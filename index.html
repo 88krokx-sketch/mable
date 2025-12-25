@@ -55,15 +55,75 @@
         .nav-logo { font-weight: 900; font-size: 1.1rem; color: #fbbf24; letter-spacing: -1px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         .dice-icon-small { width: 24px; height: 24px; fill: #fbbf24; }
 
-        .board-wrapper { 
-            perspective: 3000px; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-top: 60px; position: relative;
+        .game-layout {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            padding-top: 65px;
+            position: relative;
+        }
+
+        .info-header {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 0;
+            z-index: 110;
+        }
+
+        .profile-card-mini {
+            width: 170px; padding: 14px; border-radius: 24px;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .profile-card-mini.active-turn { 
+            border-color: #fbbf24; 
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .rank-badge { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            margin-bottom: 10px; 
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .rank-badge.p-tier { border-color: #b45309; background: rgba(180, 83, 9, 0.1); }
+        .rank-badge.ai-tier { border-color: #c084fc; background: rgba(192, 132, 252, 0.1); }
+
+        .rank-icon { width: 14px; height: 14px; }
+        .rank-text { font-size: 10px; font-weight: 900; letter-spacing: 0.5px; }
+        
+        .info-nick { font-weight: 900; font-size: 14px; color: white; line-height: 1.2; margin-bottom: 2px; }
+        .info-rank-num { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 700; margin-bottom: 8px; display: block; }
+        .money-box {
+            background: rgba(255,255,255,0.05); border-radius: 8px; padding: 4px 8px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .money-label { font-size: 8px; color: rgba(255,255,255,0.4); font-weight: 700; }
+        .money-val { font-size: 11px; font-weight: 900; color: #fbbf24; }
+
+        .board-container { 
+            perspective: 3000px; width: 100%; display: flex; align-items: center; justify-content: center; 
+            margin-top: -50px;
         }
         
         .dice-board {
             display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(7, 1fr); gap: 12px;
-            width: 95vw; max-width: 700px; aspect-ratio: 1/1;
-            transform: rotateX(55deg) rotateZ(-45deg) scale(1.1);
+            width: 95vw; max-width: 650px; aspect-ratio: 1/1;
+            transform: rotateX(55deg) rotateZ(-45deg);
             transform-style: preserve-3d;
+            position: relative;
         }
 
         .tile {
@@ -84,63 +144,83 @@
         .chess-p svg { fill: #fbbf24; filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.9)); }
         .chess-ai svg { fill: #ffffff; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9)); }
 
-        .board-center-ui {
-            position: absolute; z-index: 100; pointer-events: none;
-            width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-
-        .inner-profile-row {
-            display: flex; gap: 12px; margin-bottom: 20px; pointer-events: auto;
-        }
-
-        .profile-card-mini {
-            width: 160px; padding: 12px; border-radius: 20px;
-            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .board-center-area {
+            grid-area: 3 / 3 / 6 / 6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
             position: relative;
-            transition: all 0.3s ease;
         }
-        .profile-card-mini.active-turn { 
-            border-color: #fbbf24; 
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
-            transform: translateY(-5px);
-        }
-
-        .rank-badge {
-            display: flex; align-items: center; gap: 4px; margin-bottom: 6px;
-        }
-        .rank-icon { width: 14px; height: 14px; }
-        .rank-text { font-size: 10px; font-weight: 800; letter-spacing: -0.5px; }
-        
-        .info-nick { font-weight: 900; font-size: 13px; color: white; line-height: 1.2; margin-bottom: 2px; }
-        .info-rank-num { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 700; margin-bottom: 8px; display: block; }
-
-        .money-box {
-            background: rgba(255,255,255,0.05); border-radius: 8px; padding: 4px 8px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .money-label { font-size: 8px; color: rgba(255,255,255,0.4); font-weight: 700; }
-        .money-val { font-size: 11px; font-weight: 900; color: #fbbf24; }
 
         .character-speech {
-            background: #fff; color: #1e293b; padding: 10px 20px; border-radius: 20px;
-            font-size: 13px; font-weight: 900; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border: 3px solid #fbbf24; animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            max-width: 200px; text-align: center; pointer-events: auto;
-            margin-bottom: 15px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.85) 100%);
+            color: #1e293b; 
+            padding: 14px 28px; 
+            border-radius: 24px;
+            font-size: 13px; 
+            font-weight: 900; 
+            position: relative; 
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.4),
+                0 0 0 4px rgba(251, 191, 36, 0.2),
+                inset 0 1px 1px rgba(255,255,255,1);
+            border: 2px solid #fbbf24; 
+            animation: speechFloat 3s ease-in-out infinite, bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 200px; 
+            text-align: center;
+            transform: translateZ(100px) rotateZ(45deg) rotateX(-55deg); 
+            pointer-events: auto;
+            z-index: 100;
+            letter-spacing: -0.5px;
+            margin-bottom: 20px;
+        }
+
+        .character-speech::after {
+            content: ''; 
+            position: absolute; 
+            bottom: -10px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            border-left: 10px solid transparent; 
+            border-right: 10px solid transparent; 
+            border-top: 10px solid #fbbf24;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        }
+
+        @keyframes speechFloat {
+            0%, 100% { transform: translateZ(100px) rotateZ(45deg) rotateX(-55deg) translateY(0); }
+            50% { transform: translateZ(100px) rotateZ(45deg) rotateX(-55deg) translateY(-8px); }
+        }
+
+        .btn-quit-container {
+            position: absolute;
+            bottom: -50px;
+            transform-style: preserve-3d;
         }
 
         .btn-quit-inner {
-            pointer-events: auto;
-            padding: 6px 16px; border-radius: 12px;
-            background: rgba(239, 68, 68, 0.15); color: #ef4444; font-weight: 800; font-size: 0.7rem;
-            border: 1px solid rgba(239, 68, 68, 0.3); backdrop-filter: blur(5px);
-            transition: all 0.2s;
-            cursor: pointer;
+            padding: 10px 24px; border-radius: 100px;
+            background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%);
+            color: white; font-weight: 900; font-size: 0.8rem;
+            border: none;
+            box-shadow: 0 4px 0px #450a0a, 0 8px 20px rgba(239, 68, 68, 0.4);
+            transition: all 0.1s; cursor: pointer;
+            transform: translateZ(40px) rotateZ(45deg) rotateX(-55deg);
+            white-space: nowrap;
+            display: flex; align-items: center; gap: 6px;
         }
-        .btn-quit-inner:hover { background: rgba(239, 68, 68, 0.25); transform: translateY(-1px); }
+        
+        .btn-quit-inner:hover {
+            transform: translateZ(50px) rotateZ(45deg) rotateX(-55deg) scale(1.05);
+            box-shadow: 0 4px 0px #450a0a, 0 12px 25px rgba(239, 68, 68, 0.6);
+        }
 
-        @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .btn-quit-inner:active {
+            transform: translateZ(30px) rotateZ(45deg) rotateX(-55deg) scale(0.98);
+            box-shadow: 0 2px 0px #450a0a, 0 4px 10px rgba(239, 68, 68, 0.4);
+        }
 
         .game-controls {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
@@ -161,16 +241,12 @@
             backdrop-filter: blur(15px);
         }
         .modal-container { 
-            width: 100%; max-width: 600px; max-height: 80vh; background: #0f172a; 
+            width: 100%; max-width: 600px; height: 80vh; background: #0f172a; 
             border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
             display: flex; flex-direction: column;
         }
-        .modal-header {
-            padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); 
-            display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.8);
-        }
-        .modal-content { padding: 24px; overflow-y: auto; flex: 1; }
-
+        .modal-header { padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.8); }
+        .modal-content { padding: 20px; overflow-y: auto; flex: 1; }
         .custom-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 600; align-items: center; justify-content: center; padding: 20px; }
         
         .character-img-fixed {
@@ -184,13 +260,38 @@
             z-index: 10; letter-spacing: 1px;
         }
 
+        .nickname-container {
+            width: 100%; max-width: 280px; margin: 0 auto;
+        }
+        .small-input {
+            width: 100%; background: rgba(15, 23, 42, 0.8); border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px; padding: 12px; text-align: center; font-weight: 700; font-size: 14px;
+            color: white; outline: none; transition: all 0.3s;
+        }
+        .small-input:focus { border-color: #fbbf24; background: rgba(15, 23, 42, 1); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2); }
+        .small-btn {
+            width: 100%; margin-top: 10px; background: #fbbf24; color: #0f172a;
+            font-weight: 900; font-size: 14px; padding: 12px; border-radius: 14px;
+            transition: all 0.2s; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+        }
+
+        /* 랭킹 리스트 스타일 고도화 */
+        .rank-winrate-bar {
+            height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); width: 60px; position: relative; overflow: hidden;
+        }
+        .rank-winrate-fill {
+            position: absolute; top: 0; left: 0; height: 100%; background: #10b981;
+        }
+
+        @keyframes bounceIn { 0% { transform: scale(0.3) translateZ(100px) rotateZ(45deg) rotateX(-55deg); opacity: 0; } 100% { transform: scale(1) translateZ(100px) rotateZ(45deg) rotateX(-55deg); opacity: 1; } }
+
         @media (max-width: 640px) {
-            .profile-card-mini { width: 140px; padding: 10px; }
-            .inner-profile-row { gap: 8px; }
-            .dice-board { max-width: 350px; }
-            .nav-content { padding: 0 16px; }
-            .nav-logo span { display: none; }
-            .maker-credit { bottom: 5px; font-size: 9px; }
+            .profile-card-mini { width: 150px; padding: 10px; }
+            .dice-board { max-width: 350px; gap: 8px; }
+            .board-container { margin-top: -30px; }
+            .btn-quit-inner { padding: 8px 16px; font-size: 0.7rem; }
+            .character-speech { font-size: 11px; padding: 10px 16px; max-width: 140px; }
+            .btn-quit-container { bottom: -35px; }
         }
     </style>
 </head>
@@ -215,62 +316,72 @@
         </div>
     </header>
 
-    <!-- 홈 화면 -->
     <div id="home-screen" class="w-full h-full flex items-center justify-center">
-        <div class="glass-panel p-10 rounded-[40px] text-center w-full max-w-sm">
+        <div class="glass-panel p-8 rounded-[32px] text-center w-full max-sm:mx-4 max-w-[340px]">
             <div class="flex justify-center mb-4">
-                <svg class="w-16 h-16 text-amber-400" viewBox="0 0 100 100">
+                <svg class="w-12 h-12 text-amber-400" viewBox="0 0 100 100">
                     <rect x="10" y="10" width="80" height="80" rx="15" fill="#fbbf24" />
                     <circle cx="30" cy="30" r="6" fill="white"/><circle cx="70" cy="70" r="6" fill="white"/><circle cx="50" cy="50" r="6" fill="white"/>
                 </svg>
             </div>
-            <h2 class="text-4xl font-black mb-1 italic text-amber-400">주사위 마블</h2>
-            <p class="text-white/30 text-[10px] font-bold tracking-widest mb-10 uppercase">프리미엄 보드게임</p>
-            <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" 
-                   class="w-full bg-slate-950/50 border-2 border-slate-700/50 rounded-2xl p-4 text-center font-bold mb-4 focus:border-amber-400 outline-none text-white">
-            <button onclick="startGame()" class="w-full bg-amber-400 text-slate-900 font-black p-4 rounded-2xl shadow-xl hover:scale-105 transition-all">게임 시작</button>
+            <h2 class="text-3xl font-black mb-1 italic text-amber-400">주사위 마블</h2>
+            <p class="text-white/20 text-[9px] font-bold tracking-[0.2em] mb-8 uppercase">Premium Board Game</p>
+            
+            <div class="nickname-container">
+                <input type="text" id="nickname-input" placeholder="닉네임 입력 (8자 이내)" maxlength="8" class="small-input">
+                <button onclick="startGame()" class="small-btn">게임 시작</button>
+            </div>
+            
+            <div class="mt-6 flex items-center justify-center gap-3 opacity-30">
+                <div class="h-[1px] w-8 bg-white/50"></div>
+                <span class="text-[10px] font-bold text-white uppercase tracking-widest">v1.5.0</span>
+                <div class="h-[1px] w-8 bg-white/50"></div>
+            </div>
         </div>
     </div>
 
-    <!-- 게임 화면 -->
     <div id="game-screen" class="hidden w-full h-full relative">
-        <div class="board-wrapper">
-            <div class="board-center-ui">
-                <div class="inner-profile-row">
-                    <!-- 내 정보 -->
-                    <div id="player-card" class="profile-card-mini active-turn">
-                        <div class="rank-badge">
-                            <svg class="rank-icon fill-amber-600" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                            <span class="rank-text text-amber-600">BRONZE I</span>
-                        </div>
-                        <h3 id="p-name" class="info-nick">플레이어</h3>
-                        <span id="p-rank-num" class="info-rank-num">전체 순위 1,245위</span>
-                        <div class="money-box">
-                            <span class="money-label">보유 자산</span>
-                            <span id="p-money" class="money-val">10,000</span>
-                        </div>
+        <div class="game-layout">
+            <div class="info-header">
+                <div id="player-card" class="profile-card-mini active-turn">
+                    <div class="rank-badge p-tier">
+                        <svg class="rank-icon fill-amber-700" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                        <span class="rank-text text-amber-600 uppercase">Bronze I</span>
                     </div>
-                    <!-- AI 정보 -->
-                    <div id="ai-card" class="profile-card-mini">
-                        <div class="rank-badge">
-                            <svg class="rank-icon fill-purple-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                            <span class="rank-text text-purple-400">MASTER III</span>
-                        </div>
-                        <h3 id="ai-name" class="info-nick">AI 코어</h3>
-                        <span id="ai-rank-num" class="info-rank-num">전체 순위 82위</span>
-                        <div class="money-box">
-                            <span class="money-label">보유 자산</span>
-                            <span id="ai-money" class="money-val text-purple-400">10,000</span>
+                    <h3 id="p-name" class="info-nick">플레이어</h3>
+                    <span id="p-rank-num" class="info-rank-num">전체 순위 1,114위</span>
+                    <div class="money-box">
+                        <span class="money-label">보유 자산</span>
+                        <span id="p-money" class="money-val">10,000</span>
+                    </div>
+                </div>
+                <div id="ai-card" class="profile-card-mini">
+                    <div class="rank-badge ai-tier">
+                        <svg class="rank-icon fill-purple-400" viewBox="0 0 24 24"><path d="M5 16l-3-8 5 2 5-7 5 7 5-2-3 8z"/></svg>
+                        <span class="rank-text text-purple-400 uppercase">Master III</span>
+                    </div>
+                    <h3 id="ai-name" class="info-nick">AI 코어</h3>
+                    <span id="ai-rank-num" class="info-rank-num">전체 순위 82위</span>
+                    <div class="money-box">
+                        <span class="money-label">보유 자산</span>
+                        <span id="ai-money" class="money-val text-purple-400">10,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="board-container">
+                <div id="board" class="dice-board">
+                    <div class="board-center-area">
+                        <div id="speech-bubble" class="character-speech">주사위를 굴려보세요!</div>
+                        <div class="btn-quit-container">
+                            <button class="btn-quit-inner" onclick="confirmQuit()">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                중도포기
+                            </button>
                         </div>
                     </div>
                 </div>
-
-                <div id="speech-bubble" class="character-speech">행운을 빌어요!</div>
-                
-                <button class="btn-quit-inner" onclick="confirmQuit()">중도포기</button>
             </div>
-
-            <div id="board" class="dice-board"></div>
         </div>
 
         <div class="game-controls glass-panel">
@@ -284,51 +395,47 @@
                 <span class="text-amber-400 font-black text-xl italic tracking-tighter">500,000</span>
             </div>
         </div>
-
-        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="character-img-fixed" alt="캐릭터" onerror="this.style.display='none'">
     </div>
 
     <div class="maker-credit">게임제작사: 플리</div>
 
-    <!-- 랭킹 모달 (마블 랭킹) -->
+    <!-- 랭킹 모달 -->
     <div id="ranking-modal" class="custom-modal-overlay" onclick="closeModal('ranking-modal')">
         <div class="modal-container shadow-2xl" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h2 class="text-xl font-black text-amber-400 italic tracking-tighter uppercase">마블 랭킹 TOP 15</h2>
+                <div class="flex flex-col">
+                    <h2 class="text-xl font-black text-amber-400 italic tracking-tighter uppercase">마블 통합 랭킹</h2>
+                    <span class="text-[10px] text-white/30 font-bold uppercase tracking-widest">Total 1,115 Players Registered</span>
+                </div>
                 <button onclick="closeModal('ranking-modal')" class="text-xs font-bold text-white/40 hover:text-white">닫기</button>
             </div>
-            <div id="ranking-list" class="modal-content space-y-2"></div>
+            <div id="ranking-list" class="modal-content space-y-2">
+                <!-- 리스트가 동적으로 생성됨 -->
+            </div>
         </div>
     </div>
 
     <!-- 패치노트 모달 -->
     <div id="patch-modal" class="custom-modal-overlay" onclick="closeModal('patch-modal')">
-        <div class="modal-container shadow-2xl" onclick="event.stopPropagation()">
+        <div class="modal-container shadow-2xl h-auto max-h-[70vh]" onclick="event.stopPropagation()">
             <div class="modal-header">
                 <h2 class="text-xl font-black text-white italic">패치노트</h2>
                 <button onclick="closeModal('patch-modal')" class="text-xs font-bold text-white/40 hover:text-white">닫기</button>
             </div>
-            <div class="modal-content">
+            <div class="modal-content text-white/70">
                 <div class="patch-item mb-6">
-                    <div class="text-amber-400 font-bold text-sm mb-1">v1.3.5 - 랭킹 시스템 보완</div>
+                    <div class="text-amber-400 font-bold text-sm mb-1">v1.5.0 - 랭킹 시스템 대규모 확장</div>
                     <div class="text-white/30 text-[10px] mb-2 uppercase">2025.12.25</div>
-                    <p class="text-white/60 text-xs leading-relaxed">
-                        • '마블 랭킹'으로 명칭을 변경하고 계급장 아이콘을 추가했습니다.<br>
-                        • 랭커들의 티어에 따른 고유한 시각적 효과를 부여했습니다.
-                    </p>
-                </div>
-                <div class="patch-item">
-                    <div class="text-white/50 font-bold text-sm mb-1">v1.3.0 - 프로필 UI 대개편</div>
-                    <div class="text-white/30 text-[10px] mb-2 uppercase">2025.12.25</div>
-                    <p class="text-white/60 text-xs leading-relaxed">
-                        • 플레이어 정보 창에 계급장, 계급 명칭, 순위 시스템을 추가했습니다.
+                    <p class="text-xs leading-relaxed">
+                        • 랭킹 등록 인원이 15명에서 1,115명으로 대폭 증가했습니다.<br>
+                        • 유저들의 실력을 가늠할 수 있는 <b>'승률(Win Rate)'</b> 지표가 추가되었습니다.<br>
+                        • 대량의 데이터 처리를 위한 랭킹 렌더링 최적화가 진행되었습니다.
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 알림 모달 -->
     <div id="common-modal" class="custom-modal">
         <div class="glass-panel p-8 rounded-[30px] max-w-xs w-full text-center border-t-4 border-amber-400">
             <h3 id="modal-title" class="text-lg font-black mb-2 text-white italic uppercase">알림</h3>
@@ -348,11 +455,10 @@
         }
 
         let gameState = { turn: 'player', isMoving: false, winner: null };
-        let player = { name: "익명", money: 10000, pos: 0, rank: 1245 };
+        let player = { name: "익명", money: 10000, pos: 0, rank: 1114 };
         let ai = { name: "AI 코어", money: 10000, pos: 0, rank: 82 };
         const path = [[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],[6,5],[6,4],[6,3],[6,2],[6,1],[6,0],[5,0],[4,0],[3,0],[2,0],[1,0]];
 
-        // 계급 데이터
         const tiers = [
             { name: "CHALLENGER", color: "#60a5fa", icon: "diamond" },
             { name: "MASTER", color: "#c084fc", icon: "crown" },
@@ -374,6 +480,19 @@
                 shield: '<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>'
             };
             return icons[tiers[tierIndex].icon] || icons.star;
+        }
+
+        // 유동적인 닉네임 생성을 위한 시드 데이터
+        const namePrefix = ["강력한", "날쌘", "똑똑한", "운좋은", "행복한", "전설의", "위대한", "조용한", "차분한", "열정적인"];
+        const nameSuffix = ["사자", "독수리", "호랑이", "드래곤", "마스터", "헌터", "지배자", "다이서", "마블러", "승부사"];
+
+        function generateRandomNickname(i) {
+            if (i === 1) return "마스터_제로";
+            if (i === 2) return "운의지배자";
+            if (i === 3) return "다이스퀸";
+            const p = namePrefix[Math.floor(Math.random() * namePrefix.length)];
+            const s = nameSuffix[Math.floor(Math.random() * nameSuffix.length)];
+            return `${p}${s}_${i}`;
         }
 
         function updateUI() {
@@ -405,9 +524,19 @@
         }
 
         function initBoard() {
-            const b = document.getElementById('board'); b.innerHTML = '';
-            for(let r=0; r<7; r++) for(let c=0; c<7; c++) {
-                const t = document.createElement('div'); t.className = 'tile opacity-5'; t.style.gridArea = `${r+1}/${c+1}`; t.id = `c-${r}-${c}`; b.appendChild(t);
+            const tiles = document.querySelectorAll('.tile');
+            tiles.forEach(t => t.remove());
+
+            const b = document.getElementById('board');
+            for(let r=0; r<7; r++) {
+                for(let c=0; c<7; c++) {
+                    if(r >= 2 && r <= 4 && c >= 2 && c <= 4) continue;
+                    const t = document.createElement('div'); 
+                    t.className = 'tile opacity-5'; 
+                    t.style.gridArea = `${r+1}/${c+1}`; 
+                    t.id = `c-${r}-${c}`; 
+                    b.appendChild(t);
+                }
             }
             path.forEach((p, i) => {
                 const el = document.getElementById(`c-${p[0]}-${p[1]}`);
@@ -446,6 +575,10 @@
             document.getElementById('dice-btn').innerText = dice;
             playSfx(1.2);
 
+            const bubble = document.getElementById('speech-bubble');
+            if(type === 'player') bubble.innerText = `${dice}칸 전진합니다!`;
+            else bubble.innerText = `AI의 턴입니다. (${dice})`;
+
             for(let i=0; i<dice; i++) {
                 target.pos = (target.pos + 1) % path.length;
                 playSfx(0.8 + (i * 0.1)); 
@@ -465,32 +598,61 @@
 
         function openModal(id) {
             if(id === 'ranking-modal') {
-                const l = document.getElementById('ranking-list'); l.innerHTML = '';
-                const names = ["마스터_제로", "운의지배자", "다이스퀸", "골드러쉬", "플리마스터", "보드킹", "주사위요정", "마블러", "올인왕", "잭팟헌터", "다이스갓", "행운아", "강남건물주", "코인부자", "노력파"];
+                const list = document.getElementById('ranking-list');
+                list.innerHTML = '';
                 
-                for(let i=1; i<=15; i++) {
-                    const tierIdx = Math.min(Math.floor((i-1)/2), tiers.length - 1);
+                // 1,115명의 가상 랭킹 데이터 생성
+                const totalPlayers = 1115;
+                const fragment = document.createDocumentFragment();
+                
+                for(let i=1; i<=totalPlayers; i++) {
+                    const tierIdx = Math.min(Math.floor((i-1) / 160), tiers.length - 1);
                     const currentTier = tiers[tierIdx];
+                    
+                    // 순위에 따른 승률 계산 (상위권일수록 승률이 높음)
+                    let winRate;
+                    if (i <= 3) winRate = (90 - (i * 2.5)).toFixed(1);
+                    else winRate = (Math.max(15, 65 - (i * 0.05)) + (Math.random() * 5)).toFixed(1);
+
                     const item = document.createElement('div');
-                    item.className = 'flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/5 transition-all hover:bg-white/10';
+                    item.className = 'flex justify-between items-center p-3 sm:p-4 bg-white/5 rounded-2xl border border-white/5 transition-all hover:bg-white/10';
                     item.innerHTML = `
-                        <div class="flex items-center gap-4">
-                            <span class="text-[14px] font-black w-6 ${i <= 3 ? 'text-amber-400' : 'text-white/40'}">#${i}</span>
-                            <div class="flex flex-col">
-                                <div class="flex items-center gap-1.5 mb-0.5">
-                                    <svg class="w-3 h-3" style="fill: ${currentTier.color}" viewBox="0 0 24 24">${getTierIcon(tierIdx)}</svg>
-                                    <span class="text-[9px] font-black uppercase tracking-tighter" style="color: ${currentTier.color}">${currentTier.name}</span>
+                        <div class="flex items-center gap-3 sm:gap-4 overflow-hidden">
+                            <span class="text-[12px] sm:text-[14px] font-black w-8 shrink-0 ${i <= 3 ? 'text-amber-400' : 'text-white/40'}">#${i}</span>
+                            <div class="flex flex-col min-w-0">
+                                <div class="flex items-center gap-1.5 mb-1 overflow-x-hidden">
+                                    <div class="rank-badge py-0.5 px-2 mb-0 shrink-0" style="border-color: ${currentTier.color}80; background: ${currentTier.color}15">
+                                        <svg class="w-2.5 h-2.5" style="fill: ${currentTier.color}" viewBox="0 0 24 24">${getTierIcon(tierIdx)}</svg>
+                                        <span class="text-[8px] font-black uppercase tracking-tighter" style="color: ${currentTier.color}">${currentTier.name}</span>
+                                    </div>
+                                    <span class="text-[9px] font-bold text-white/20 uppercase tracking-widest hidden sm:inline">Ranked</span>
                                 </div>
-                                <span class="text-white font-bold text-[13px]">${names[i-1] || '익명유저'}</span>
+                                <span class="text-white font-bold text-[12px] sm:text-[13px] truncate">${generateRandomNickname(i)}</span>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <span class="text-amber-400 font-black text-[13px] block">${(5000000 / (i + 0.5)).toLocaleString().split('.')[0]} P</span>
-                            <span class="text-[9px] text-white/20 font-bold">승률 ${(90 - i * 2)}%</span>
+                        <div class="flex flex-col items-end shrink-0 gap-1 ml-4">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[9px] font-black text-white/40 uppercase tracking-tighter">Win Rate</span>
+                                <span class="text-[11px] font-black ${winRate >= 60 ? 'text-emerald-400' : 'text-white/60'}">${winRate}%</span>
+                            </div>
+                            <div class="rank-winrate-bar">
+                                <div class="rank-winrate-fill" style="width: ${winRate}%; background: ${winRate >= 60 ? '#10b981' : (winRate >= 45 ? '#fbbf24' : '#ef4444')}"></div>
+                            </div>
                         </div>
                     `;
-                    l.appendChild(item);
+                    fragment.appendChild(item);
+
+                    // 한 번에 너무 많은 데이터를 렌더링하면 브라우저가 멈출 수 있으므로 상위 100명까지만 즉시 노출
+                    // 나머지는 스크롤 시 로드하도록 할 수 있으나, 여기서는 간소화를 위해 일단 100명까지만 보여줍니다.
+                    if (i >= 100) {
+                        const tail = document.createElement('div');
+                        tail.className = 'text-center py-8 text-white/20 text-[10px] font-bold uppercase tracking-[0.3em]';
+                        tail.innerText = `... and ${totalPlayers - 100} more players ...`;
+                        fragment.appendChild(tail);
+                        break;
+                    }
                 }
+                list.appendChild(fragment);
             }
             document.getElementById(id).style.display = 'flex';
         }
