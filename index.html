@@ -263,11 +263,26 @@
             box-shadow: 0 4px 0px #450a0a, 0 12px 25px rgba(239, 68, 68, 0.6);
         }
 
-        /* 하단 정보 테이블 박스 최적화 - 크기 축소 */
+        /* 하단 정보 테이블 박스 최적화 - 반투명 설정 */
         .game-controls-mini {
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 600px; padding: 12px 30px; border-radius: 24px;
-            display: flex; align-items: center; justify-content: space-between; z-index: 160;
+            position: fixed; 
+            bottom: 25px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 90%; 
+            max-width: 600px; 
+            padding: 12px 30px; 
+            border-radius: 24px;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            z-index: 160;
+            /* 더 투명하게 조정 (rgba 알파값 0.6 -> 0.3) */
+            background: rgba(15, 23, 42, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
         .dice-box {
@@ -375,7 +390,7 @@
             
             <div class="mt-6 flex items-center justify-center gap-3 opacity-30">
                 <div class="h-[1px] w-8 bg-white/50"></div>
-                <span class="text-[10px] font-bold text-white uppercase tracking-widest">v1.5.2</span>
+                <span class="text-[10px] font-bold text-white uppercase tracking-widest">v1.5.3</span>
                 <div class="h-[1px] w-8 bg-white/50"></div>
             </div>
         </div>
@@ -425,7 +440,7 @@
             </div>
         </div>
 
-        <div class="game-controls-mini glass-panel">
+        <div class="game-controls-mini">
             <div>
                 <span class="text-[8px] font-black text-blue-400 block mb-0.5 uppercase tracking-wider">현재 위치</span>
                 <span id="pos-display" class="text-base sm:text-lg font-black italic text-white">00</span>
@@ -461,12 +476,11 @@
             </div>
             <div class="modal-content text-white/70">
                 <div class="patch-item mb-6">
-                    <div class="text-amber-400 font-bold text-sm mb-1">v1.5.2 - UI 컴팩트화</div>
+                    <div class="text-amber-400 font-bold text-sm mb-1">v1.5.3 - 레이어 가독성</div>
                     <div class="text-white/30 text-[10px] mb-2 uppercase">2025.12.25</div>
                     <p class="text-xs leading-relaxed">
-                        • 하단 정보 테이블 박스 크기를 축소하여 게임 화면 공간을 확보했습니다.<br>
-                        • 주사위 버튼 크기를 조정하여 슬림한 디자인을 적용했습니다.<br>
-                        • 모바일 뷰포트에서의 하단 레이아웃을 최적화했습니다.
+                        • 하단 정보 테이블 박스 배경을 반투명하게 변경하여 게임판 시야를 개선했습니다.<br>
+                        • 배경 블러(Blur) 효과를 강화하여 가독성을 유지했습니다.
                     </p>
                 </div>
             </div>
