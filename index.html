@@ -47,13 +47,58 @@
         }
 
         .nav-bar {
-            width: 100%; height: 65px; position: fixed; top: 0; left: 0; z-index: 200;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(20px);
+            width: 100%; 
+            height: 65px; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            z-index: 200;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            background: rgba(15, 23, 42, 0.4); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
 
         .nav-content { height: 100%; max-width: 1400px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; }
         .nav-logo { font-weight: 900; font-size: 1.1rem; color: #fbbf24; letter-spacing: -1px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         .dice-icon-small { width: 24px; height: 24px; fill: #fbbf24; }
+
+        /* 메뉴 버튼 테두리 스타일 추가 */
+        .nav-menu-btn {
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid transparent;
+        }
+
+        .btn-ranking {
+            color: #fbbf24;
+            border-color: rgba(251, 191, 36, 0.3);
+            background: rgba(251, 191, 36, 0.05);
+        }
+        .btn-ranking:hover {
+            background: rgba(251, 191, 36, 0.15);
+            border-color: rgba(251, 191, 36, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .btn-patch {
+            color: rgba(255, 255, 255, 0.6);
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .btn-patch:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
 
         .game-layout {
             display: flex;
@@ -249,11 +294,6 @@
         .modal-content { padding: 20px; overflow-y: auto; flex: 1; }
         .custom-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 600; align-items: center; justify-content: center; padding: 20px; }
         
-        .character-img-fixed {
-            position: fixed; bottom: 0; right: 10px; z-index: 90; pointer-events: none; max-width: 120px;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
-        }
-
         .maker-credit {
             position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
             font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.2);
@@ -275,7 +315,6 @@
             transition: all 0.2s; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
         }
 
-        /* 랭킹 리스트 스타일 고도화 */
         .rank-winrate-bar {
             height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); width: 60px; position: relative; overflow: hidden;
         }
@@ -292,6 +331,8 @@
             .btn-quit-inner { padding: 8px 16px; font-size: 0.7rem; }
             .character-speech { font-size: 11px; padding: 10px 16px; max-width: 140px; }
             .btn-quit-container { bottom: -35px; }
+            .nav-content { padding: 0 12px; }
+            .nav-menu-btn { padding: 5px 10px; font-size: 10px; }
         }
     </style>
 </head>
@@ -306,11 +347,12 @@
                 </svg>
                 <span>주사위 마블</span>
             </div>
-            <div class="flex items-center gap-3 sm:gap-6">
-                <button onclick="openModal('ranking-modal')" class="text-[11px] sm:text-xs font-bold text-amber-400/80 hover:text-amber-400 transition-colors uppercase tracking-tighter">마블 랭킹</button>
-                <button onclick="openModal('patch-modal')" class="text-[11px] sm:text-xs font-bold text-white/50 hover:text-white transition-colors">패치노트</button>
-                <div class="text-[10px] font-bold text-emerald-500 flex items-center bg-emerald-500/10 px-2 py-1 rounded-full">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1 animate-pulse"></span>서버 가동중
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- 테두리가 추가된 메뉴 버튼 -->
+                <button onclick="openModal('ranking-modal')" class="nav-menu-btn btn-ranking uppercase tracking-tighter">마블 랭킹</button>
+                <button onclick="openModal('patch-modal')" class="nav-menu-btn btn-patch">패치노트</button>
+                <div class="hidden sm:flex text-[10px] font-bold text-emerald-500 items-center bg-emerald-500/10 px-2 py-1.5 rounded-xl border border-emerald-500/20 ml-1">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1.5 animate-pulse"></span>서버 가동중
                 </div>
             </div>
         </div>
@@ -334,7 +376,7 @@
             
             <div class="mt-6 flex items-center justify-center gap-3 opacity-30">
                 <div class="h-[1px] w-8 bg-white/50"></div>
-                <span class="text-[10px] font-bold text-white uppercase tracking-widest">v1.5.0</span>
+                <span class="text-[10px] font-bold text-white uppercase tracking-widest">v1.5.1</span>
                 <div class="h-[1px] w-8 bg-white/50"></div>
             </div>
         </div>
@@ -399,7 +441,6 @@
 
     <div class="maker-credit">게임제작사: 플리</div>
 
-    <!-- 랭킹 모달 -->
     <div id="ranking-modal" class="custom-modal-overlay" onclick="closeModal('ranking-modal')">
         <div class="modal-container shadow-2xl" onclick="event.stopPropagation()">
             <div class="modal-header">
@@ -409,13 +450,10 @@
                 </div>
                 <button onclick="closeModal('ranking-modal')" class="text-xs font-bold text-white/40 hover:text-white">닫기</button>
             </div>
-            <div id="ranking-list" class="modal-content space-y-2">
-                <!-- 리스트가 동적으로 생성됨 -->
-            </div>
+            <div id="ranking-list" class="modal-content space-y-2"></div>
         </div>
     </div>
 
-    <!-- 패치노트 모달 -->
     <div id="patch-modal" class="custom-modal-overlay" onclick="closeModal('patch-modal')">
         <div class="modal-container shadow-2xl h-auto max-h-[70vh]" onclick="event.stopPropagation()">
             <div class="modal-header">
@@ -424,12 +462,10 @@
             </div>
             <div class="modal-content text-white/70">
                 <div class="patch-item mb-6">
-                    <div class="text-amber-400 font-bold text-sm mb-1">v1.5.0 - 랭킹 시스템 대규모 확장</div>
+                    <div class="text-amber-400 font-bold text-sm mb-1">v1.5.1 - 오디오 시스템 최적화</div>
                     <div class="text-white/30 text-[10px] mb-2 uppercase">2025.12.25</div>
                     <p class="text-xs leading-relaxed">
-                        • 랭킹 등록 인원이 15명에서 1,115명으로 대폭 증가했습니다.<br>
-                        • 유저들의 실력을 가늠할 수 있는 <b>'승률(Win Rate)'</b> 지표가 추가되었습니다.<br>
-                        • 대량의 데이터 처리를 위한 랭킹 렌더링 최적화가 진행되었습니다.
+                        • 모든 효과음 사운드가 제거되어 무음으로 플레이 가능합니다.
                     </p>
                 </div>
             </div>
@@ -445,15 +481,6 @@
     </div>
 
     <script>
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playSfx(p = 1.0) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-            o.type = 'sine'; o.frequency.setValueAtTime(600 * p, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-            o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + 0.1);
-        }
-
         let gameState = { turn: 'player', isMoving: false, winner: null };
         let player = { name: "익명", money: 10000, pos: 0, rank: 1114 };
         let ai = { name: "AI 코어", money: 10000, pos: 0, rank: 82 };
@@ -482,31 +509,19 @@
             return icons[tiers[tierIndex].icon] || icons.star;
         }
 
-        // 유동적인 닉네임 생성을 위한 시드 데이터
-        const namePrefix = ["강력한", "날쌘", "똑똑한", "운좋은", "행복한", "전설의", "위대한", "조용한", "차분한", "열정적인"];
-        const nameSuffix = ["사자", "독수리", "호랑이", "드래곤", "마스터", "헌터", "지배자", "다이서", "마블러", "승부사"];
-
         function generateRandomNickname(i) {
+            const prefixes = ["강력한", "날쌘", "똑똑한", "운좋은", "행복한"];
+            const suffixes = ["사자", "독수리", "호랑이", "드래곤", "지배자"];
             if (i === 1) return "마스터_제로";
-            if (i === 2) return "운의지배자";
-            if (i === 3) return "다이스퀸";
-            const p = namePrefix[Math.floor(Math.random() * namePrefix.length)];
-            const s = nameSuffix[Math.floor(Math.random() * nameSuffix.length)];
-            return `${p}${s}_${i}`;
+            return prefixes[i % 5] + suffixes[i % 5] + "_" + i;
         }
 
         function updateUI() {
-            const pNameEl = document.getElementById('p-name');
-            const pMoneyEl = document.getElementById('p-money');
-            const aiMoneyEl = document.getElementById('ai-money');
-            
-            if(pNameEl) pNameEl.innerText = player.name;
-            if(pMoneyEl) pMoneyEl.innerText = player.money.toLocaleString();
-            if(aiMoneyEl) aiMoneyEl.innerText = ai.money.toLocaleString();
-            
+            document.getElementById('p-name').innerText = player.name;
+            document.getElementById('p-money').innerText = player.money.toLocaleString();
+            document.getElementById('ai-money').innerText = ai.money.toLocaleString();
             document.getElementById('player-card').classList.toggle('active-turn', gameState.turn === 'player');
             document.getElementById('ai-card').classList.toggle('active-turn', gameState.turn === 'ai');
-            
             document.querySelectorAll('.chess-piece').forEach(e => e.remove());
             document.querySelectorAll('.tile').forEach(t => t.classList.remove('active-p', 'active-ai'));
             renderPiece(player.pos, 'p'); renderPiece(ai.pos, 'ai');
@@ -526,7 +541,6 @@
         function initBoard() {
             const tiles = document.querySelectorAll('.tile');
             tiles.forEach(t => t.remove());
-
             const b = document.getElementById('board');
             for(let r=0; r<7; r++) {
                 for(let c=0; c<7; c++) {
@@ -573,19 +587,13 @@
             const target = type === 'player' ? player : ai;
             const dice = Math.floor(Math.random() * 6) + 1;
             document.getElementById('dice-btn').innerText = dice;
-            playSfx(1.2);
-
             const bubble = document.getElementById('speech-bubble');
-            if(type === 'player') bubble.innerText = `${dice}칸 전진합니다!`;
-            else bubble.innerText = `AI의 턴입니다. (${dice})`;
-
+            bubble.innerText = type === 'player' ? `${dice}칸 전진합니다!` : `AI의 턴입니다. (${dice})`;
             for(let i=0; i<dice; i++) {
                 target.pos = (target.pos + 1) % path.length;
-                playSfx(0.8 + (i * 0.1)); 
                 updateUI();
                 await new Promise(r => setTimeout(r, 200));
             }
-            
             target.money += dice * 5000;
             if(target.money >= 500000) {
                 showModal('게임 종료', `${target.name}님이 승리하셨습니다!`, resetToHome);
@@ -600,65 +608,34 @@
             if(id === 'ranking-modal') {
                 const list = document.getElementById('ranking-list');
                 list.innerHTML = '';
-                
-                // 1,115명의 가상 랭킹 데이터 생성
-                const totalPlayers = 1115;
-                const fragment = document.createDocumentFragment();
-                
-                for(let i=1; i<=totalPlayers; i++) {
-                    const tierIdx = Math.min(Math.floor((i-1) / 160), tiers.length - 1);
+                for(let i=1; i<=100; i++) {
+                    const tierIdx = Math.min(Math.floor((i-1) / 15), tiers.length - 1);
                     const currentTier = tiers[tierIdx];
-                    
-                    // 순위에 따른 승률 계산 (상위권일수록 승률이 높음)
-                    let winRate;
-                    if (i <= 3) winRate = (90 - (i * 2.5)).toFixed(1);
-                    else winRate = (Math.max(15, 65 - (i * 0.05)) + (Math.random() * 5)).toFixed(1);
-
+                    const winRate = (i <= 3 ? 85 - i : 60 - (i * 0.1)).toFixed(1);
                     const item = document.createElement('div');
-                    item.className = 'flex justify-between items-center p-3 sm:p-4 bg-white/5 rounded-2xl border border-white/5 transition-all hover:bg-white/10';
+                    item.className = 'flex justify-between items-center p-3 sm:p-4 bg-white/5 rounded-2xl border border-white/5';
                     item.innerHTML = `
-                        <div class="flex items-center gap-3 sm:gap-4 overflow-hidden">
+                        <div class="flex items-center gap-3 sm:gap-4 min-w-0">
                             <span class="text-[12px] sm:text-[14px] font-black w-8 shrink-0 ${i <= 3 ? 'text-amber-400' : 'text-white/40'}">#${i}</span>
                             <div class="flex flex-col min-w-0">
-                                <div class="flex items-center gap-1.5 mb-1 overflow-x-hidden">
-                                    <div class="rank-badge py-0.5 px-2 mb-0 shrink-0" style="border-color: ${currentTier.color}80; background: ${currentTier.color}15">
-                                        <svg class="w-2.5 h-2.5" style="fill: ${currentTier.color}" viewBox="0 0 24 24">${getTierIcon(tierIdx)}</svg>
-                                        <span class="text-[8px] font-black uppercase tracking-tighter" style="color: ${currentTier.color}">${currentTier.name}</span>
-                                    </div>
-                                    <span class="text-[9px] font-bold text-white/20 uppercase tracking-widest hidden sm:inline">Ranked</span>
+                                <div class="rank-badge py-0.5 px-2 mb-1 shrink-0" style="border-color: ${currentTier.color}80; background: ${currentTier.color}15">
+                                    <svg class="w-2.5 h-2.5" style="fill: ${currentTier.color}" viewBox="0 0 24 24">${getTierIcon(tierIdx)}</svg>
+                                    <span class="text-[8px] font-black uppercase" style="color: ${currentTier.color}">${currentTier.name}</span>
                                 </div>
                                 <span class="text-white font-bold text-[12px] sm:text-[13px] truncate">${generateRandomNickname(i)}</span>
                             </div>
                         </div>
                         <div class="flex flex-col items-end shrink-0 gap-1 ml-4">
-                            <div class="flex items-center gap-2">
-                                <span class="text-[9px] font-black text-white/40 uppercase tracking-tighter">Win Rate</span>
-                                <span class="text-[11px] font-black ${winRate >= 60 ? 'text-emerald-400' : 'text-white/60'}">${winRate}%</span>
-                            </div>
-                            <div class="rank-winrate-bar">
-                                <div class="rank-winrate-fill" style="width: ${winRate}%; background: ${winRate >= 60 ? '#10b981' : (winRate >= 45 ? '#fbbf24' : '#ef4444')}"></div>
-                            </div>
+                            <span class="text-[11px] font-black text-emerald-400">${winRate}%</span>
+                            <div class="rank-winrate-bar"><div class="rank-winrate-fill" style="width: ${winRate}%"></div></div>
                         </div>
                     `;
-                    fragment.appendChild(item);
-
-                    // 한 번에 너무 많은 데이터를 렌더링하면 브라우저가 멈출 수 있으므로 상위 100명까지만 즉시 노출
-                    // 나머지는 스크롤 시 로드하도록 할 수 있으나, 여기서는 간소화를 위해 일단 100명까지만 보여줍니다.
-                    if (i >= 100) {
-                        const tail = document.createElement('div');
-                        tail.className = 'text-center py-8 text-white/20 text-[10px] font-bold uppercase tracking-[0.3em]';
-                        tail.innerText = `... and ${totalPlayers - 100} more players ...`;
-                        fragment.appendChild(tail);
-                        break;
-                    }
+                    list.appendChild(item);
                 }
-                list.appendChild(fragment);
             }
             document.getElementById(id).style.display = 'flex';
         }
-        
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        
         function showModal(t, d, cb) {
             document.getElementById('modal-title').innerText = t; document.getElementById('modal-desc').innerText = d;
             document.getElementById('modal-confirm-btn').onclick = () => { if(cb) cb(); closeCommonModal(); };
