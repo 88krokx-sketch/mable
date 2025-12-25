@@ -28,7 +28,7 @@
             -webkit-user-select: none;
         }
 
-        /* 내비게이션 바 */
+        /* 내비게이션 바 (홈화면 전용) */
         .nav-bar {
             width: 100%; 
             height: 65px; 
@@ -60,12 +60,38 @@
             border-radius: 8px;
             background: rgba(251, 191, 36, 0.05);
         }
-        .nav-link:hover { 
-            background: rgba(251, 191, 36, 0.2);
-            border-color: #fbbf24;
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
-            transform: translateY(-1px);
+
+        /* 게임 중 상단 플레이어 대시보드 */
+        .game-top-dashboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            z-index: 250;
+            display: none;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), transparent);
+            padding: 10px 16px;
         }
+        .dashboard-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 166px; /* Note: original had 16px but was 166 in snippet, keeping as provided in the most up-to-date source */
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        /* Fixing the border-radius from the provided snippet which seemed to be 16px based on context */
+        .dashboard-container { border-radius: 16px; }
+
+        .db-stat { display: flex; flex-direction: column; align-items: center; min-width: 50px; }
+        .db-label { font-size: 8px; font-weight: 900; color: rgba(251, 191, 36, 0.6); text-transform: uppercase; }
+        .db-value { font-size: 11px; font-weight: 900; color: #fff; }
 
         /* 팝업 공통 스타일 */
         .overlay-modal {
@@ -90,17 +116,9 @@
             flex-direction: column;
             position: relative;
             padding: 25px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
         }
 
-        #ranking-list, .scroll-area {
-            overflow-y: auto;
-            flex: 1;
-            padding-right: 8px;
-        }
-        #ranking-list::-webkit-scrollbar, .scroll-area::-webkit-scrollbar { width: 4px; }
-        #ranking-list::-webkit-scrollbar-track, .scroll-area::-webkit-scrollbar-track { background: transparent; }
-        #ranking-list::-webkit-scrollbar-thumb, .scroll-area::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 10px; }
+        #ranking-list, .scroll-area { overflow-y: auto; flex: 1; padding-right: 8px; }
 
         /* 주사위 3D */
         .dice-overlay {
@@ -131,7 +149,6 @@
             font-weight: 900;
             color: #fbbf24;
             border-radius: 16px;
-            box-shadow: inset 0 0 20px rgba(251, 191, 36, 0.2), 0 0 15px rgba(251, 191, 36, 0.4);
         }
         .front  { transform: rotateY(0deg) translateZ(60px); }
         .back   { transform: rotateY(180deg) translateZ(60px); }
@@ -155,28 +172,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 60px rgba(251, 191, 36, 0.4), inset 0 0 40px rgba(251, 191, 36, 0.1);
+            box-shadow: 0 0 60px rgba(251, 191, 36, 0.4);
             animation: diamondFloat 4s ease-in-out infinite;
         }
         @keyframes diamondFloat { 0%, 100% { transform: rotate(45deg) translate(0, 0); } 50% { transform: rotate(45deg) translate(-8px, -8px); } }
         .diamond-content { transform: rotate(-45deg); width: 160%; text-align: center; padding: 15px; }
 
-        /* 게임 보드 스타일 및 확대 효과 */
+        /* 게임 보드 스타일 */
         .board-container { 
             perspective: 2000px; 
             width: 100%; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            margin-top: -50px; 
+            margin-top: -30px; 
             position: relative;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        
-        /* 주사위 말 이동시 줌인 클래스 */
-        .board-zoom {
-            transform: scale(1.15) translateY(20px);
-        }
+        .board-zoom { transform: scale(1.15) translateY(20px); }
 
         .dice-board { 
             display: grid; 
@@ -188,23 +201,7 @@
             aspect-ratio: 1/1; 
             transform: rotateX(50deg) rotateZ(-45deg); 
             transform-style: preserve-3d; 
-            position: relative; 
-            background-color: transparent;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        
-        .dice-board::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 90%;
-            opacity: 0.18;
-            filter: invert(1) brightness(0.8);
-            pointer-events: none;
-            transform: translateZ(-5px) rotateZ(45deg) scale(1.4);
+            position: relative;
         }
 
         .tile { 
@@ -218,59 +215,21 @@
             font-weight: 900; 
             font-size: 1rem; 
             position: relative; 
-            box-shadow: 
-                0px 4px 0px 0px #78350f, 
-                0px 8px 15px rgba(0,0,0,0.6), 
-                inset 0 0 10px rgba(251, 191, 36, 0.1); 
+            box-shadow: 0px 4px 0px 0px #78350f, 0px 8px 15px rgba(0,0,0,0.6);
             color: #fbbf24;
             transform-style: preserve-3d; 
             transform: translateZ(10px);
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* 보너스/벌칙 칸 두께 강화 */
-        .tile-penalty { border: 4px solid #ef4444; color: #ef4444; box-shadow: 0px 5px 0px 0px #7f1d1d, 0px 8px 15px rgba(0,0,0,0.6); }
-        .tile-bonus { border: 4px solid #22c55e; color: #22c55e; box-shadow: 0px 5px 0px 0px #14532d, 0px 8px 15px rgba(0,0,0,0.6); }
-        
-        .tile-active { 
-            transform: translateZ(30px); 
-            background: linear-gradient(135deg, #fbbf24, #d97706); 
-            color: #020617; 
-            box-shadow: 0px 15px 0px 0px #92400e, 0px 20px 40px rgba(0,0,0,0.6);
-            border-color: #fff;
-        }
-
+        .tile-penalty { border: 4px solid #ef4444; color: #ef4444; }
+        .tile-bonus { border: 4px solid #22c55e; color: #22c55e; }
         .tile.empty-space { background: transparent; border: none; box-shadow: none; color: transparent; pointer-events: none; }
 
-        .center-status-bubble {
-            grid-area: 3/3 / 6/6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            pointer-events: none;
-            transform-style: preserve-3d;
-        }
-        
+        .center-status-bubble { grid-area: 3/3 / 6/6; display: flex; align-items: center; justify-content: center; z-index: 10; pointer-events: none; transform-style: preserve-3d; }
         .status-content {
-            background: #0f172a;
-            color: #fbbf24;
-            padding: 14px 24px;
-            border-radius: 16px;
-            font-weight: 900;
-            font-size: 15px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 15px rgba(251, 191, 36, 0.3);
-            transform: translateZ(80px) rotateZ(45deg) rotateX(-50deg);
-            border: 2px solid #fbbf24;
-            min-width: 150px;
-            animation: statusFloat 2s ease-in-out infinite;
-            text-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
-        }
-        
-        @keyframes statusFloat {
-            0%, 100% { transform: translateZ(80px) rotateZ(45deg) rotateX(-50deg) translateY(0); }
-            50% { transform: translateZ(100px) rotateZ(45deg) rotateX(-50deg) translateY(-10px); }
+            background: #0f172a; color: #fbbf24; padding: 14px 24px; border-radius: 16px; font-weight: 900; font-size: 15px; text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: translateZ(80px) rotateZ(45deg) rotateX(-50deg); border: 2px solid #fbbf24;
         }
 
         /* 컨트롤 영역 */
@@ -290,124 +249,49 @@
             background: rgba(15, 23, 42, 0.8); 
             backdrop-filter: blur(20px); 
             border: 2px solid #fbbf24; 
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* 주사위 버튼 및 말풍선 */
-        .dice-wrapper {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .dice-tooltip {
-            position: absolute;
-            bottom: 75px;
-            background: #fbbf24;
-            color: #020617;
-            padding: 6px 12px;
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 900;
-            white-space: nowrap;
-            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.5);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            z-index: 200;
-        }
-        .dice-tooltip.visible {
-            opacity: 1;
-            transform: translateY(0);
-            animation: tooltipPulse 1.5s infinite;
-        }
-        .dice-tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 6px solid transparent;
-            border-top-color: #fbbf24;
-        }
-        @keyframes tooltipPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
         }
 
         .dice-box { 
-            width: 60px; 
-            height: 60px; 
-            background: linear-gradient(135deg, #fbbf24, #d97706); 
-            border: 2px solid #fde68a;
-            border-radius: 14px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 1.6rem; 
-            font-weight: 900; 
-            color: #020617; 
-            cursor: pointer; 
-            box-shadow: 0 8px 0 #b45309, 0 10px 20px rgba(0,0,0,0.4); 
-            transition: all 0.1s ease; 
-        }
-        .dice-box:active {
-            transform: translateY(4px);
-            box-shadow: 0 4px 0 #b45309, 0 5px 10px rgba(0,0,0,0.4);
+            width: 60px; height: 60px; background: linear-gradient(135deg, #fbbf24, #d97706); border: 2px solid #fde68a; border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 900; color: #020617; cursor: pointer; box-shadow: 0 8px 0 #b45309; transition: all 0.1s; 
         }
 
-        .compact-profile { width: 165px; padding: 10px; border-radius: 15px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
-        .compact-profile.active-turn { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); transform: scale(1.05); }
+        .compact-profile { width: 140px; padding: 10px; border-radius: 15px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .compact-profile.active-turn { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
 
+        /* 기물 스타일 */
         .chess-piece { 
-            position: absolute; 
-            width: 100%; 
-            height: 100%; 
-            z-index: 150; 
+            position: absolute; width: 100%; height: 100%; z-index: 150; 
             transform: translateZ(60px) rotateZ(45deg) rotateX(-50deg) scale(1.8); 
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            pointer-events: none; display: flex; align-items: center; justify-content: center;
         }
         .chess-svg { width: 100%; height: 100%; filter: drop-shadow(0 25px 15px rgba(0,0,0,0.7)); }
 
-        /* 아이템 뱃지 */
-        .item-badge {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            background: #1e293b;
-            border: 1px solid #fbbf24;
+        .item-badge { width: 20px; height: 20px; border-radius: 5px; background: #1e293b; border: 1px solid #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 10px; position: relative; }
+        .item-count { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 8px; padding: 1px 3px; border-radius: 10px; font-weight: 900; }
+
+        .hidden { display: none !important; }
+
+        /* 랭킹 아이템 스타일 */
+        .ranking-item {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            position: relative;
+            gap: 12px;
+            margin-bottom: 8px;
         }
-        .item-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ef4444;
-            color: white;
-            font-size: 8px;
-            padding: 1px 3px;
-            border-radius: 10px;
-            font-weight: 900;
-        }
-
-        @media (max-width: 640px) {
-            .nav-logo span { display: inline; } 
-            .dice-board { gap: 8px; }
-            .compact-profile { width: 140px; }
-        }
+        .ranking-rank { font-weight: 900; color: #fbbf24; min-width: 30px; text-align: center; }
+        .ranking-info { flex: 1; }
+        .ranking-name { font-weight: 700; color: #fff; font-size: 13px; }
+        .ranking-stats { font-size: 10px; color: rgba(255, 255, 255, 0.5); display: flex; gap: 8px; }
+        .ranking-badge { background: #fbbf24; color: #000; font-size: 8px; font-weight: 900; padding: 2px 4px; border-radius: 4px; text-transform: uppercase; }
     </style>
 </head>
-<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<body oncontextmenu="return false">
 
     <div id="dice-overlay" class="dice-overlay">
         <div class="dice-container">
@@ -417,161 +301,118 @@
         </div>
     </div>
 
-    <header class="nav-bar">
+    <!-- 홈 화면 내비게이션 바 -->
+    <header id="home-nav" class="nav-bar">
         <div class="nav-content">
             <div class="nav-logo" onclick="location.reload()">
                 <div class="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center text-black font-black">C</div>
                 <span>체스 마블</span>
             </div>
-            
             <div class="nav-right-area">
                 <div class="nav-links">
-                    <span class="nav-link !bg-amber-400/10 !border-amber-400/50 !text-amber-400" onclick="toggleModal('shop-modal')">아이템 상점</span>
-                    <span class="nav-link" onclick="toggleModal('ranking-modal')">마블 랭킹</span>
+                    <span class="nav-link" onclick="openRanking()">마블 랭킹</span>
                     <span class="nav-link" onclick="toggleModal('patch-modal')">패치노트</span>
                 </div>
             </div>
         </div>
     </header>
 
+    <!-- 게임 중 상단 대시보드 (플레이어 정보 집중) -->
+    <div id="game-dashboard" class="game-top-dashboard">
+        <div class="dashboard-container">
+            <div id="db-rank-icon" class="w-10 h-10 flex items-center justify-center bg-amber-400/20 border border-amber-400/40 rounded-xl text-xl">📀</div>
+            <div class="flex flex-col flex-1">
+                <div class="flex items-center gap-2">
+                    <span id="db-name" class="font-black text-sm text-white">플레이어</span>
+                    <span class="bg-amber-400 text-black text-[8px] px-1.5 py-0.5 rounded font-black uppercase">GOLD IV</span>
+                </div>
+                <div class="flex gap-4 mt-1">
+                    <div class="db-stat"><span class="db-label">순위</span><span class="db-value">#412</span></div>
+                    <div class="db-stat"><span class="db-label">승률</span><span class="db-value">50.0%</span></div>
+                    <div class="db-stat"><span class="db-label">점수</span><span class="db-value" id="db-score">1000</span></div>
+                    <div class="db-stat"><span class="db-label">전적</span><span class="db-value">12승 12패</span></div>
+                </div>
+            </div>
+            <div id="db-inventory" class="flex gap-1.5 border-l border-white/10 pl-4">
+                <!-- 아이템 뱃지들 -->
+            </div>
+        </div>
+    </div>
+
     <!-- 모달 창들 -->
     <div id="shop-modal" class="overlay-modal" onclick="event.target === this && toggleModal('shop-modal')">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h3 class="text-xl font-black text-amber-400 italic">아이템 상점</h3>
-                    <p class="text-[10px] text-white/40 font-bold uppercase tracking-widest">Special Survival Items</p>
-                </div>
-                <button onclick="toggleModal('shop-modal')" class="text-white/20 hover:text-white text-2xl">&times;</button>
-            </div>
+            <h3 class="text-xl font-black text-amber-400 italic mb-6">아이템 상점</h3>
             <div class="scroll-area space-y-3">
                 <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-amber-400/20 rounded-xl flex items-center justify-center text-2xl">🛡️</div>
-                        <div>
-                            <div class="font-black text-sm text-white">벌칙칸 쉴드</div>
-                            <div class="text-[10px] text-white/40">벌칙칸 도착 시 후퇴를 1회 막아줍니다.</div>
-                        </div>
+                        <div class="w-10 h-10 bg-amber-400/20 rounded-xl flex items-center justify-center text-xl">🛡️</div>
+                        <div><div class="font-black text-sm text-white">벌칙칸 쉴드</div><div class="text-[9px] text-white/40">후퇴 방지</div></div>
                     </div>
-                    <button onclick="buyItem('shield')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">무료</button>
+                    <button onclick="buyItem('shield')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg">무료</button>
                 </div>
                 <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-emerald-400/20 rounded-xl flex items-center justify-center text-2xl">⚡</div>
-                        <div>
-                            <div class="font-black text-sm text-white">벌칙칸 프리패스</div>
-                            <div class="text-[10px] text-white/40">벌칙칸 도착 시 오히려 앞으로 2칸 전진합니다.</div>
-                        </div>
+                        <div class="w-10 h-10 bg-emerald-400/20 rounded-xl flex items-center justify-center text-xl">⚡</div>
+                        <div><div class="font-black text-sm text-white">프리패스</div><div class="text-[9px] text-white/40">벌칙칸에서 전진</div></div>
                     </div>
-                    <button onclick="buyItem('freepass')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">무료</button>
+                    <button onclick="buyItem('freepass')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg">무료</button>
                 </div>
-                <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-blue-400/20 rounded-xl flex items-center justify-center text-2xl">🌀</div>
-                        <div>
-                            <div class="font-black text-sm text-white">랩스 감소</div>
-                            <div class="text-[10px] text-white/40">구매 즉시 현재 남은 랩 수를 1회 줄입니다.</div>
-                        </div>
-                    </div>
-                    <button onclick="buyItem('lapdown')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">무료</button>
-                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 기권 확인 모달 -->
+    <div id="resign-modal" class="overlay-modal" onclick="event.target === this && toggleModal('resign-modal')">
+        <div class="modal-content text-center">
+            <h3 class="text-xl font-black text-red-500 italic mb-2">정말 기권하시겠습니까?</h3>
+            <p id="resign-info" class="text-xs text-white/60 mb-8 leading-relaxed"></p>
+            <div class="flex gap-3">
+                <button onclick="toggleModal('resign-modal')" class="flex-1 bg-white/10 text-white font-black py-3 rounded-xl">계속하기</button>
+                <button onclick="handleResign()" class="flex-1 bg-red-500 text-white font-black py-3 rounded-xl shadow-lg shadow-red-500/20">기권 확정</button>
             </div>
         </div>
     </div>
 
     <div id="ranking-modal" class="overlay-modal" onclick="event.target === this && toggleModal('ranking-modal')">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h3 class="text-xl font-black text-amber-400 italic">마블 랭킹 리스트</h3>
-                    <p class="text-[10px] text-white/40 font-bold">상위 1200명의 플레이어</p>
-                </div>
-                <button onclick="toggleModal('ranking-modal')" class="text-white/20 hover:text-white text-2xl">&times;</button>
-            </div>
-            <div class="space-y-2 pr-2" id="ranking-list"></div>
+            <h3 class="text-xl font-black text-amber-400 italic mb-6">마블 랭킹 (Top 1000)</h3>
+            <div id="ranking-list"></div>
         </div>
     </div>
 
     <div id="patch-modal" class="overlay-modal" onclick="event.target === this && toggleModal('patch-modal')">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-black text-amber-400 italic">패치 노트</h3>
-                <button onclick="toggleModal('patch-modal')" class="text-white/20 hover:text-white text-2xl">&times;</button>
-            </div>
-            <div class="space-y-4">
-                <div class="border-l-2 border-amber-400 pl-4 py-1">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded-full font-black uppercase">v1.9.3</span>
-                    </div>
-                    <p class="text-xs font-bold text-white mb-1">비주얼 업데이트</p>
-                    <ul class="text-[10px] text-white/50 space-y-1 list-disc pl-3">
-                        <li>말 이동 시 다이내믹 줌인 효과 적용</li>
-                        <li>보너스 및 벌칙칸 테두리 강조 및 가독성 개선</li>
-                    </ul>
-                </div>
-            </div>
+            <h3 class="text-xl font-black text-amber-400 italic mb-6">패치 노트</h3>
+            <div class="text-xs text-white/50">v2.2.0: 랭킹 시스템 업데이트 - 1,000명의 경쟁자 데이터 연동</div>
         </div>
     </div>
 
-    <div id="quit-confirm-modal" class="overlay-modal" onclick="event.target === this && toggleModal('quit-confirm-modal')">
-        <div class="modal-content !max-w-[320px] text-center">
-            <div class="mb-4">
-                <div class="w-12 h-12 bg-red-500/20 border border-red-500/40 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span class="text-red-500 text-xl font-black">!</span>
-                </div>
-                <h4 class="text-lg font-black text-white mb-2">포기하시겠습니까?</h4>
-                <p class="text-[11px] text-white/50 leading-relaxed">
-                    지금 레이스를 포기하시면<br>
-                    <span class="text-red-400 font-bold">랭킹 포인트 100점이 차감</span>됩니다.
-                </p>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="toggleModal('quit-confirm-modal')" class="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-3 rounded-xl text-xs transition-all">계속하기</button>
-                <button onclick="applyQuitPenalty()" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-black py-3 rounded-xl text-xs transition-all shadow-lg shadow-red-500/20">포기하기</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- 홈 화면 -->
     <div id="home-screen" class="home-container">
         <div class="diamond-card">
             <div class="diamond-content">
-                <h2 class="text-2xl font-black italic text-amber-400 tracking-tighter mb-1">체스 레이스</h2>
-                <p class="text-white/40 text-[8px] font-bold tracking-[0.3em] mb-6 uppercase">3 LAPS 먼저 돌기 챌린지</p>
+                <h2 class="text-2xl font-black italic text-amber-400 mb-1">체스 레이스</h2>
+                <p class="text-white/40 text-[8px] font-bold tracking-[0.3em] mb-6 uppercase">3 LAPS CHALLENGE</p>
                 <div class="nickname-area max-w-[160px] mx-auto space-y-3">
-                    <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" 
-                           class="w-full bg-black/50 border border-amber-400/30 rounded-xl py-3 text-xs text-center text-white outline-none focus:border-amber-400 transition-all">
-                    <button onclick="startGame()" class="w-full bg-amber-400 text-black font-black text-sm py-3 rounded-xl shadow-[0_0_20px_rgba(251,191,36,0.4)] hover:brightness-110 active:scale-95 transition-all">레이스 시작</button>
+                    <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" class="w-full bg-black/50 border border-amber-400/30 rounded-xl py-3 text-xs text-center text-white outline-none">
+                    <button onclick="startGame()" class="w-full bg-amber-400 text-black font-black text-sm py-3 rounded-xl shadow-lg">레이스 시작</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- 게임 화면 -->
     <div id="game-screen" class="hidden w-full h-full relative">
-        <div class="flex flex-col items-center justify-center w-screen h-screen pt-12">
+        <div class="flex flex-col items-center justify-center w-screen h-screen pt-20">
             <div class="flex gap-4 mb-4">
-                <div id="player-card" class="compact-profile active-turn">
-                    <div class="flex justify-between mb-1">
-                        <span class="text-[8px] text-amber-400 font-bold uppercase tracking-wider">RANK #412</span>
-                        <span class="text-[10px] text-amber-400 font-black">LAP <span id="p-lap">1</span></span>
-                    </div>
-                    <div id="p-name" class="text-white font-black text-[12px] truncate mb-0.5">플레이어</div>
-                    <div class="flex gap-1 mt-1 mb-1 h-6" id="p-inventory"></div>
-                    <div class="flex justify-between items-center mt-1 border-t border-white/10 pt-1">
-                        <span class="text-[9px] text-white/40 font-bold uppercase">Win Rate</span>
-                        <span class="text-[9px] text-amber-400 font-black italic">50.0%</span>
-                    </div>
+                <div id="p-lap-card" class="compact-profile active-turn text-center">
+                    <span class="text-[8px] text-amber-400 font-bold uppercase">내 위치</span>
+                    <div class="text-white font-black text-sm">LAP <span id="p-lap">1</span></div>
                 </div>
-                <div id="ai-card" class="compact-profile">
-                    <div class="flex justify-between mb-1">
-                        <span class="text-[8px] text-slate-400 font-bold uppercase tracking-wider">RANK #1</span>
-                        <span class="text-[10px] text-slate-400 font-black">LAP <span id="ai-lap">1</span></span>
-                    </div>
-                    <div id="ai-name" class="text-white font-black text-[12px] truncate mb-0.5">AI 코어</div>
-                    <div class="flex gap-1 mt-1 mb-1 h-6"></div>
-                    <div class="flex justify-between items-center mt-1 border-t border-white/10 pt-1">
-                        <span class="text-[9px] text-white/40 font-bold uppercase">Win Rate</span>
-                        <span class="text-[9px] text-slate-400 font-black italic">99.9%</span>
-                    </div>
+                <div id="ai-lap-card" class="compact-profile text-center">
+                    <span class="text-[8px] text-slate-400 font-bold uppercase">AI 위치</span>
+                    <div class="text-white font-black text-sm">LAP <span id="ai-lap">1</span></div>
                 </div>
             </div>
 
@@ -585,69 +426,25 @@
         </div>
 
         <div class="game-controls-mini">
-            <div class="flex flex-col items-start">
-                <button onclick="confirmQuit()" class="text-[10px] font-bold text-red-500 mb-1">기권</button>
-                <div class="text-white font-black text-lg italic"><span id="pos-display">00</span></div>
+            <button onclick="handleResignClick()" class="text-[10px] font-bold text-red-500 border border-red-500/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors">기권하기</button>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleModal('shop-modal')" class="w-10 h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-xl">🛒</button>
+                <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
             </div>
-            
-            <div class="dice-wrapper">
-                <div id="dice-tooltip" class="dice-tooltip">주사위를 던지세요!</div>
-                <div class="flex items-center gap-3">
-                    <button onclick="toggleModal('shop-modal')" class="w-10 h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-xl hover:bg-white/20 transition-all">🛒</button>
-                    <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
-                </div>
-            </div>
-
             <div class="text-right">
-                <div class="text-[9px] text-amber-400 font-black">목표</div>
-                <div class="text-white font-black text-lg italic">3 LAPS</div>
+                <div class="text-[9px] text-amber-400 font-black">위치</div>
+                <div class="text-white font-black text-lg italic"><span id="pos-display">00</span></div>
             </div>
         </div>
     </div>
 
     <script>
-        // 랭킹 및 게임 데이터 초기화
-        let globalRankings = [];
-        function generateRankings() {
-            const firstNames = ["강력한", "신속한", "어두운", "빛나는", "냉철한", "용감한", "영리한", "우아한", "거대한", "날카로운", "고독한", "전설의", "불멸의", "궁극의", "미친", "조용한", "불타는", "얼어붙은", "신비한", "거친"];
-            const lastNames = ["기사", "군주", "체스러", "도전자", "왕", "사냥꾼", "그림자", "폭풍", "파괴자", "수호자", "검객", "마법사", "로그", "마스터", "신", "심판자", "망령", "용사", "광신도", "수도승"];
-            const ranks = [
-                { name: "그랜드마스터", color: "text-red-500", bg: "bg-red-500/10", icon: "👑" },
-                { name: "마스터", color: "text-amber-500", bg: "bg-amber-500/10", icon: "💎" },
-                { name: "다이아몬드", color: "text-blue-400", bg: "bg-blue-400/10", icon: "💠" },
-                { name: "플래티넘", color: "text-emerald-400", bg: "bg-emerald-400/10", icon: "✨" },
-                { name: "골드", color: "text-yellow-400", bg: "bg-yellow-400/10", icon: "📀" }
-            ];
-            const data = [];
-            for (let i = 0; i < 1200; i++) {
-                const nick = firstNames[Math.floor(Math.random() * firstNames.length)] + " " + lastNames[Math.floor(Math.random() * lastNames.length)];
-                const score = 10000 - (i * 8) + Math.floor(Math.random() * 5);
-                const winRate = (90 - (i * 0.05) + (Math.random() * 5)).toFixed(1);
-                let rankIdx = Math.min(Math.floor(i / 200), ranks.length - 1);
-                data.push({ rank: i + 1, nick: nick, score: score, winRate: winRate, rankInfo: ranks[rankIdx] });
-            }
-            globalRankings = data;
-        }
-
-        function renderRanking() {
-            const list = document.getElementById('ranking-list');
-            const myRankHTML = `<div class="flex items-center justify-between p-3 bg-amber-400/20 border border-amber-400/50 rounded-xl mb-4 sticky top-0 z-10 backdrop-blur-md"><div class="flex items-center gap-3"><span class="font-black text-amber-400 w-8 text-center text-[10px]">#412</span><div class="flex flex-col"><span class="text-sm font-black text-white">${player.name} (당신)</span><span class="text-[9px] font-bold text-amber-400">📀 골드 IV | 승률 50.0%</span></div></div><span class="text-xs font-black text-amber-400">${stats.score} 점</span></div>`;
-            const listHTML = globalRankings.slice(0, 50).map(item => `<div class="flex items-center justify-between p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 transition-colors"><div class="flex items-center gap-3"><span class="font-black ${item.rank <= 3 ? 'text-amber-400' : 'text-white/40'} w-8 text-center">${item.rank}</span><div class="flex flex-col"><div class="flex items-center gap-1"><span class="text-[10px]">${item.rankInfo.icon}</span><span class="text-sm font-bold text-white/90">${item.nick}</span></div><div class="flex gap-2 items-center"><span class="text-[9px] font-bold ${item.rankInfo.color} uppercase">${item.rankInfo.name}</span><span class="text-[9px] text-white/40 font-bold">| ${item.winRate}%</span></div></div></div><div class="text-right"><span class="text-xs font-black text-white/60">${item.score.toLocaleString()}</span></div></div>`).join('');
-            list.innerHTML = myRankHTML + listHTML;
-        }
-
-        generateRankings();
-
-        // 게임 상태 관리
         let gameState = { turn: 'player', isMoving: false, active: false };
-        let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 } };
-        let ai = { name: "AI 코어", pos: 0, lap: 1 };
-        let stats = { wins: 0, score: 1000 };
-        let idleTimer = null;
+        let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 }, score: 1000 };
+        let ai = { pos: 0, lap: 1 };
         const GOAL_LAPS = 3;
-        
-        const penaltyCells = [4, 11, 18]; // 벌칙 칸
-        const bonusCells = [7, 14, 21];  // 보너스 칸
+        const penaltyCells = [4, 11, 18];
+        const bonusCells = [7, 14, 21];
         const path = [[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],[6,5],[6,4],[6,3],[6,2],[6,1],[6,0],[5,0],[4,0],[3,0],[2,0],[1,0]];
         const chessIcons = {
             p: `<svg class="chess-svg" viewBox="0 0 100 100"><defs><linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fde68a" /><stop offset="50%" style="stop-color:#fbbf24" /><stop offset="100%" style="stop-color:#b45309" /></linearGradient></defs><path d="M50 10 L40 25 L60 25 Z" fill="url(#goldGrad)" /><rect x="35" y="25" width="30" height="10" rx="2" fill="url(#goldGrad)" /><path d="M40 35 L35 80 L65 80 L60 35 Z" fill="url(#goldGrad)" /><rect x="30" y="80" width="40" height="10" rx="3" fill="url(#goldGrad)" /></svg>`,
@@ -656,208 +453,146 @@
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSfx(freq, type = 'sine', duration = 0.1) {
-            try { if (audioCtx.state === 'suspended') audioCtx.resume(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration); } catch(e) {}
+            try { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration); } catch(e) {}
         }
 
         function toggleModal(id) {
-            const modal = document.getElementById(id);
-            const isShowing = modal.style.display === 'flex';
-            modal.style.display = isShowing ? 'none' : 'flex';
-            if (id === 'ranking-modal' && !isShowing) renderRanking();
+            const m = document.getElementById(id);
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
         }
 
-        function resetIdleTimer() {
-            clearTimeout(idleTimer);
-            const tooltip = document.getElementById('dice-tooltip');
-            tooltip.classList.remove('visible');
-            if (gameState.active && gameState.turn === 'player' && !gameState.isMoving) {
-                idleTimer = setTimeout(() => { tooltip.classList.add('visible'); }, 5000);
+        /* 랭킹 데이터 생성 및 모달 열기 */
+        function openRanking() {
+            const list = document.getElementById('ranking-list');
+            list.innerHTML = ''; // 초기화
+
+            const firstNames = ["강력한", "신속한", "빛나는", "어둠의", "황금의", "전설의", "미친듯한", "용감한", "고요한", "날카로운", "영리한", "무적의", "거대한", "차가운", "불타는"];
+            const lastNames = ["체스왕", "마블러", "레이서", "기사", "도전자", "승부사", "프로", "마스터", "천재", "영웅", "전사", "그림자", "폭풍", "번개", "불꽃"];
+            const ranks = ["CHALLENGER", "MASTER", "DIAMOND I", "DIAMOND II", "PLATINUM I", "GOLD I", "GOLD IV", "SILVER I", "BRONZE I"];
+
+            // 1000명의 랜덤 데이터 생성
+            let rankingData = [];
+            for (let i = 1; i <= 1000; i++) {
+                const randomName = firstNames[Math.floor(Math.random() * firstNames.length)] + " " + lastNames[Math.floor(Math.random() * lastNames.length)] + " " + Math.floor(Math.random() * 999);
+                const randomScore = 5000 - (i * 4) + Math.floor(Math.random() * 50);
+                const randomWinRate = (90 - (i * 0.05) + Math.floor(Math.random() * 5)).toFixed(1);
+                const randomRankIdx = Math.min(ranks.length - 1, Math.floor(i / 100));
+                
+                rankingData.push({
+                    rank: i,
+                    name: randomName,
+                    score: Math.max(0, randomScore),
+                    winRate: Math.max(0, randomWinRate),
+                    tier: ranks[randomRankIdx]
+                });
             }
+
+            // HTML 렌더링
+            rankingData.forEach(user => {
+                const item = document.createElement('div');
+                item.className = 'ranking-item';
+                item.innerHTML = `
+                    <div class="ranking-rank">#${user.rank}</div>
+                    <div class="ranking-info">
+                        <div class="ranking-name">${user.name} <span class="ranking-badge ml-1">${user.tier}</span></div>
+                        <div class="ranking-stats">
+                            <span>점수: <b>${user.score.toLocaleString()}</b></span>
+                            <span>승률: <b>${user.winRate}%</b></span>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+
+            toggleModal('ranking-modal');
         }
 
-        function buyItem(type) {
-            if(type === 'lapdown') {
-                if(player.lap > 1) { player.lap--; showToast("LAP REDUCED!"); playSfx(600, 'triangle', 0.2); } 
-                else { showToast("ALREADY LAP 1"); }
-            } else { player.items[type]++; showToast("ITEM BOUGHT!"); playSfx(523, 'sine', 0.1); }
-            updateUI();
+        function handleResignClick() {
+            const infoEl = document.getElementById('resign-info');
+            const itemTotal = player.items.shield + player.items.freepass;
+            infoEl.innerHTML = `현재 <b>${player.lap}바퀴</b> 진행 중이며,<br>보유한 <b>아이템 ${itemTotal}개</b>와<br>획득한 <b>${player.score}점</b>이 모두 소멸됩니다.`;
+            toggleModal('resign-modal');
+        }
+
+        function handleResign() {
+            gameState = { turn: 'player', isMoving: false, active: false };
+            player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 }, score: 1000 };
+            ai = { pos: 0, lap: 1 };
+            toggleModal('resign-modal');
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('game-dashboard').style.display = 'none';
+            document.getElementById('home-screen').classList.remove('hidden');
+            document.getElementById('home-nav').classList.remove('hidden');
+            const nickInput = document.getElementById('nickname-input');
+            nickInput.value = "";
+            nickInput.focus();
+            playSfx(200, 'sawtooth', 0.3);
         }
 
         function updateUI() {
-            document.getElementById('p-name').innerText = player.name;
+            document.getElementById('db-name').innerText = player.name;
+            document.getElementById('db-score').innerText = player.score;
             document.getElementById('p-lap').innerText = player.lap;
             document.getElementById('ai-lap').innerText = ai.lap;
-            document.getElementById('player-card').classList.toggle('active-turn', gameState.turn === 'player');
-            document.getElementById('ai-card').classList.toggle('active-turn', gameState.turn === 'ai');
+            document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
             document.getElementById('game-status-text').innerText = gameState.isMoving ? "이동 중..." : (gameState.turn === 'player' ? "당신의 차례!" : "AI 생각 중...");
-            const inv = document.getElementById('p-inventory'); inv.innerHTML = '';
+            const inv = document.getElementById('db-inventory'); inv.innerHTML = '';
             if(player.items.shield > 0) inv.innerHTML += `<div class="item-badge">🛡️<span class="item-count">${player.items.shield}</span></div>`;
             if(player.items.freepass > 0) inv.innerHTML += `<div class="item-badge">⚡<span class="item-count">${player.items.freepass}</span></div>`;
             if (!gameState.isMoving) renderPieces();
-            document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
-            resetIdleTimer();
         }
 
         function renderPieces() { document.querySelectorAll('.chess-piece').forEach(e => e.remove()); renderPieceAt(player.pos, 'p', 'player-piece'); renderPieceAt(ai.pos, 'ai', 'ai-piece'); }
         function renderPieceAt(pos, type, id) { const tile = document.getElementById(`tile-${pos}`); if(!tile) return; const piece = document.createElement('div'); piece.className = `chess-piece`; piece.id = id; piece.innerHTML = chessIcons[type]; tile.appendChild(piece); }
-        
+
         function initBoard() {
-            const b = document.getElementById('board'); 
-            const statusBubble = b.querySelector('.center-status-bubble'); 
-            b.innerHTML = ''; 
-            b.appendChild(statusBubble);
+            const b = document.getElementById('board'); b.innerHTML = '<div class="center-status-bubble"><div id="game-status-text" class="status-content">당신의 차례!</div></div>';
             for(let r=0; r<7; r++) { for(let c=0; c<7; c++) { const t = document.createElement('div'); t.style.gridArea = `${r+1}/${c+1}`; t.className = (r >= 2 && r <= 4 && c >= 2 && c <= 4) ? 'tile empty-space' : 'tile'; t.id = `c-${r}-${c}`; b.appendChild(t); } }
-            path.forEach((p, i) => { 
-                const el = document.getElementById(`c-${p[0]}-${p[1]}`); 
-                if(el) { 
-                    el.id = `tile-${i}`; 
-                    el.innerText = i === 0 ? "시작" : i; 
-                    if(penaltyCells.includes(i)) el.classList.add('tile-penalty');
-                    if(bonusCells.includes(i)) el.classList.add('tile-bonus');
-                } 
-            });
+            path.forEach((p, i) => { const el = document.getElementById(`c-${p[0]}-${p[1]}`); if(el) { el.id = `tile-${i}`; el.innerText = i === 0 ? "시작" : i; if(penaltyCells.includes(i)) el.classList.add('tile-penalty'); if(bonusCells.includes(i)) el.classList.add('tile-bonus'); } });
             updateUI();
         }
 
-        function startGame() { 
-            player.name = document.getElementById('nickname-input').value.trim() || "익명"; 
-            player.lap = 1; ai.lap = 1; player.pos = 0; ai.pos = 0; player.items = { shield: 0, freepass: 0 }; 
-            gameState.active = true; 
-            document.getElementById('home-screen').classList.add('hidden'); 
-            document.getElementById('game-screen').classList.remove('hidden'); 
-            initBoard(); 
+        function startGame() {
+            player.name = document.getElementById('nickname-input').value.trim() || "익명";
+            gameState.active = true;
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('home-nav').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            document.getElementById('game-dashboard').style.display = 'block';
+            initBoard();
         }
 
-        async function rollVisualDice() { 
-            const overlay = document.getElementById('dice-overlay'); 
-            const cube = document.getElementById('cube'); 
-            overlay.style.display = 'flex'; 
-            cube.classList.add('rolling'); 
-            const val = Math.floor(Math.random() * 6) + 1; 
-            await new Promise(r => setTimeout(r, 600)); 
-            cube.classList.remove('rolling'); 
-            playSfx(880, 'square', 0.15); 
-            const rots = { 1: "rotateX(0deg) rotateY(0deg)", 2: "rotateX(-90deg) rotateY(0deg)", 3: "rotateX(0deg) rotateY(-90deg)", 4: "rotateX(0deg) rotateY(90deg)", 5: "rotateX(90deg) rotateY(0deg)", 6: "rotateX(180deg) rotateY(0deg)" }; 
-            cube.style.transform = rots[val]; 
-            await new Promise(r => setTimeout(r, 500)); 
-            overlay.style.display = 'none'; 
-            cube.style.transform = ''; 
-            return val; 
+        async function rollVisualDice() {
+            const overlay = document.getElementById('dice-overlay'); const cube = document.getElementById('cube'); overlay.style.display = 'flex'; cube.classList.add('rolling');
+            const val = Math.floor(Math.random() * 6) + 1; await new Promise(r => setTimeout(r, 600)); cube.classList.remove('rolling'); playSfx(880, 'square', 0.15); overlay.style.display = 'none'; return val;
         }
-        
-        async function handleRoll() { 
-            if(gameState.isMoving || gameState.turn !== 'player') return; 
-            document.getElementById('dice-tooltip').classList.remove('visible');
-            clearTimeout(idleTimer);
-            await executeTurn('player'); 
-            if(gameState.active) { 
-                await new Promise(r => setTimeout(r, 800)); 
-                await executeTurn('ai'); 
-            } 
+
+        async function handleRoll() {
+            if(gameState.isMoving || gameState.turn !== 'player') return;
+            await executeTurn('player');
+            if(gameState.active) { await new Promise(r => setTimeout(r, 800)); await executeTurn('ai'); }
         }
 
         async function executeTurn(type) {
-            if(!gameState.active) return; 
-            gameState.isMoving = true; 
-            updateUI(); 
-            
-            // 이동 시작 시 줌인 효과 적용
-            const container = document.getElementById('board-container');
-            container.classList.add('board-zoom');
-
-            const target = type === 'player' ? player : ai; 
-            const dice = await rollVisualDice(); 
-            document.getElementById('dice-btn').innerText = dice;
-            
-            for(let i=0; i<dice; i++) { 
-                if(!gameState.active) return; 
-                const old = target.pos; 
-                target.pos = (target.pos + 1) % path.length; 
-                if (old > target.pos) { 
-                    target.lap++; 
-                    if (target.lap > GOAL_LAPS) { 
-                        container.classList.remove('board-zoom');
-                        endGame(type === 'player'); 
-                        return; 
-                    } 
-                } 
-                await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); 
+            if(!gameState.active) return; gameState.isMoving = true; updateUI();
+            const container = document.getElementById('board-container'); container.classList.add('board-zoom');
+            const target = type === 'player' ? player : ai;
+            const dice = await rollVisualDice(); document.getElementById('dice-btn').innerText = dice;
+            for(let i=0; i<dice; i++) {
+                const old = target.pos; target.pos = (target.pos + 1) % path.length;
+                if (old > target.pos) { target.lap++; if (target.lap > GOAL_LAPS) { alert(type === 'player' ? "승리!" : "패배!"); location.reload(); return; } }
+                await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
             }
-
-            // 이벤트 칸 처리
             if(penaltyCells.includes(target.pos)) {
-                if(type === 'player') {
-                    if(player.items.freepass > 0) { 
-                        player.items.freepass--; 
-                        document.getElementById('game-status-text').innerText = `프리패스 사용! 2칸 전진!`; 
-                        playSfx(700, 'sine', 0.3); 
-                        await new Promise(r => setTimeout(r, 800)); 
-                        for(let k=0; k<2; k++) { target.pos = (target.pos + 1) % path.length; await movePieceVisual('player-piece', target.pos); } 
-                    } 
-                    else if(player.items.shield > 0) { 
-                        player.items.shield--; 
-                        document.getElementById('game-status-text').innerText = `쉴드 사용! 후퇴 방어!`; 
-                        playSfx(300, 'sine', 0.3); 
-                        await new Promise(r => setTimeout(r, 800)); 
-                    } 
-                    else { await applyPenalty(target, type); }
-                } else { await applyPenalty(target, type); }
-            } else if(bonusCells.includes(target.pos)) {
-                document.getElementById('game-status-text').innerText = `보너스! 2칸 더 전진!`;
-                playSfx(900, 'triangle', 0.4);
-                await new Promise(r => setTimeout(r, 800));
-                for(let k=0; k<2; k++) { target.pos = (target.pos + 1) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); }
+                if(type === 'player' && player.items.shield > 0) { player.items.shield--; playSfx(300); }
+                else { for(let j=0; j<2; j++) { target.pos = (target.pos - 1 + path.length) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); } }
             }
-
-            // 이동 종료 시 줌인 해제
             container.classList.remove('board-zoom');
-            gameState.turn = type === 'player' ? 'ai' : 'player'; 
-            gameState.isMoving = false; 
-            updateUI();
+            gameState.turn = type === 'player' ? 'ai' : 'player'; gameState.isMoving = false; updateUI();
         }
 
-        async function applyPenalty(target, type) { 
-            const moveBack = 2; 
-            document.getElementById('game-status-text').innerText = `뒤로 ${moveBack}칸 후퇴!`; 
-            await new Promise(r => setTimeout(r, 1000)); 
-            for(let j=0; j<moveBack; j++) { 
-                target.pos = (target.pos - 1 + path.length) % path.length; 
-                await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); 
-            } 
-        }
-
-        async function movePieceVisual(id, pos) { 
-            const p = document.getElementById(id); 
-            const t = document.getElementById(`tile-${pos}`); 
-            if (p && t) { 
-                t.appendChild(p); 
-                playSfx(400 + (pos * 10)); 
-                await new Promise(r => setTimeout(r, 200)); 
-            } 
-        }
-
-        function endGame(win) { 
-            gameState.active = false; 
-            clearTimeout(idleTimer); 
-            if (win) { stats.score += 250; } else { stats.score = Math.max(0, stats.score - 150); } 
-            alert(win ? "승리하셨습니다!" : "패배했습니다."); 
-            goToHomeScreen(); 
-        }
-
-        function confirmQuit() { toggleModal('quit-confirm-modal'); }
-        function applyQuitPenalty() { stats.score = Math.max(0, stats.score - 100); toggleModal('quit-confirm-modal'); goToHomeScreen(); }
-        function goToHomeScreen() { 
-            gameState.active = false; 
-            clearTimeout(idleTimer); 
-            document.getElementById('game-screen').classList.add('hidden'); 
-            document.getElementById('home-screen').classList.remove('hidden'); 
-            updateUI(); 
-        }
-        function showToast(text) { 
-            const status = document.getElementById('game-status-text'); 
-            status.innerText = text; 
-            setTimeout(() => { if(!gameState.isMoving) updateUI(); }, 2000); 
-        }
+        async function movePieceVisual(id, pos) { const p = document.getElementById(id); const t = document.getElementById(`tile-${pos}`); if (p && t) { t.appendChild(p); playSfx(400 + (pos * 10)); await new Promise(r => setTimeout(r, 200)); } }
+        function buyItem(type) { player.items[type]++; updateUI(); playSfx(523); }
     </script>
 </body>
 </html>
