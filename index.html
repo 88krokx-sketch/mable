@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -53,7 +53,6 @@
             top: 0; 
             left: 0; 
             z-index: 200;
-            /* 경계선 제거됨 */
             border-bottom: none; 
             background: rgba(15, 23, 42, 0.4); 
             backdrop-filter: blur(15px);
@@ -174,9 +173,11 @@
         .tile {
             aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center;
             background: linear-gradient(145deg, #1e293b, #020617); border-radius: 14px;
-            font-weight: 900; font-size: 0.9rem; position: relative; border: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: 900; font-size: 0.9rem; position: relative; 
+            border: 1px solid rgba(255, 255, 255, 0); 
             box-shadow: 8px 8px 0px rgba(0,0,0,0.5); color: rgba(255,255,255,0.1);
             transform-style: preserve-3d;
+            transition: all 0.3s ease;
         }
         .tile.active-p { background: linear-gradient(145deg, #3b82f6, #1d4ed8); transform: translateZ(25px); color: white; box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
         .tile.active-ai { background: linear-gradient(145deg, #ef4444, #991b1b); transform: translateZ(25px); color: white; box-shadow: 0 0 30px rgba(239, 68, 68, 0.6); }
@@ -262,23 +263,22 @@
             box-shadow: 0 4px 0px #450a0a, 0 12px 25px rgba(239, 68, 68, 0.6);
         }
 
-        .btn-quit-inner:active {
-            transform: translateZ(30px) rotateZ(45deg) rotateX(-55deg) scale(0.98);
-            box-shadow: 0 2px 0px #450a0a, 0 4px 10px rgba(239, 68, 68, 0.4);
-        }
-
-        .game-controls {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: 92%; max-width: 750px; padding: 20px 40px; border-radius: 40px;
+        /* 하단 정보 테이블 박스 최적화 - 크기 축소 */
+        .game-controls-mini {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 600px; padding: 12px 30px; border-radius: 24px;
             display: flex; align-items: center; justify-content: space-between; z-index: 160;
         }
 
         .dice-box {
-            width: 70px; height: 70px; background: white; border-radius: 18px;
+            width: 54px; height: 54px; background: white; border-radius: 14px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; font-weight: 900; color: #0f172a; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            font-size: 1.5rem; font-weight: 900; color: #0f172a; cursor: pointer;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
         }
+        .dice-box:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(251, 191, 36, 0.3); }
+        .dice-box:active { transform: scale(0.95); }
 
         .custom-modal-overlay {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
@@ -331,8 +331,8 @@
             .btn-quit-inner { padding: 8px 16px; font-size: 0.7rem; }
             .character-speech { font-size: 11px; padding: 10px 16px; max-width: 140px; }
             .btn-quit-container { bottom: -35px; }
-            .nav-content { padding: 0 12px; }
-            .nav-menu-btn { padding: 5px 10px; font-size: 10px; }
+            .game-controls-mini { width: 95%; padding: 8px 20px; bottom: 15px; }
+            .dice-box { width: 44px; height: 44px; font-size: 1.2rem; border-radius: 12px; }
         }
     </style>
 </head>
@@ -375,7 +375,7 @@
             
             <div class="mt-6 flex items-center justify-center gap-3 opacity-30">
                 <div class="h-[1px] w-8 bg-white/50"></div>
-                <span class="text-[10px] font-bold text-white uppercase tracking-widest">v1.5.1</span>
+                <span class="text-[10px] font-bold text-white uppercase tracking-widest">v1.5.2</span>
                 <div class="h-[1px] w-8 bg-white/50"></div>
             </div>
         </div>
@@ -425,15 +425,15 @@
             </div>
         </div>
 
-        <div class="game-controls glass-panel">
+        <div class="game-controls-mini glass-panel">
             <div>
-                <span class="text-[9px] font-black text-blue-400 block mb-1 uppercase tracking-wider">현재 위치</span>
-                <span id="pos-display" class="text-xl font-black italic text-white">00</span>
+                <span class="text-[8px] font-black text-blue-400 block mb-0.5 uppercase tracking-wider">현재 위치</span>
+                <span id="pos-display" class="text-base sm:text-lg font-black italic text-white">00</span>
             </div>
             <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
             <div class="text-right">
-                <span class="text-[9px] font-black text-amber-400 block mb-1 uppercase tracking-wider">목표 자산</span>
-                <span class="text-amber-400 font-black text-xl italic tracking-tighter">500,000</span>
+                <span class="text-[8px] font-black text-amber-400 block mb-0.5 uppercase tracking-wider">목표 자산</span>
+                <span class="text-amber-400 font-black text-base sm:text-lg italic tracking-tighter">500,000</span>
             </div>
         </div>
     </div>
@@ -461,10 +461,12 @@
             </div>
             <div class="modal-content text-white/70">
                 <div class="patch-item mb-6">
-                    <div class="text-amber-400 font-bold text-sm mb-1">v1.5.1 - 오디오 시스템 최적화</div>
+                    <div class="text-amber-400 font-bold text-sm mb-1">v1.5.2 - UI 컴팩트화</div>
                     <div class="text-white/30 text-[10px] mb-2 uppercase">2025.12.25</div>
                     <p class="text-xs leading-relaxed">
-                        • 모든 효과음 사운드가 제거되어 무음으로 플레이 가능합니다.
+                        • 하단 정보 테이블 박스 크기를 축소하여 게임 화면 공간을 확보했습니다.<br>
+                        • 주사위 버튼 크기를 조정하여 슬림한 디자인을 적용했습니다.<br>
+                        • 모바일 뷰포트에서의 하단 레이아웃을 최적화했습니다.
                     </p>
                 </div>
             </div>
