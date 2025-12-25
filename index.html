@@ -294,13 +294,60 @@
 
         .hidden { display: none !important; }
 
-        /* 랭킹 UI */
-        .ranking-item { padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: all 0.2s; }
-        .ranking-rank { font-weight: 900; color: #fbbf24; min-width: 40px; text-align: center; font-size: 14px; font-style: italic; }
-        .ranking-info { flex: 1; }
-        .ranking-name { font-weight: 700; color: #fff; font-size: 13px; display: flex; align-items: center; gap: 6px; }
-        .ranking-stats { font-size: 10px; color: rgba(255, 255, 255, 0.5); display: flex; gap: 8px; margin-top: 2px; }
-        .ranking-tier-icon { background: #fbbf24; color: #000; font-size: 7px; font-weight: 900; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* 랭킹 UI - 계급장 티어 색상 반영 */
+        .ranking-item { 
+            padding: 14px 16px; 
+            background: rgba(30, 41, 59, 0.7); 
+            border: 1px solid rgba(251, 191, 36, 0.2); 
+            border-radius: 16px; 
+            display: grid;
+            grid-template-columns: 45px 85px 1fr 60px 85px;
+            align-items: center; 
+            gap: 8px; 
+            margin-bottom: 10px; 
+            transition: all 0.2s; 
+        }
+        .ranking-rank { font-weight: 900; color: #fbbf24; text-align: center; font-size: 16px; font-style: italic; }
+        .ranking-tier-cell { display: flex; justify-content: center; }
+        
+        /* 티어별 계급장 스타일 */
+        .ranking-tier-badge { 
+            font-size: 9px; 
+            font-weight: 900; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            width: fit-content; 
+            text-align: center;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        .tier-diamond { background: rgba(34, 211, 238, 0.2); color: #22d3ee; border-color: #22d3ee; }
+        .tier-platinum { background: rgba(45, 212, 191, 0.2); color: #2dd4bf; border-color: #2dd4bf; }
+        .tier-gold { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border-color: #fbbf24; }
+        .tier-silver { background: rgba(148, 163, 184, 0.2); color: #94a3b8; border-color: #94a3b8; }
+        .tier-bronze { background: rgba(180, 83, 9, 0.2); color: #b45309; border-color: #b45309; }
+        .tier-iron { background: rgba(71, 85, 105, 0.2); color: #475569; border-color: #475569; }
+
+        .ranking-name { font-weight: 900; color: #fff; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .ranking-winrate { font-size: 12px; color: rgba(251, 191, 36, 0.9); font-weight: 800; text-align: center; }
+        .ranking-score { font-size: 12px; color: #fff; font-weight: 900; text-align: right; }
+
+        .ranking-header {
+            display: grid;
+            grid-template-columns: 45px 85px 1fr 60px 85px;
+            gap: 8px;
+            padding: 0 16px 12px 16px;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+            margin-bottom: 15px;
+            font-size: 10px;
+            font-weight: 900;
+            color: rgba(251, 191, 36, 0.5);
+            text-transform: uppercase;
+            text-align: center;
+        }
 
         /* 매칭 로딩 */
         .matching-loader {
@@ -359,8 +406,8 @@
                     <span id="db-mode-badge" class="bg-amber-400 text-black text-[8px] px-1.5 py-0.5 rounded font-black uppercase">CLASSIC</span>
                 </div>
                 <div class="flex gap-4 mt-1">
-                    <div class="db-stat"><span class="db-label">순위</span><span class="db-value">#412</span></div>
-                    <div class="db-stat"><span class="db-label">승률</span><span class="db-value">52.4%</span></div>
+                    <div class="db-stat"><span class="db-label">순위</span><span class="db-value">#1</span></div>
+                    <div class="db-stat"><span class="db-label">승률</span><span class="db-value">100%</span></div>
                     <div class="db-stat"><span class="db-label">모드</span><span id="db-mode-text" class="db-value text-amber-400">인공지능</span></div>
                 </div>
             </div>
@@ -402,13 +449,24 @@
         </div>
     </div>
 
+    <!-- 랭킹 모달 -->
     <div id="ranking-modal" class="overlay-modal">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-black text-amber-400 italic">마블 랭킹 (Top 1000)</h3>
-                <button onclick="toggleModal('ranking-modal')" class="text-white/40">✕</button>
+        <div class="modal-content max-w-[600px]">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-black text-amber-400 italic">마블 랭킹 TOP 1000</h3>
+                <button onclick="toggleModal('ranking-modal')" class="text-white/40 hover:text-white transition-colors">✕</button>
             </div>
-            <div id="ranking-list" class="overflow-y-auto pr-2"></div>
+            
+            <div class="ranking-header">
+                <span>순위</span>
+                <span>계급장</span>
+                <span class="text-left">닉네임</span>
+                <span>승률</span>
+                <span class="text-right">점수</span>
+            </div>
+
+            <div id="ranking-list" class="overflow-y-auto pr-2 custom-scrollbar">
+            </div>
         </div>
     </div>
 
@@ -416,10 +474,10 @@
         <div class="modal-content">
             <h3 class="text-xl font-black text-amber-400 italic mb-6">패치 노트</h3>
             <div class="text-xs text-white/50 leading-loose">
-                v2.6.0: 트리플 모드 시스템 도입<br>
-                - 인공지능 모드: 정통 레이스 모드<br>
-                - 마블 전투 모드: 자동 전투 칸 추가<br>
-                - 랜덤 매칭 모드: 실시간 유저 매칭 시뮬레이션
+                v2.7.7: 보안 업데이트<br>
+                - 오른쪽 클릭 방지 시스템 강화<br>
+                - 개발자 도구 단축키 차단 적용<br>
+                - 소스 코드 무단 접근 방지
             </div>
         </div>
     </div>
@@ -511,7 +569,6 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
@@ -543,6 +600,39 @@
     </script>
 
     <script>
+        /* 보안 스크립트: 오른쪽 클릭 및 개발자 도구 방지 */
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        }, false);
+
+        document.addEventListener('keydown', function(e) {
+            // F12 방지
+            if (e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+I (개발자 도구) 방지
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+J (콘솔) 방지
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+U (소스 보기) 방지
+            if (e.ctrlKey && e.keyCode === 85) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+S (저장) 방지
+            if (e.ctrlKey && e.keyCode === 83) {
+                e.preventDefault();
+                return false;
+            }
+        }, false);
+
         let gameState = { turn: 'player', isMoving: false, active: false, mode: 'ai', matchId: null };
         let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 } };
         let ai = { pos: 0, lap: 1, name: "상대방" };
@@ -780,20 +870,72 @@
         function buyItem(type) { player.items[type]++; updateUI(); playSfx(523); }
         function handleResignClick() { toggleModal('resign-modal'); }
         
+        // 랭킹 시스템 닉네임 무작위 생성 (순위, 계급, 닉네임, 승률, 점수)
         function openRanking() {
             const list = document.getElementById('ranking-list');
             list.innerHTML = '';
-            for (let i = 1; i <= 20; i++) {
+            
+            // 닉네임 구성을 위한 풍부한 단어 목록
+            const adjs = ["날랜", "용맹한", "어두운", "빛나는", "강철의", "황금", "전설의", "미친", "고독한", "위대한", "침묵의", "번개", "불꽃", "차가운", "비밀스런", "무적의", "푸른", "붉은", "그림자", "대담한"];
+            const nouns = ["체스광", "레이서", "군주", "기사", "도전자", "승부사", "킹", "퀸", "비숍", "나이트", "폰", "장인", "천재", "악마", "천사", "바람", "폭풍", "파괴자", "수호자", "그림자"];
+            const surnames = ["김", "이", "박", "최", "정", "강", "조", "윤", "장", "임", "한", "오", "서", "신", "권", "황", "안", "송", "전", "홍"];
+            const syllables = ["민", "지", "서", "현", "도", "준", "하", "예", "아", "영", "우", "은", "채", "호", "진", "훈", "성", "윤", "빈", "솔"];
+
+            const getRandomNickname = () => {
+                const type = Math.floor(Math.random() * 3);
+                if (type === 0) {
+                    return adjs[Math.floor(Math.random() * adjs.length)] + nouns[Math.floor(Math.random() * nouns.length)];
+                } else if (type === 1) {
+                    return surnames[Math.floor(Math.random() * surnames.length)] + syllables[Math.floor(Math.random() * syllables.length)] + syllables[Math.floor(Math.random() * syllables.length)];
+                } else {
+                    return nouns[Math.floor(Math.random() * nouns.length)] + Math.floor(Math.random() * 999);
+                }
+            };
+
+            const fullRanking = [];
+            let currentScore = 2600 + Math.floor(Math.random() * 400);
+            let currentWinRate = 85 + Math.random() * 10;
+
+            for (let i = 1; i <= 1000; i++) {
+                const newScore = Math.max(10, currentScore);
+                const newWinRate = Math.max(20, currentWinRate).toFixed(1) + "%";
+                
+                let tierClass = "tier-iron";
+                let tierName = "IRON";
+                
+                if (newScore > 2500) { tierClass = "tier-diamond"; tierName = "DIAMOND"; }
+                else if (newScore > 2000) { tierClass = "tier-platinum"; tierName = "PLATINUM"; }
+                else if (newScore > 1500) { tierClass = "tier-gold"; tierName = "GOLD"; }
+                else if (newScore > 1000) { tierClass = "tier-silver"; tierName = "SILVER"; }
+                else if (newScore > 500) { tierClass = "tier-bronze"; tierName = "BRONZE"; }
+
+                fullRanking.push({
+                    rank: i,
+                    name: getRandomNickname(),
+                    score: newScore,
+                    winRate: newWinRate,
+                    tierClass: tierClass,
+                    tierName: tierName
+                });
+
+                // 점수와 승률 하락폭 조절
+                currentScore -= (Math.random() * 5);
+                currentWinRate -= (Math.random() * 0.1);
+            }
+
+            fullRanking.forEach(data => {
                 const item = document.createElement('div');
                 item.className = 'ranking-item';
                 item.innerHTML = `
-                    <div class="ranking-rank">#${i}</div>
-                    <div class="ranking-info">
-                        <div class="ranking-name">플레이어_${Math.floor(Math.random()*999)} <span class="ranking-tier-icon">GOLD</span></div>
-                        <div class="ranking-stats"><span>점수: ${2000 - (i*50)}</span><span>승률: 55%</span></div>
-                    </div>`;
+                    <div class="ranking-rank">#${data.rank}</div>
+                    <div class="ranking-tier-cell"><span class="ranking-tier-badge ${data.tierClass}">${data.tierName}</span></div>
+                    <div class="ranking-name">${data.name}</div>
+                    <div class="ranking-winrate">${data.winRate}</div>
+                    <div class="ranking-score">${Math.floor(data.score).toLocaleString()}</div>
+                `;
                 list.appendChild(item);
-            }
+            });
+            
             toggleModal('ranking-modal');
         }
     </script>
