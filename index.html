@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -25,11 +24,8 @@
             align-items: center;
             justify-content: center;
             touch-action: manipulation;
-            /* 텍스트 선택 방지 보안 설정 */
             user-select: none;
             -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
         }
 
         /* 내비게이션 바 */
@@ -98,14 +94,14 @@
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
         }
 
-        #ranking-list {
+        #ranking-list, .scroll-area {
             overflow-y: auto;
             flex: 1;
             padding-right: 8px;
         }
-        #ranking-list::-webkit-scrollbar { width: 4px; }
-        #ranking-list::-webkit-scrollbar-track { background: transparent; }
-        #ranking-list::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 10px; }
+        #ranking-list::-webkit-scrollbar, .scroll-area::-webkit-scrollbar { width: 4px; }
+        #ranking-list::-webkit-scrollbar-track, .scroll-area::-webkit-scrollbar-track { background: transparent; }
+        #ranking-list::-webkit-scrollbar-thumb, .scroll-area::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 10px; }
 
         /* 3D 주사위 오버레이 */
         .dice-overlay {
@@ -246,7 +242,6 @@
             transform-style: preserve-3d;
         }
         
-        /* 말풍선 디자인 */
         .status-content {
             background: #0f172a;
             color: #fbbf24;
@@ -308,7 +303,6 @@
         .compact-profile { width: 165px; padding: 10px; border-radius: 15px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
         .compact-profile.active-turn { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); transform: scale(1.05); }
 
-        /* 캐릭터 SVG */
         .chess-piece { 
             position: absolute; 
             width: 100%; 
@@ -322,6 +316,31 @@
             justify-content: center;
         }
         .chess-svg { width: 100%; height: 100%; filter: drop-shadow(0 25px 15px rgba(0,0,0,0.7)); }
+
+        /* 아이템 뱃지 */
+        .item-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: #1e293b;
+            border: 1px solid #fbbf24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            position: relative;
+        }
+        .item-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            font-size: 8px;
+            padding: 1px 3px;
+            border-radius: 10px;
+            font-weight: 900;
+        }
 
         @media (max-width: 640px) {
             .nav-logo span { display: inline; } 
@@ -349,12 +368,61 @@
             
             <div class="nav-right-area">
                 <div class="nav-links">
+                    <span class="nav-link !bg-red-500/10 !border-red-500/50 !text-red-400" onclick="toggleModal('shop-modal')">아이템 상점</span>
                     <span class="nav-link" onclick="toggleModal('ranking-modal')">마블 랭킹</span>
                     <span class="nav-link" onclick="toggleModal('patch-modal')">패치노트</span>
                 </div>
             </div>
         </div>
     </header>
+
+    <!-- 상점 모달 -->
+    <div id="shop-modal" class="overlay-modal" onclick="event.target === this && toggleModal('shop-modal')">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-xl font-black text-amber-400 italic">아이템 상점</h3>
+                    <p class="text-[10px] text-white/40 font-bold uppercase tracking-widest">Special Survival Items</p>
+                </div>
+                <button onclick="toggleModal('shop-modal')" class="text-white/20 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div class="scroll-area space-y-3">
+                <!-- Item 1 -->
+                <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-amber-400/20 rounded-xl flex items-center justify-center text-2xl">🛡️</div>
+                        <div>
+                            <div class="font-black text-sm text-white">벌칙칸 쉴드</div>
+                            <div class="text-[10px] text-white/40">벌칙칸 도착 시 후퇴를 1회 막아줍니다.</div>
+                        </div>
+                    </div>
+                    <button onclick="buyItem('shield')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">₩ 0</button>
+                </div>
+                <!-- Item 2 -->
+                <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-emerald-400/20 rounded-xl flex items-center justify-center text-2xl">⚡</div>
+                        <div>
+                            <div class="font-black text-sm text-white">벌칙칸 프리패스</div>
+                            <div class="text-[10px] text-white/40">벌칙칸 도착 시 오히려 앞으로 2칸 전진합니다.</div>
+                        </div>
+                    </div>
+                    <button onclick="buyItem('freepass')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">₩ 0</button>
+                </div>
+                <!-- Item 3 -->
+                <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-blue-400/20 rounded-xl flex items-center justify-center text-2xl">🌀</div>
+                        <div>
+                            <div class="font-black text-sm text-white">랩스 감소</div>
+                            <div class="text-[10px] text-white/40">구매 즉시 현재 남은 랩 수를 1회 줄입니다.</div>
+                        </div>
+                    </div>
+                    <button onclick="buyItem('lapdown')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">₩ 0</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 랭킹 모달 -->
     <div id="ranking-modal" class="overlay-modal" onclick="event.target === this && toggleModal('ranking-modal')">
@@ -380,12 +448,12 @@
             <div class="space-y-4">
                 <div class="border-l-2 border-amber-400 pl-4 py-1">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded-full font-black uppercase">v1.8.1</span>
+                        <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded-full font-black uppercase">v1.9.0</span>
                     </div>
-                    <p class="text-xs font-bold text-white mb-1">플레이어 정보 가독성 개선</p>
+                    <p class="text-xs font-bold text-white mb-1">아이템 상점 업데이트</p>
                     <ul class="text-[10px] text-white/50 space-y-1 list-disc pl-3">
-                        <li>플레이어 및 AI 프로필에 실시간 승률 및 현재 순위 표시</li>
-                        <li>보안 스크립트 유지 (우클릭 및 소스 확인 방지)</li>
+                        <li>상점 시스템 추가 및 생존 아이템 3종 출시</li>
+                        <li>벌칙칸 대응 쉴드/프리패스 시스템 적용</li>
                     </ul>
                 </div>
             </div>
@@ -435,7 +503,9 @@
                         <span class="text-[10px] text-amber-400 font-black">LAP <span id="p-lap">1</span></span>
                     </div>
                     <div id="p-name" class="text-white font-black text-[12px] truncate mb-0.5">플레이어</div>
-                    <div class="flex justify-between items-center mt-1">
+                    <!-- 인벤토리 영역 -->
+                    <div class="flex gap-1 mt-1 mb-1 h-6" id="p-inventory"></div>
+                    <div class="flex justify-between items-center mt-1 border-t border-white/10 pt-1">
                         <span class="text-[9px] text-white/40 font-bold uppercase">Win Rate</span>
                         <span class="text-[9px] text-amber-400 font-black italic">50.0%</span>
                     </div>
@@ -446,7 +516,8 @@
                         <span class="text-[10px] text-slate-400 font-black">LAP <span id="ai-lap">1</span></span>
                     </div>
                     <div id="ai-name" class="text-white font-black text-[12px] truncate mb-0.5">AI 코어</div>
-                    <div class="flex justify-between items-center mt-1">
+                    <div class="flex gap-1 mt-1 mb-1 h-6"></div>
+                    <div class="flex justify-between items-center mt-1 border-t border-white/10 pt-1">
                         <span class="text-[9px] text-white/40 font-bold uppercase">Win Rate</span>
                         <span class="text-[9px] text-slate-400 font-black italic">99.9%</span>
                     </div>
@@ -467,7 +538,10 @@
                 <button onclick="confirmQuit()" class="text-[10px] font-bold text-red-500 mb-1">기권</button>
                 <div class="text-white font-black text-lg italic"><span id="pos-display">00</span></div>
             </div>
-            <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleModal('shop-modal')" class="w-10 h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-xl hover:bg-white/20 transition-all">🛒</button>
+                <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
+            </div>
             <div class="text-right">
                 <div class="text-[9px] text-amber-400 font-black">목표</div>
                 <div class="text-white font-black text-lg italic">3 LAPS</div>
@@ -476,7 +550,6 @@
     </div>
 
     <script>
-        /* 보안 스크립트: 우클릭 방지 및 소스 확인 우회 차단 */
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', function(e) {
             if (e.keyCode === 123 || 
@@ -487,7 +560,6 @@
             }
         });
 
-        /* 기존 게임 로직 */
         let globalRankings = [];
         function generateRankings() {
             const firstNames = ["강력한", "신속한", "어두운", "빛나는", "냉철한", "용감한", "영리한", "우아한", "거대한", "날카로운", "고독한", "전설의", "불멸의", "궁극의", "미친", "조용한", "불타는", "얼어붙은", "신비한", "거친"];
@@ -542,7 +614,7 @@
         generateRankings();
 
         let gameState = { turn: 'player', isMoving: false, active: false };
-        let player = { name: "익명", pos: 0, lap: 1 };
+        let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 } };
         let ai = { name: "AI 코어", pos: 0, lap: 1 };
         let stats = { wins: 0, score: 1000 };
         const GOAL_LAPS = 3;
@@ -568,6 +640,24 @@
             if (id === 'ranking-modal' && !isShowing) renderRanking();
         }
 
+        // 아이템 구매 로직
+        function buyItem(type) {
+            if(type === 'lapdown') {
+                if(player.lap > 1) {
+                    player.lap--;
+                    showToast("LAPS REDUCED!");
+                    playSfx(600, 'triangle', 0.2);
+                } else {
+                    showToast("ALREADY LAP 1");
+                }
+            } else {
+                player.items[type]++;
+                showToast("ITEM PURCHASED!");
+                playSfx(523, 'sine', 0.1);
+            }
+            updateUI();
+        }
+
         function updateUI() {
             document.getElementById('p-name').innerText = player.name;
             document.getElementById('p-lap').innerText = player.lap;
@@ -575,6 +665,13 @@
             document.getElementById('player-card').classList.toggle('active-turn', gameState.turn === 'player');
             document.getElementById('ai-card').classList.toggle('active-turn', gameState.turn === 'ai');
             document.getElementById('game-status-text').innerText = gameState.isMoving ? "이동 중..." : (gameState.turn === 'player' ? "당신의 차례!" : "AI 생각 중...");
+            
+            // 인벤토리 렌더링
+            const inv = document.getElementById('p-inventory');
+            inv.innerHTML = '';
+            if(player.items.shield > 0) inv.innerHTML += `<div class="item-badge">🛡️<span class="item-count">${player.items.shield}</span></div>`;
+            if(player.items.freepass > 0) inv.innerHTML += `<div class="item-badge">⚡<span class="item-count">${player.items.freepass}</span></div>`;
+            
             if (!gameState.isMoving) renderPieces();
             document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
         }
@@ -623,6 +720,7 @@
         function startGame() {
             player.name = document.getElementById('nickname-input').value.trim() || "익명";
             player.lap = 1; ai.lap = 1; player.pos = 0; ai.pos = 0;
+            player.items = { shield: 0, freepass: 0 };
             gameState.active = true;
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
@@ -668,18 +766,42 @@
             }
 
             if(penaltyCells.includes(target.pos)) {
-                const moveBack = 2;
-                document.getElementById('game-status-text').innerText = `뒤로 ${moveBack}칸 후퇴!`;
-                await new Promise(r => setTimeout(r, 1000));
-                for(let j=0; j<moveBack; j++) {
-                    target.pos = (target.pos - 1 + path.length) % path.length;
-                    await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
+                if(type === 'player') {
+                    if(player.items.freepass > 0) {
+                        player.items.freepass--;
+                        document.getElementById('game-status-text').innerText = `프리패스 사용! 2칸 전진!`;
+                        playSfx(700, 'sine', 0.3);
+                        await new Promise(r => setTimeout(r, 1000));
+                        for(let k=0; k<2; k++) {
+                            target.pos = (target.pos + 1) % path.length;
+                            await movePieceVisual('player-piece', target.pos);
+                        }
+                    } else if(player.items.shield > 0) {
+                        player.items.shield--;
+                        document.getElementById('game-status-text').innerText = `쉴드 사용! 후퇴 방어!`;
+                        playSfx(300, 'sine', 0.3);
+                        await new Promise(r => setTimeout(r, 1000));
+                    } else {
+                        await applyPenalty(target, type);
+                    }
+                } else {
+                    await applyPenalty(target, type);
                 }
             }
 
             gameState.turn = type === 'player' ? 'ai' : 'player'; 
             gameState.isMoving = false; 
             updateUI();
+        }
+
+        async function applyPenalty(target, type) {
+            const moveBack = 2;
+            document.getElementById('game-status-text').innerText = `뒤로 ${moveBack}칸 후퇴!`;
+            await new Promise(r => setTimeout(r, 1000));
+            for(let j=0; j<moveBack; j++) {
+                target.pos = (target.pos - 1 + path.length) % path.length;
+                await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
+            }
         }
 
         async function movePieceVisual(id, pos) {
@@ -711,6 +833,12 @@
             document.getElementById('game-screen').classList.add('hidden');
             document.getElementById('home-screen').classList.remove('hidden');
             updateUI();
+        }
+
+        function showToast(text) {
+            const status = document.getElementById('game-status-text');
+            status.innerText = text;
+            setTimeout(() => { if(!gameState.isMoving) updateUI(); }, 2000);
         }
     </script>
 </body>
