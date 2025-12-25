@@ -97,7 +97,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        .db-stat { display: flex; flex-direction: column; align-items: center; min-width: 50px; }
+        .db-stat { display: flex; flex-direction: column; align-items: center; min-width: 40px; }
         .db-label { font-size: 8px; font-weight: 900; color: rgba(251, 191, 36, 0.6); text-transform: uppercase; }
         .db-value { font-size: 11px; font-weight: 900; color: #fff; }
 
@@ -233,16 +233,32 @@
             box-shadow: 0 15px 30px rgba(251, 191, 36, 0.2);
         }
 
-        /* 게임 보드 */
-        .board-container { perspective: 2000px; width: 100%; display: flex; align-items: center; justify-content: center; margin-top: -30px; position: relative; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .board-zoom { transform: scale(1.15) translateY(20px); }
+        /* 게임 보드 및 반응형 해상도 조정 */
+        .board-container { 
+            perspective: 2000px; 
+            width: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-top: 0px; 
+            position: relative; 
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
+        }
+        
+        /* 모바일에서는 줌 효과를 조금 완화하여 화면 밖으로 나가지 않게 조절 */
+        @media (max-width: 640px) {
+            .board-zoom { transform: scale(1.05) translateY(10px); }
+        }
+        @media (min-width: 641px) {
+            .board-zoom { transform: scale(1.15) translateY(20px); }
+        }
 
         .dice-board { 
             display: grid; 
             grid-template-columns: repeat(7, 1fr); 
             grid-template-rows: repeat(7, 1fr); 
-            gap: 16px; 
-            width: 95vw; 
+            gap: 2%; 
+            width: 90vw; 
             max-width: 600px; 
             aspect-ratio: 1/1; 
             transform: rotateX(50deg) rotateZ(-45deg); 
@@ -257,15 +273,19 @@
             justify-content: center; 
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); 
             border: 1px solid rgba(251, 191, 36, 0.4);
-            border-radius: 12px; 
+            border-radius: 8px; 
             font-weight: 900; 
-            font-size: 1rem; 
+            font-size: 0.8rem; 
             position: relative; 
             box-shadow: 0px 4px 0px 0px #78350f, 0px 8px 15px rgba(0,0,0,0.6);
             color: #fbbf24;
             transform-style: preserve-3d; 
             transform: translateZ(10px);
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @media (min-width: 641px) {
+            .tile { font-size: 1rem; border-radius: 12px; }
         }
 
         .tile-penalty { border: 4px solid #ef4444; color: #ef4444; }
@@ -275,18 +295,48 @@
 
         .center-status-bubble { grid-area: 3/3 / 6/6; display: flex; align-items: center; justify-content: center; z-index: 10; pointer-events: none; transform-style: preserve-3d; }
         .status-content {
-            background: #0f172a; color: #fbbf24; padding: 14px 24px; border-radius: 16px; font-weight: 900; font-size: 15px; text-align: center;
+            background: #0f172a; color: #fbbf24; padding: 10px 16px; border-radius: 12px; font-weight: 900; font-size: 12px; text-align: center;
             box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: translateZ(80px) rotateZ(45deg) rotateX(-50deg) ; border: 2px solid #fbbf24;
+            white-space: nowrap;
+        }
+        @media (min-width: 641px) {
+            .status-content { padding: 14px 24px; border-radius: 16px; font-size: 15px; }
         }
 
         /* 컨트롤 영역 */
-        .game-controls-mini { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 550px; padding: 12px 24px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; z-index: 160; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(20px); border: 2px solid #fbbf24; }
-        .dice-box { width: 60px; height: 60px; background: linear-gradient(135deg, #fbbf24, #d97706); border: 2px solid #fde68a; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 900; color: #020617; cursor: pointer; box-shadow: 0 8px 0 #b45309; transition: all 0.1s; }
-        .compact-profile { width: 140px; padding: 10px; border-radius: 15px; background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .game-controls-mini { 
+            position: fixed; 
+            bottom: 25px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 90%; 
+            max-width: 550px; 
+            padding: 12px 20px; 
+            border-radius: 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            z-index: 160; 
+            background: rgba(0, 0, 0, 0.85); 
+            backdrop-filter: blur(20px); 
+            border: 2px solid #fbbf24; 
+        }
+        .dice-box { width: 50px; height: 50px; background: linear-gradient(135deg, #fbbf24, #d97706); border: 2px solid #fde68a; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900; color: #020617; cursor: pointer; box-shadow: 0 6px 0 #b45309; transition: all 0.1s; }
+        @media (min-width: 641px) {
+            .dice-box { width: 60px; height: 60px; font-size: 1.6rem; box-shadow: 0 8px 0 #b45309; }
+        }
+
+        .compact-profile { width: 110px; padding: 8px; border-radius: 12px; background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); }
+        @media (min-width: 641px) {
+            .compact-profile { width: 140px; padding: 10px; border-radius: 15px; }
+        }
         .compact-profile.active-turn { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
 
         /* 기물 */
-        .chess-piece { position: absolute; width: 100%; height: 100%; z-index: 150; transform: translateZ(60px) rotateZ(45deg) rotateX(-50deg) scale(1.8); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; display: flex; align-items: center; justify-content: center; }
+        .chess-piece { position: absolute; width: 100%; height: 100%; z-index: 150; transform: translateZ(60px) rotateZ(45deg) rotateX(-50deg) scale(1.5); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; display: flex; align-items: center; justify-content: center; }
+        @media (min-width: 641px) {
+            .chess-piece { transform: translateZ(60px) rotateZ(45deg) rotateX(-50deg) scale(1.8); }
+        }
         .chess-svg { width: 100%; height: 100%; filter: drop-shadow(0 25px 15px rgba(0,0,0,0.7)); }
 
         .item-badge { width: 20px; height: 20px; border-radius: 5px; background: #1e293b; border: 1px solid #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 10px; position: relative; }
@@ -294,35 +344,37 @@
 
         .hidden { display: none !important; }
 
-        /* 랭킹 UI - 계급장 티어 색상 반영 */
+        /* 랭킹 UI */
         .ranking-item { 
-            padding: 14px 16px; 
+            padding: 10px 12px; 
             background: rgba(30, 41, 59, 0.7); 
             border: 1px solid rgba(251, 191, 36, 0.2); 
-            border-radius: 16px; 
+            border-radius: 12px; 
             display: grid;
-            grid-template-columns: 45px 85px 1fr 60px 85px;
+            grid-template-columns: 35px 70px 1fr 50px 70px;
             align-items: center; 
-            gap: 8px; 
-            margin-bottom: 10px; 
+            gap: 6px; 
+            margin-bottom: 8px; 
             transition: all 0.2s; 
         }
-        .ranking-rank { font-weight: 900; color: #fbbf24; text-align: center; font-size: 16px; font-style: italic; }
-        .ranking-tier-cell { display: flex; justify-content: center; }
-        
-        /* 티어별 계급장 스타일 */
+        @media (min-width: 641px) {
+            .ranking-item { padding: 14px 16px; border-radius: 16px; grid-template-columns: 45px 85px 1fr 60px 85px; gap: 8px; margin-bottom: 10px; }
+        }
+        .ranking-rank { font-weight: 900; color: #fbbf24; text-align: center; font-size: 14px; font-style: italic; }
+        @media (min-width: 641px) { .ranking-rank { font-size: 16px; } }
+
         .ranking-tier-badge { 
-            font-size: 9px; 
+            font-size: 7px; 
             font-weight: 900; 
-            padding: 3px 6px; 
+            padding: 2px 4px; 
             border-radius: 4px; 
             text-transform: uppercase; 
-            letter-spacing: 0.5px; 
             width: fit-content; 
             text-align: center;
             border-width: 1px;
             border-style: solid;
         }
+        @media (min-width: 641px) { .ranking-tier-badge { font-size: 9px; padding: 3px 6px; } }
 
         .tier-diamond { background: rgba(34, 211, 238, 0.2); color: #22d3ee; border-color: #22d3ee; }
         .tier-platinum { background: rgba(45, 212, 191, 0.2); color: #2dd4bf; border-color: #2dd4bf; }
@@ -331,22 +383,28 @@
         .tier-bronze { background: rgba(180, 83, 9, 0.2); color: #b45309; border-color: #b45309; }
         .tier-iron { background: rgba(71, 85, 105, 0.2); color: #475569; border-color: #475569; }
 
-        .ranking-name { font-weight: 900; color: #fff; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .ranking-winrate { font-size: 12px; color: rgba(251, 191, 36, 0.9); font-weight: 800; text-align: center; }
-        .ranking-score { font-size: 12px; color: #fff; font-weight: 900; text-align: right; }
+        .ranking-name { font-weight: 900; color: #fff; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        @media (min-width: 641px) { .ranking-name { font-size: 14px; } }
+        .ranking-winrate { font-size: 10px; color: rgba(251, 191, 36, 0.9); font-weight: 800; text-align: center; }
+        @media (min-width: 641px) { .ranking-winrate { font-size: 12px; } }
+        .ranking-score { font-size: 10px; color: #fff; font-weight: 900; text-align: right; }
+        @media (min-width: 641px) { .ranking-score { font-size: 12px; } }
 
         .ranking-header {
             display: grid;
-            grid-template-columns: 45px 85px 1fr 60px 85px;
-            gap: 8px;
-            padding: 0 16px 12px 16px;
+            grid-template-columns: 35px 70px 1fr 50px 70px;
+            gap: 6px;
+            padding: 0 12px 10px 12px;
             border-bottom: 1px solid rgba(251, 191, 36, 0.2);
-            margin-bottom: 15px;
-            font-size: 10px;
+            margin-bottom: 10px;
+            font-size: 8px;
             font-weight: 900;
             color: rgba(251, 191, 36, 0.5);
             text-transform: uppercase;
             text-align: center;
+        }
+        @media (min-width: 641px) {
+            .ranking-header { grid-template-columns: 45px 85px 1fr 60px 85px; gap: 8px; padding: 0 16px 12px 16px; font-size: 10px; margin-bottom: 15px; }
         }
 
         /* 매칭 로딩 */
@@ -359,7 +417,6 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* 모바일 모드 화면 스크롤 허용 */
         #mode-screen {
             height: 100vh;
             display: flex;
@@ -399,13 +456,13 @@
     <!-- 게임 대시보드 -->
     <div id="game-dashboard" class="game-top-dashboard">
         <div class="dashboard-container">
-            <div class="w-10 h-10 flex items-center justify-center bg-amber-400/20 border border-amber-400/40 rounded-xl text-xl">📀</div>
+            <div class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-amber-400/20 border border-amber-400/40 rounded-xl text-lg sm:text-xl">📀</div>
             <div class="flex flex-col flex-1">
                 <div class="flex items-center gap-2">
-                    <span id="db-name" class="font-black text-sm text-white">플레이어</span>
-                    <span id="db-mode-badge" class="bg-amber-400 text-black text-[8px] px-1.5 py-0.5 rounded font-black uppercase">CLASSIC</span>
+                    <span id="db-name" class="font-black text-xs sm:text-sm text-white">플레이어</span>
+                    <span id="db-mode-badge" class="bg-amber-400 text-black text-[7px] sm:text-[8px] px-1 py-0.5 sm:px-1.5 rounded font-black uppercase">CLASSIC</span>
                 </div>
-                <div class="flex gap-4 mt-1">
+                <div class="flex gap-3 sm:gap-4 mt-0.5 sm:mt-1">
                     <div class="db-stat"><span class="db-label">순위</span><span class="db-value">#1</span></div>
                     <div class="db-stat"><span class="db-label">승률</span><span class="db-value">100%</span></div>
                     <div class="db-stat"><span class="db-label">모드</span><span id="db-mode-text" class="db-value text-amber-400">인공지능</span></div>
@@ -453,7 +510,7 @@
     <div id="ranking-modal" class="overlay-modal">
         <div class="modal-content max-w-[600px]">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-black text-amber-400 italic">마블 랭킹 TOP 1000</h3>
+                <h3 class="text-lg sm:text-xl font-black text-amber-400 italic">마블 랭킹 TOP 1000</h3>
                 <button onclick="toggleModal('ranking-modal')" class="text-white/40 hover:text-white transition-colors">✕</button>
             </div>
             
@@ -474,10 +531,10 @@
         <div class="modal-content">
             <h3 class="text-xl font-black text-amber-400 italic mb-6">패치 노트</h3>
             <div class="text-xs text-white/50 leading-loose">
-                v2.7.7: 보안 업데이트<br>
-                - 오른쪽 클릭 방지 시스템 강화<br>
-                - 개발자 도구 단축키 차단 적용<br>
-                - 소스 코드 무단 접근 방지
+                v2.7.8: 모바일 환경 최적화<br>
+                - 모바일 해상도에 따른 게임 보드 자동 조정<br>
+                - 터치 환경에 최적화된 컨트롤 인터페이스<br>
+                - 반응형 디자인 강화로 가시성 개선
             </div>
         </div>
     </div>
@@ -537,15 +594,15 @@
 
     <!-- 3단계: 게임 화면 -->
     <div id="game-screen" class="hidden w-full h-full relative">
-        <div class="flex flex-col items-center justify-center w-screen h-screen pt-20">
-            <div class="flex gap-4 mb-4">
+        <div class="flex flex-col items-center justify-center w-screen h-screen pt-12 sm:pt-20">
+            <div class="flex gap-2 sm:gap-4 mb-4">
                 <div id="p-lap-card" class="compact-profile active-turn text-center">
-                    <span class="text-[8px] text-amber-400 font-bold uppercase">내 위치</span>
-                    <div class="text-white font-black text-sm">LAP <span id="p-lap">1</span></div>
+                    <span class="text-[7px] sm:text-[8px] text-amber-400 font-bold uppercase">내 위치</span>
+                    <div class="text-white font-black text-xs sm:text-sm">LAP <span id="p-lap">1</span></div>
                 </div>
                 <div id="ai-lap-card" class="compact-profile text-center">
-                    <span id="o-label" class="text-[8px] text-slate-400 font-bold uppercase">AI 위치</span>
-                    <div class="text-white font-black text-sm">LAP <span id="ai-lap">1</span></div>
+                    <span id="o-label" class="text-[7px] sm:text-[8px] text-slate-400 font-bold uppercase">AI 위치</span>
+                    <div class="text-white font-black text-xs sm:text-sm">LAP <span id="ai-lap">1</span></div>
                 </div>
             </div>
             <div id="board-container" class="board-container">
@@ -557,14 +614,14 @@
             </div>
         </div>
         <div class="game-controls-mini">
-            <button onclick="handleResignClick()" class="text-[10px] font-bold text-red-500 border border-red-500/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors">기권</button>
-            <div class="flex items-center gap-3">
-                <button onclick="toggleModal('shop-modal')" class="w-10 h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-xl">🛒</button>
+            <button onclick="handleResignClick()" class="text-[8px] sm:text-[10px] font-bold text-red-500 border border-red-500/50 hover:bg-red-500/10 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-colors">기권</button>
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="toggleModal('shop-modal')" class="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-lg sm:text-xl">🛒</button>
                 <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
             </div>
             <div class="text-right">
-                <div class="text-[9px] text-amber-400 font-black">POS</div>
-                <div class="text-white font-black text-lg italic"><span id="pos-display">00</span></div>
+                <div class="text-[8px] sm:text-[9px] text-amber-400 font-black">POS</div>
+                <div class="text-white font-black text-base sm:text-lg italic"><span id="pos-display">00</span></div>
             </div>
         </div>
     </div>
@@ -606,31 +663,11 @@
         }, false);
 
         document.addEventListener('keydown', function(e) {
-            // F12 방지
-            if (e.keyCode === 123) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+Shift+I (개발자 도구) 방지
-            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+Shift+J (콘솔) 방지
-            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+U (소스 보기) 방지
-            if (e.ctrlKey && e.keyCode === 85) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+S (저장) 방지
-            if (e.ctrlKey && e.keyCode === 83) {
-                e.preventDefault();
-                return false;
-            }
+            if (e.keyCode === 123) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
         }, false);
 
         let gameState = { turn: 'player', isMoving: false, active: false, mode: 'ai', matchId: null };
@@ -674,54 +711,26 @@
 
         function selectMode(mode) {
             gameState.mode = mode;
-            if (mode === 'multi') {
-                startRealMatching();
-            } else {
-                startGame();
-            }
+            if (mode === 'multi') { startRealMatching(); } else { startGame(); }
         }
 
         async function startRealMatching() {
             if (!window.currentUser) { alert("인증 대기 중입니다. 잠시 후 다시 시도하세요."); return; }
             document.getElementById('matching-overlay').classList.remove('hidden');
-            
-            const db = window.db;
-            const appId = window.appId;
-            const uid = window.currentUser.uid;
+            const db = window.db; const appId = window.appId; const uid = window.currentUser.uid;
             const { collection, getDocs, setDoc, doc, onSnapshot, deleteDoc } = window.firestoreUtils;
-
             const waitRef = collection(db, 'artifacts', appId, 'public', 'data', 'matchmaking');
             const snapshot = await getDocs(waitRef);
             let targetMatch = null;
-            
-            snapshot.forEach(d => {
-                if (d.id !== uid) targetMatch = { id: d.id, ...d.data() };
-            });
-
+            snapshot.forEach(d => { if (d.id !== uid) targetMatch = { id: d.id, ...d.data() }; });
             if (targetMatch) {
                 gameState.matchId = targetMatch.id;
                 await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'matchmaking', targetMatch.id));
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'active_matches', gameState.matchId), {
-                    player1: targetMatch.id,
-                    player2: uid,
-                    p1Name: targetMatch.name,
-                    p2Name: player.name,
-                    status: 'started'
-                });
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'active_matches', gameState.matchId), { player1: targetMatch.id, player2: uid, p1Name: targetMatch.name, p2Name: player.name, status: 'started' });
                 startGame();
             } else {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'matchmaking', uid), {
-                    name: player.name,
-                    timestamp: Date.now()
-                });
-                
-                let matchUnsubscribe = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'active_matches', uid), (docSnap) => {
-                    if (docSnap.exists() && docSnap.data().status === 'started') {
-                        gameState.matchId = uid;
-                        matchUnsubscribe();
-                        startGame();
-                    }
-                });
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'matchmaking', uid), { name: player.name, timestamp: Date.now() });
+                let matchUnsubscribe = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'active_matches', uid), (docSnap) => { if (docSnap.exists() && docSnap.data().status === 'started') { gameState.matchId = uid; matchUnsubscribe(); startGame(); } });
             }
         }
 
@@ -735,27 +744,17 @@
             document.getElementById('matching-overlay').classList.add('hidden');
             player.pos = 0; player.lap = 1; player.items = { shield: 0, freepass: 0 };
             ai.pos = 0; ai.lap = 1;
-            gameState.turn = 'player';
-            gameState.isMoving = false;
-            gameState.active = true;
-
+            gameState.turn = 'player'; gameState.isMoving = false; gameState.active = true;
             document.getElementById('mode-screen').classList.add('hidden');
             document.getElementById('top-nav').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             document.getElementById('game-dashboard').style.display = 'block';
-            
             const modeBadge = document.getElementById('db-mode-badge');
             const modeText = document.getElementById('db-mode-text');
             const oLabel = document.getElementById('o-label');
-            
-            if (gameState.mode === 'ai') {
-                modeBadge.innerText = "CLASSIC"; modeText.innerText = "인공지능"; oLabel.innerText = "AI 위치";
-            } else if (gameState.mode === 'battle') {
-                modeBadge.innerText = "BATTLE"; modeText.innerText = "전투 레이스"; oLabel.innerText = "보스 위치";
-            } else {
-                modeBadge.innerText = "MULTI"; modeText.innerText = "유저 매칭"; oLabel.innerText = "상대방 위치";
-            }
-            
+            if (gameState.mode === 'ai') { modeBadge.innerText = "CLASSIC"; modeText.innerText = "인공지능"; oLabel.innerText = "AI 위치"; } 
+            else if (gameState.mode === 'battle') { modeBadge.innerText = "BATTLE"; modeText.innerText = "전투 레이스"; oLabel.innerText = "보스 위치"; } 
+            else { modeBadge.innerText = "MULTI"; modeText.innerText = "유저 매칭"; oLabel.innerText = "상대방 위치"; }
             initBoard();
         }
 
@@ -806,10 +805,7 @@
         async function handleRoll() {
             if(gameState.isMoving || gameState.turn !== 'player' || !gameState.active) return;
             await executeTurn('player');
-            if(gameState.active && gameState.turn === 'ai') { 
-                await new Promise(r => setTimeout(r, 800)); 
-                await executeTurn('ai'); 
-            }
+            if(gameState.active && gameState.turn === 'ai') { await new Promise(r => setTimeout(r, 800)); await executeTurn('ai'); }
         }
 
         async function executeTurn(type) {
@@ -817,16 +813,13 @@
             const container = document.getElementById('board-container'); container.classList.add('board-zoom');
             const target = type === 'player' ? player : ai;
             const dice = await rollVisualDice(); document.getElementById('dice-btn').innerText = dice;
-            
             for(let i=0; i<dice; i++) {
                 if(!gameState.active) return;
                 const old = target.pos; target.pos = (target.pos + 1) % path.length;
                 if (old > target.pos) { target.lap++; if (target.lap > GOAL_LAPS) { alert(type === 'player' ? "승리!" : "패배!"); handleResign(); return; } }
                 await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
             }
-
             if(!gameState.active) return;
-
             if(penaltyCells.includes(target.pos)) {
                 if(type === 'player' && player.items.shield > 0) { player.items.shield--; playSfx(300); }
                 else { for(let j=0; j<2; j++) { target.pos = (target.pos - 1 + path.length) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); } }
@@ -837,17 +830,11 @@
                 const status = document.getElementById('game-status-text');
                 status.innerText = isWin ? "전투 승리! +2칸" : "전투 패배! -1칸";
                 await new Promise(r => setTimeout(r, 800));
-                if(isWin) { target.pos = (target.pos + 2) % path.length; } 
-                else { target.pos = (target.pos - 1 + path.length) % path.length; }
+                if(isWin) { target.pos = (target.pos + 2) % path.length; } else { target.pos = (target.pos - 1 + path.length) % path.length; }
                 await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
             }
-
             container.classList.remove('board-zoom');
-            if(gameState.active) {
-                gameState.turn = type === 'player' ? 'ai' : 'player'; 
-                gameState.isMoving = false; 
-                updateUI();
-            }
+            if(gameState.active) { gameState.turn = type === 'player' ? 'ai' : 'player'; gameState.isMoving = false; updateUI(); }
         }
 
         async function movePieceVisual(id, pos) { const p = document.getElementById(id); const t = document.getElementById(`tile-${pos}`); if (p && t) { t.appendChild(p); playSfx(400 + (pos * 10)); await new Promise(r => setTimeout(r, 200)); } }
@@ -870,72 +857,26 @@
         function buyItem(type) { player.items[type]++; updateUI(); playSfx(523); }
         function handleResignClick() { toggleModal('resign-modal'); }
         
-        // 랭킹 시스템 닉네임 무작위 생성 (순위, 계급, 닉네임, 승률, 점수)
         function openRanking() {
-            const list = document.getElementById('ranking-list');
-            list.innerHTML = '';
-            
-            // 닉네임 구성을 위한 풍부한 단어 목록
+            const list = document.getElementById('ranking-list'); list.innerHTML = '';
             const adjs = ["날랜", "용맹한", "어두운", "빛나는", "강철의", "황금", "전설의", "미친", "고독한", "위대한", "침묵의", "번개", "불꽃", "차가운", "비밀스런", "무적의", "푸른", "붉은", "그림자", "대담한"];
             const nouns = ["체스광", "레이서", "군주", "기사", "도전자", "승부사", "킹", "퀸", "비숍", "나이트", "폰", "장인", "천재", "악마", "천사", "바람", "폭풍", "파괴자", "수호자", "그림자"];
             const surnames = ["김", "이", "박", "최", "정", "강", "조", "윤", "장", "임", "한", "오", "서", "신", "권", "황", "안", "송", "전", "홍"];
             const syllables = ["민", "지", "서", "현", "도", "준", "하", "예", "아", "영", "우", "은", "채", "호", "진", "훈", "성", "윤", "빈", "솔"];
-
-            const getRandomNickname = () => {
-                const type = Math.floor(Math.random() * 3);
-                if (type === 0) {
-                    return adjs[Math.floor(Math.random() * adjs.length)] + nouns[Math.floor(Math.random() * nouns.length)];
-                } else if (type === 1) {
-                    return surnames[Math.floor(Math.random() * surnames.length)] + syllables[Math.floor(Math.random() * syllables.length)] + syllables[Math.floor(Math.random() * syllables.length)];
-                } else {
-                    return nouns[Math.floor(Math.random() * nouns.length)] + Math.floor(Math.random() * 999);
-                }
-            };
-
-            const fullRanking = [];
-            let currentScore = 2600 + Math.floor(Math.random() * 400);
-            let currentWinRate = 85 + Math.random() * 10;
-
+            const getRandomNickname = () => { const type = Math.floor(Math.random() * 3); if (type === 0) return adjs[Math.floor(Math.random() * adjs.length)] + nouns[Math.floor(Math.random() * nouns.length)]; if (type === 1) return surnames[Math.floor(Math.random() * surnames.length)] + syllables[Math.floor(Math.random() * syllables.length)] + syllables[Math.floor(Math.random() * syllables.length)]; return nouns[Math.floor(Math.random() * nouns.length)] + Math.floor(Math.random() * 999); };
+            const fullRanking = []; let currentScore = 2600 + Math.floor(Math.random() * 400); let currentWinRate = 85 + Math.random() * 10;
             for (let i = 1; i <= 1000; i++) {
-                const newScore = Math.max(10, currentScore);
-                const newWinRate = Math.max(20, currentWinRate).toFixed(1) + "%";
-                
-                let tierClass = "tier-iron";
-                let tierName = "IRON";
-                
-                if (newScore > 2500) { tierClass = "tier-diamond"; tierName = "DIAMOND"; }
-                else if (newScore > 2000) { tierClass = "tier-platinum"; tierName = "PLATINUM"; }
-                else if (newScore > 1500) { tierClass = "tier-gold"; tierName = "GOLD"; }
-                else if (newScore > 1000) { tierClass = "tier-silver"; tierName = "SILVER"; }
-                else if (newScore > 500) { tierClass = "tier-bronze"; tierName = "BRONZE"; }
-
-                fullRanking.push({
-                    rank: i,
-                    name: getRandomNickname(),
-                    score: newScore,
-                    winRate: newWinRate,
-                    tierClass: tierClass,
-                    tierName: tierName
-                });
-
-                // 점수와 승률 하락폭 조절
-                currentScore -= (Math.random() * 5);
-                currentWinRate -= (Math.random() * 0.1);
+                const newScore = Math.max(10, currentScore); const newWinRate = Math.max(20, currentWinRate).toFixed(1) + "%";
+                let tierClass = "tier-iron"; let tierName = "IRON";
+                if (newScore > 2500) { tierClass = "tier-diamond"; tierName = "DIAMOND"; } else if (newScore > 2000) { tierClass = "tier-platinum"; tierName = "PLATINUM"; } else if (newScore > 1500) { tierClass = "tier-gold"; tierName = "GOLD"; } else if (newScore > 1000) { tierClass = "tier-silver"; tierName = "SILVER"; } else if (newScore > 500) { tierClass = "tier-bronze"; tierName = "BRONZE"; }
+                fullRanking.push({ rank: i, name: getRandomNickname(), score: newScore, winRate: newWinRate, tierClass: tierClass, tierName: tierName });
+                currentScore -= (Math.random() * 5); currentWinRate -= (Math.random() * 0.1);
             }
-
             fullRanking.forEach(data => {
-                const item = document.createElement('div');
-                item.className = 'ranking-item';
-                item.innerHTML = `
-                    <div class="ranking-rank">#${data.rank}</div>
-                    <div class="ranking-tier-cell"><span class="ranking-tier-badge ${data.tierClass}">${data.tierName}</span></div>
-                    <div class="ranking-name">${data.name}</div>
-                    <div class="ranking-winrate">${data.winRate}</div>
-                    <div class="ranking-score">${Math.floor(data.score).toLocaleString()}</div>
-                `;
+                const item = document.createElement('div'); item.className = 'ranking-item';
+                item.innerHTML = `<div class="ranking-rank">#${data.rank}</div><div class="ranking-tier-cell"><span class="ranking-tier-badge ${data.tierClass}">${data.tierName}</span></div><div class="ranking-name">${data.name}</div><div class="ranking-winrate">${data.winRate}</div><div class="ranking-score">${Math.floor(data.score).toLocaleString()}</div>`;
                 list.appendChild(item);
             });
-            
             toggleModal('ranking-modal');
         }
     </script>
