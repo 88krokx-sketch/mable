@@ -10,12 +10,14 @@
         
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #020617;
+            background-color: #000000;
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(30, 58, 138, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(88, 28, 135, 0.4) 0%, transparent 50%),
-                linear-gradient(to bottom right, #020617, #0f172a, #1e1b4b);
-            background-attachment: fixed;
+                linear-gradient(45deg, #111 25%, transparent 25%), 
+                linear-gradient(-45deg, #111 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #111 75%), 
+                linear-gradient(-45deg, transparent 75%, #111 75%);
+            background-size: 80px 80px;
+            background-position: 0 0, 0 40px, 40px -40px, -40px 0px;
             color: #f8fafc;
             overflow: hidden;
             min-height: 100vh;
@@ -28,7 +30,7 @@
             -webkit-user-select: none;
         }
 
-        /* 내비게이션 바 (홈화면 전용) */
+        /* 내비게이션 바 */
         .nav-bar {
             width: 100%; 
             height: 65px; 
@@ -36,10 +38,10 @@
             top: 0; 
             left: 0; 
             z-index: 200;
-            background: rgba(15, 23, 42, 0.2);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            border-bottom: none;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
         }
 
         .nav-content { height: 100%; max-width: 1400px; margin: 0 auto; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; }
@@ -61,7 +63,7 @@
             background: rgba(251, 191, 36, 0.05);
         }
 
-        /* 게임 중 상단 플레이어 대시보드 */
+        /* 게임 중 상단 대시보드 */
         .game-top-dashboard {
             position: fixed;
             top: 0;
@@ -70,35 +72,33 @@
             height: 75px;
             z-index: 250;
             display: none;
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), transparent);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), transparent);
             padding: 10px 16px;
         }
         .dashboard-container {
             max-width: 900px;
             margin: 0 auto;
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(251, 191, 36, 0.3);
-            border-radius: 166px; /* Note: original had 16px but was 166 in snippet, keeping as provided in the most up-to-date source */
+            border-radius: 16px;
             display: flex;
             align-items: center;
             padding: 8px 16px;
             gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-        /* Fixing the border-radius from the provided snippet which seemed to be 16px based on context */
-        .dashboard-container { border-radius: 16px; }
 
         .db-stat { display: flex; flex-direction: column; align-items: center; min-width: 50px; }
         .db-label { font-size: 8px; font-weight: 900; color: rgba(251, 191, 36, 0.6); text-transform: uppercase; }
         .db-value { font-size: 11px; font-weight: 900; color: #fff; }
 
-        /* 팝업 공통 스타일 */
+        /* 모달 스타일 */
         .overlay-modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(10px);
             z-index: 1000;
             align-items: center;
@@ -128,7 +128,7 @@
             display: none;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.6);
             backdrop-filter: blur(4px);
             pointer-events: none;
         }
@@ -139,7 +139,7 @@
             position: absolute;
             width: 120px;
             height: 120px;
-            background: rgba(30, 41, 59, 0.6);
+            background: rgba(30, 41, 59, 0.8);
             backdrop-filter: blur(8px);
             border: 4px solid rgba(251, 191, 36, 0.8);
             display: flex;
@@ -159,36 +159,36 @@
         .rolling { animation: cubeRotate 0.4s linear infinite; }
         @keyframes cubeRotate { 0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); } 100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); } }
 
-        /* 홈 스크린 */
+        /* 홈 스크린 - 스페이드 A 카드 */
         .home-container { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; perspective: 1000px; }
-        .diamond-card {
+        .spade-card {
             width: 280px;
-            height: 280px;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(30px);
-            border: 4px solid #fbbf24;
+            height: 400px;
+            background: #ffffff;
+            border-radius: 15px;
             position: relative;
-            transform: rotate(45deg); 
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 60px rgba(251, 191, 36, 0.4);
-            animation: diamondFloat 4s ease-in-out infinite;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.1);
+            animation: cardFloat 4s ease-in-out infinite;
+            padding: 20px;
+            border: 1px solid #ddd;
         }
-        @keyframes diamondFloat { 0%, 100% { transform: rotate(45deg) translate(0, 0); } 50% { transform: rotate(45deg) translate(-8px, -8px); } }
-        .diamond-content { transform: rotate(-45deg); width: 160%; text-align: center; padding: 15px; }
+        @keyframes cardFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(1deg); } }
+        
+        .card-corner { position: absolute; display: flex; flex-direction: column; align-items: center; color: #1a1a1a; font-weight: 900; line-height: 1; }
+        .corner-top { top: 15px; left: 15px; }
+        .corner-bottom { bottom: 15px; right: 15px; transform: rotate(180deg); }
+        .corner-rank { font-size: 24px; }
+        .corner-suit { font-size: 18px; }
 
-        /* 게임 보드 스타일 */
-        .board-container { 
-            perspective: 2000px; 
-            width: 100%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            margin-top: -30px; 
-            position: relative;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
+        .spade-center-icon { font-size: 100px; color: #1a1a1a; margin-bottom: 20px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); }
+        .spade-content { width: 100%; text-align: center; z-index: 10; }
+
+        /* 게임 보드 */
+        .board-container { perspective: 2000px; width: 100%; display: flex; align-items: center; justify-content: center; margin-top: -30px; position: relative; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
         .board-zoom { transform: scale(1.15) translateY(20px); }
 
         .dice-board { 
@@ -233,39 +233,13 @@
         }
 
         /* 컨트롤 영역 */
-        .game-controls-mini { 
-            position: fixed; 
-            bottom: 25px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: 90%; 
-            max-width: 550px; 
-            padding: 12px 24px; 
-            border-radius: 20px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            z-index: 160; 
-            background: rgba(15, 23, 42, 0.8); 
-            backdrop-filter: blur(20px); 
-            border: 2px solid #fbbf24; 
-        }
-
-        .dice-box { 
-            width: 60px; height: 60px; background: linear-gradient(135deg, #fbbf24, #d97706); border: 2px solid #fde68a; border-radius: 14px; 
-            display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 900; color: #020617; cursor: pointer; box-shadow: 0 8px 0 #b45309; transition: all 0.1s; 
-        }
-
-        .compact-profile { width: 140px; padding: 10px; border-radius: 15px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .game-controls-mini { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 550px; padding: 12px 24px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; z-index: 160; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(20px); border: 2px solid #fbbf24; }
+        .dice-box { width: 60px; height: 60px; background: linear-gradient(135deg, #fbbf24, #d97706); border: 2px solid #fde68a; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 900; color: #020617; cursor: pointer; box-shadow: 0 8px 0 #b45309; transition: all 0.1s; }
+        .compact-profile { width: 140px; padding: 10px; border-radius: 15px; background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); }
         .compact-profile.active-turn { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
 
-        /* 기물 스타일 */
-        .chess-piece { 
-            position: absolute; width: 100%; height: 100%; z-index: 150; 
-            transform: translateZ(60px) rotateZ(45deg) rotateX(-50deg) scale(1.8); 
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
-            pointer-events: none; display: flex; align-items: center; justify-content: center;
-        }
+        /* 기물 */
+        .chess-piece { position: absolute; width: 100%; height: 100%; z-index: 150; transform: translateZ(60px) rotateZ(45deg) rotateX(-50deg) scale(1.8); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; display: flex; align-items: center; justify-content: center; }
         .chess-svg { width: 100%; height: 100%; filter: drop-shadow(0 25px 15px rgba(0,0,0,0.7)); }
 
         .item-badge { width: 20px; height: 20px; border-radius: 5px; background: #1e293b; border: 1px solid #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 10px; position: relative; }
@@ -273,22 +247,16 @@
 
         .hidden { display: none !important; }
 
-        /* 랭킹 아이템 스타일 */
-        .ranking-item {
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-        .ranking-rank { font-weight: 900; color: #fbbf24; min-width: 30px; text-align: center; }
+        /* 랭킹 UI 강화 */
+        .ranking-item { padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: all 0.2s; }
+        .ranking-item:hover { background: rgba(255, 255, 255, 0.08); transform: translateX(5px); }
+        .ranking-rank { font-weight: 900; color: #fbbf24; min-width: 40px; text-align: center; font-size: 14px; font-style: italic; }
         .ranking-info { flex: 1; }
-        .ranking-name { font-weight: 700; color: #fff; font-size: 13px; }
-        .ranking-stats { font-size: 10px; color: rgba(255, 255, 255, 0.5); display: flex; gap: 8px; }
-        .ranking-badge { background: #fbbf24; color: #000; font-size: 8px; font-weight: 900; padding: 2px 4px; border-radius: 4px; text-transform: uppercase; }
+        .ranking-name { font-weight: 700; color: #fff; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+        .ranking-stats { font-size: 10px; color: rgba(255, 255, 255, 0.5); display: flex; gap: 8px; margin-top: 2px; }
+        .ranking-tier-icon { background: #fbbf24; color: #000; font-size: 7px; font-weight: 900; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .search-bar { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px; padding: 10px 16px; margin-bottom: 16px; width: 100%; color: white; outline: none; font-size: 12px; }
+        .search-bar:focus { border-color: #fbbf24; }
     </style>
 </head>
 <body oncontextmenu="return false">
@@ -317,7 +285,7 @@
         </div>
     </header>
 
-    <!-- 게임 중 상단 대시보드 (플레이어 정보 집중) -->
+    <!-- 게임 중 상단 대시보드 -->
     <div id="game-dashboard" class="game-top-dashboard">
         <div class="dashboard-container">
             <div id="db-rank-icon" class="w-10 h-10 flex items-center justify-center bg-amber-400/20 border border-amber-400/40 rounded-xl text-xl">📀</div>
@@ -333,9 +301,7 @@
                     <div class="db-stat"><span class="db-label">전적</span><span class="db-value">12승 12패</span></div>
                 </div>
             </div>
-            <div id="db-inventory" class="flex gap-1.5 border-l border-white/10 pl-4">
-                <!-- 아이템 뱃지들 -->
-            </div>
+            <div id="db-inventory" class="flex gap-1.5 border-l border-white/10 pl-4"></div>
         </div>
     </div>
 
@@ -374,9 +340,16 @@
         </div>
     </div>
 
-    <div id="ranking-modal" class="overlay-modal" onclick="event.target === this && toggleModal('ranking-modal')">
+    <!-- 랭킹 모달 (강화됨) -->
+    <div id="ranking-modal" class="overlay-modal">
         <div class="modal-content">
-            <h3 class="text-xl font-black text-amber-400 italic mb-6">마블 랭킹 (Top 1000)</h3>
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-black text-amber-400 italic">마블 랭킹 (Top 1000)</h3>
+                <button onclick="toggleModal('ranking-modal')" class="text-white/40 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <input type="text" id="rank-search" placeholder="닉네임으로 검색하세요..." class="search-bar" oninput="filterRanking()">
             <div id="ranking-list"></div>
         </div>
     </div>
@@ -384,19 +357,22 @@
     <div id="patch-modal" class="overlay-modal" onclick="event.target === this && toggleModal('patch-modal')">
         <div class="modal-content">
             <h3 class="text-xl font-black text-amber-400 italic mb-6">패치 노트</h3>
-            <div class="text-xs text-white/50">v2.2.0: 랭킹 시스템 업데이트 - 1,000명의 경쟁자 데이터 연동</div>
+            <div class="text-xs text-white/50">v2.5.1: 랭킹 검색 및 상세 UI 개선 (순위/티어/닉네임/승률)</div>
         </div>
     </div>
 
     <!-- 홈 화면 -->
     <div id="home-screen" class="home-container">
-        <div class="diamond-card">
-            <div class="diamond-content">
-                <h2 class="text-2xl font-black italic text-amber-400 mb-1">체스 레이스</h2>
-                <p class="text-white/40 text-[8px] font-bold tracking-[0.3em] mb-6 uppercase">3 LAPS CHALLENGE</p>
-                <div class="nickname-area max-w-[160px] mx-auto space-y-3">
-                    <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" class="w-full bg-black/50 border border-amber-400/30 rounded-xl py-3 text-xs text-center text-white outline-none">
-                    <button onclick="startGame()" class="w-full bg-amber-400 text-black font-black text-sm py-3 rounded-xl shadow-lg">레이스 시작</button>
+        <div class="spade-card">
+            <div class="card-corner corner-top"><div class="corner-rank">A</div><div class="corner-suit">♠</div></div>
+            <div class="card-corner corner-bottom"><div class="corner-rank">A</div><div class="corner-suit">♠</div></div>
+            <div class="spade-center-icon">♠</div>
+            <div class="spade-content">
+                <h2 class="text-2xl font-black italic text-black mb-1">체스 레이스</h2>
+                <p class="text-black/40 text-[8px] font-bold tracking-[0.3em] mb-8 uppercase">ACE OF SPADES EDITION</p>
+                <div class="nickname-area max-w-[200px] mx-auto space-y-4">
+                    <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" class="w-full bg-slate-100 border-2 border-slate-200 rounded-xl py-3 text-xs text-center text-black font-bold outline-none focus:border-black transition-colors">
+                    <button onclick="startGame()" class="w-full bg-black text-white font-black text-sm py-4 rounded-xl shadow-xl active:scale-95 transition-transform">레이스 시작</button>
                 </div>
             </div>
         </div>
@@ -415,7 +391,6 @@
                     <div class="text-white font-black text-sm">LAP <span id="ai-lap">1</span></div>
                 </div>
             </div>
-
             <div id="board-container" class="board-container">
                 <div id="board" class="dice-board">
                     <div class="center-status-bubble">
@@ -424,7 +399,6 @@
                 </div>
             </div>
         </div>
-
         <div class="game-controls-mini">
             <button onclick="handleResignClick()" class="text-[10px] font-bold text-red-500 border border-red-500/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors">기권하기</button>
             <div class="flex items-center gap-3">
@@ -442,6 +416,7 @@
         let gameState = { turn: 'player', isMoving: false, active: false };
         let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 }, score: 1000 };
         let ai = { pos: 0, lap: 1 };
+        let currentRankingData = [];
         const GOAL_LAPS = 3;
         const penaltyCells = [4, 11, 18];
         const bonusCells = [7, 14, 21];
@@ -459,52 +434,61 @@
         function toggleModal(id) {
             const m = document.getElementById(id);
             m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+            if (id === 'ranking-modal') {
+                document.getElementById('rank-search').value = '';
+            }
         }
 
-        /* 랭킹 데이터 생성 및 모달 열기 */
         function openRanking() {
             const list = document.getElementById('ranking-list');
-            list.innerHTML = ''; // 초기화
-
+            list.innerHTML = '';
             const firstNames = ["강력한", "신속한", "빛나는", "어둠의", "황금의", "전설의", "미친듯한", "용감한", "고요한", "날카로운", "영리한", "무적의", "거대한", "차가운", "불타는"];
             const lastNames = ["체스왕", "마블러", "레이서", "기사", "도전자", "승부사", "프로", "마스터", "천재", "영웅", "전사", "그림자", "폭풍", "번개", "불꽃"];
-            const ranks = ["CHALLENGER", "MASTER", "DIAMOND I", "DIAMOND II", "PLATINUM I", "GOLD I", "GOLD IV", "SILVER I", "BRONZE I"];
-
-            // 1000명의 랜덤 데이터 생성
-            let rankingData = [];
+            const tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE"];
+            
+            currentRankingData = [];
             for (let i = 1; i <= 1000; i++) {
                 const randomName = firstNames[Math.floor(Math.random() * firstNames.length)] + " " + lastNames[Math.floor(Math.random() * lastNames.length)] + " " + Math.floor(Math.random() * 999);
                 const randomScore = 5000 - (i * 4) + Math.floor(Math.random() * 50);
                 const randomWinRate = (90 - (i * 0.05) + Math.floor(Math.random() * 5)).toFixed(1);
-                const randomRankIdx = Math.min(ranks.length - 1, Math.floor(i / 100));
-                
-                rankingData.push({
-                    rank: i,
-                    name: randomName,
-                    score: Math.max(0, randomScore),
-                    winRate: Math.max(0, randomWinRate),
-                    tier: ranks[randomRankIdx]
-                });
+                const tierIdx = Math.min(tiers.length - 1, Math.floor(i / 150));
+                currentRankingData.push({ rank: i, name: randomName, score: Math.max(0, randomScore), winRate: Math.max(0, randomWinRate), tier: tiers[tierIdx] });
             }
+            displayRanking(currentRankingData);
+            toggleModal('ranking-modal');
+        }
 
-            // HTML 렌더링
-            rankingData.forEach(user => {
+        function displayRanking(data) {
+            const list = document.getElementById('ranking-list');
+            list.innerHTML = '';
+            if (data.length === 0) {
+                list.innerHTML = '<div class="text-center py-10 text-white/20 text-xs">검색 결과가 없습니다.</div>';
+                return;
+            }
+            data.forEach(user => {
                 const item = document.createElement('div');
                 item.className = 'ranking-item';
                 item.innerHTML = `
                     <div class="ranking-rank">#${user.rank}</div>
                     <div class="ranking-info">
-                        <div class="ranking-name">${user.name} <span class="ranking-badge ml-1">${user.tier}</span></div>
+                        <div class="ranking-name">
+                            <span>${user.name}</span>
+                            <span class="ranking-tier-icon">${user.tier}</span>
+                        </div>
                         <div class="ranking-stats">
                             <span>점수: <b>${user.score.toLocaleString()}</b></span>
-                            <span>승률: <b>${user.winRate}%</b></span>
+                            <span>승률: <b class="text-amber-400">${user.winRate}%</b></span>
                         </div>
                     </div>
                 `;
                 list.appendChild(item);
             });
+        }
 
-            toggleModal('ranking-modal');
+        function filterRanking() {
+            const query = document.getElementById('rank-search').value.toLowerCase();
+            const filtered = currentRankingData.filter(user => user.name.toLowerCase().includes(query));
+            displayRanking(filtered);
         }
 
         function handleResignClick() {
