@@ -161,8 +161,23 @@
         @keyframes diamondFloat { 0%, 100% { transform: rotate(45deg) translate(0, 0); } 50% { transform: rotate(45deg) translate(-8px, -8px); } }
         .diamond-content { transform: rotate(-45deg); width: 160%; text-align: center; padding: 15px; }
 
-        /* 게임 보드 스타일 */
-        .board-container { perspective: 2000px; width: 100%; display: flex; align-items: center; justify-content: center; margin-top: -50px; position: relative; }
+        /* 게임 보드 스타일 및 확대 효과 */
+        .board-container { 
+            perspective: 2000px; 
+            width: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-top: -50px; 
+            position: relative;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        /* 주사위 말 이동시 줌인 클래스 */
+        .board-zoom {
+            transform: scale(1.15) translateY(20px);
+        }
+
         .dice-board { 
             display: grid; 
             grid-template-columns: repeat(7, 1fr); 
@@ -175,6 +190,7 @@
             transform-style: preserve-3d; 
             position: relative; 
             background-color: transparent;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
         
         .dice-board::before {
@@ -212,15 +228,10 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .tile-penalty { border-color: #ef4444; color: #ef4444; box-shadow: 0px 4px 0px 0px #7f1d1d, 0px 8px 15px rgba(0,0,0,0.6); }
-        .tile-bonus { border-color: #22c55e; color: #22c55e; box-shadow: 0px 4px 0px 0px #14532d, 0px 8px 15px rgba(0,0,0,0.6); }
+        /* 보너스/벌칙 칸 두께 강화 */
+        .tile-penalty { border: 4px solid #ef4444; color: #ef4444; box-shadow: 0px 5px 0px 0px #7f1d1d, 0px 8px 15px rgba(0,0,0,0.6); }
+        .tile-bonus { border: 4px solid #22c55e; color: #22c55e; box-shadow: 0px 5px 0px 0px #14532d, 0px 8px 15px rgba(0,0,0,0.6); }
         
-        .tile-step { 
-            transform: translateZ(2px); 
-            box-shadow: 0px 1px 0px 0px #78350f, 0px 2px 5px rgba(0,0,0,0.8);
-            background: linear-gradient(135deg, #334155, #1e293b); 
-        }
-
         .tile-active { 
             transform: translateZ(30px); 
             background: linear-gradient(135deg, #fbbf24, #d97706); 
@@ -442,7 +453,7 @@
                             <div class="text-[10px] text-white/40">벌칙칸 도착 시 후퇴를 1회 막아줍니다.</div>
                         </div>
                     </div>
-                    <button onclick="buyItem('shield')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">₩ 0</button>
+                    <button onclick="buyItem('shield')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">무료</button>
                 </div>
                 <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
                     <div class="flex items-center gap-4">
@@ -452,7 +463,7 @@
                             <div class="text-[10px] text-white/40">벌칙칸 도착 시 오히려 앞으로 2칸 전진합니다.</div>
                         </div>
                     </div>
-                    <button onclick="buyItem('freepass')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">₩ 0</button>
+                    <button onclick="buyItem('freepass')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">무료</button>
                 </div>
                 <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
                     <div class="flex items-center gap-4">
@@ -462,7 +473,7 @@
                             <div class="text-[10px] text-white/40">구매 즉시 현재 남은 랩 수를 1회 줄입니다.</div>
                         </div>
                     </div>
-                    <button onclick="buyItem('lapdown')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">₩ 0</button>
+                    <button onclick="buyItem('lapdown')" class="bg-amber-400 text-black font-black text-xs px-4 py-2 rounded-lg hover:scale-105 transition-all">무료</button>
                 </div>
             </div>
         </div>
@@ -490,12 +501,12 @@
             <div class="space-y-4">
                 <div class="border-l-2 border-amber-400 pl-4 py-1">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded-full font-black uppercase">v1.9.2</span>
+                        <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded-full font-black uppercase">v1.9.3</span>
                     </div>
-                    <p class="text-xs font-bold text-white mb-1">상호작용 개선</p>
+                    <p class="text-xs font-bold text-white mb-1">비주얼 업데이트</p>
                     <ul class="text-[10px] text-white/50 space-y-1 list-disc pl-3">
-                        <li>5초간 미입력 시 주사위 던지기 유도 말풍선 추가</li>
-                        <li>주사위 버튼 클릭 피드백 강화</li>
+                        <li>말 이동 시 다이내믹 줌인 효과 적용</li>
+                        <li>보너스 및 벌칙칸 테두리 강조 및 가독성 개선</li>
                     </ul>
                 </div>
             </div>
@@ -564,7 +575,7 @@
                 </div>
             </div>
 
-            <div class="board-container">
+            <div id="board-container" class="board-container">
                 <div id="board" class="dice-board">
                     <div class="center-status-bubble">
                         <div id="game-status-text" class="status-content">당신의 차례!</div>
@@ -595,7 +606,7 @@
     </div>
 
     <script>
-        // 랭킹 생성
+        // 랭킹 및 게임 데이터 초기화
         let globalRankings = [];
         function generateRankings() {
             const firstNames = ["강력한", "신속한", "어두운", "빛나는", "냉철한", "용감한", "영리한", "우아한", "거대한", "날카로운", "고독한", "전설의", "불멸의", "궁극의", "미친", "조용한", "불타는", "얼어붙은", "신비한", "거친"];
@@ -627,15 +638,16 @@
 
         generateRankings();
 
-        // 게임 상태
+        // 게임 상태 관리
         let gameState = { turn: 'player', isMoving: false, active: false };
         let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 } };
         let ai = { name: "AI 코어", pos: 0, lap: 1 };
         let stats = { wins: 0, score: 1000 };
-        let idleTimer = null; // 5초 타이머용
+        let idleTimer = null;
         const GOAL_LAPS = 3;
         
-        const penaltyCells = [4, 10, 16, 22];
+        const penaltyCells = [4, 11, 18]; // 벌칙 칸
+        const bonusCells = [7, 14, 21];  // 보너스 칸
         const path = [[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],[6,5],[6,4],[6,3],[6,2],[6,1],[6,0],[5,0],[4,0],[3,0],[2,0],[1,0]];
         const chessIcons = {
             p: `<svg class="chess-svg" viewBox="0 0 100 100"><defs><linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fde68a" /><stop offset="50%" style="stop-color:#fbbf24" /><stop offset="100%" style="stop-color:#b45309" /></linearGradient></defs><path d="M50 10 L40 25 L60 25 Z" fill="url(#goldGrad)" /><rect x="35" y="25" width="30" height="10" rx="2" fill="url(#goldGrad)" /><path d="M40 35 L35 80 L65 80 L60 35 Z" fill="url(#goldGrad)" /><rect x="30" y="80" width="40" height="10" rx="3" fill="url(#goldGrad)" /></svg>`,
@@ -654,25 +666,20 @@
             if (id === 'ranking-modal' && !isShowing) renderRanking();
         }
 
-        // 타이머 제어
         function resetIdleTimer() {
             clearTimeout(idleTimer);
             const tooltip = document.getElementById('dice-tooltip');
             tooltip.classList.remove('visible');
-            
-            // 플레이어 차례이고, 이동 중이 아닐 때만 타이머 가동
             if (gameState.active && gameState.turn === 'player' && !gameState.isMoving) {
-                idleTimer = setTimeout(() => {
-                    tooltip.classList.add('visible');
-                }, 5000);
+                idleTimer = setTimeout(() => { tooltip.classList.add('visible'); }, 5000);
             }
         }
 
         function buyItem(type) {
             if(type === 'lapdown') {
-                if(player.lap > 1) { player.lap--; showToast("LAPS REDUCED!"); playSfx(600, 'triangle', 0.2); } 
+                if(player.lap > 1) { player.lap--; showToast("LAP REDUCED!"); playSfx(600, 'triangle', 0.2); } 
                 else { showToast("ALREADY LAP 1"); }
-            } else { player.items[type]++; showToast("ITEM PURCHASED!"); playSfx(523, 'sine', 0.1); }
+            } else { player.items[type]++; showToast("ITEM BOUGHT!"); playSfx(523, 'sine', 0.1); }
             updateUI();
         }
 
@@ -688,21 +695,55 @@
             if(player.items.freepass > 0) inv.innerHTML += `<div class="item-badge">⚡<span class="item-count">${player.items.freepass}</span></div>`;
             if (!gameState.isMoving) renderPieces();
             document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
-            
-            resetIdleTimer(); // 상태가 바뀔 때마다 타이머 갱신
+            resetIdleTimer();
         }
 
         function renderPieces() { document.querySelectorAll('.chess-piece').forEach(e => e.remove()); renderPieceAt(player.pos, 'p', 'player-piece'); renderPieceAt(ai.pos, 'ai', 'ai-piece'); }
         function renderPieceAt(pos, type, id) { const tile = document.getElementById(`tile-${pos}`); if(!tile) return; const piece = document.createElement('div'); piece.className = `chess-piece`; piece.id = id; piece.innerHTML = chessIcons[type]; tile.appendChild(piece); }
+        
         function initBoard() {
-            const b = document.getElementById('board'); const statusBubble = b.querySelector('.center-status-bubble'); b.innerHTML = ''; b.appendChild(statusBubble);
+            const b = document.getElementById('board'); 
+            const statusBubble = b.querySelector('.center-status-bubble'); 
+            b.innerHTML = ''; 
+            b.appendChild(statusBubble);
             for(let r=0; r<7; r++) { for(let c=0; c<7; c++) { const t = document.createElement('div'); t.style.gridArea = `${r+1}/${c+1}`; t.className = (r >= 2 && r <= 4 && c >= 2 && c <= 4) ? 'tile empty-space' : 'tile'; t.id = `c-${r}-${c}`; b.appendChild(t); } }
-            path.forEach((p, i) => { const el = document.getElementById(`c-${p[0]}-${p[1]}`); if(el) { el.id = `tile-${i}`; el.innerText = i === 0 ? "시작" : i; if(penaltyCells.includes(i)) el.classList.add('tile-penalty'); } });
+            path.forEach((p, i) => { 
+                const el = document.getElementById(`c-${p[0]}-${p[1]}`); 
+                if(el) { 
+                    el.id = `tile-${i}`; 
+                    el.innerText = i === 0 ? "시작" : i; 
+                    if(penaltyCells.includes(i)) el.classList.add('tile-penalty');
+                    if(bonusCells.includes(i)) el.classList.add('tile-bonus');
+                } 
+            });
             updateUI();
         }
 
-        function startGame() { player.name = document.getElementById('nickname-input').value.trim() || "익명"; player.lap = 1; ai.lap = 1; player.pos = 0; ai.pos = 0; player.items = { shield: 0, freepass: 0 }; gameState.active = true; document.getElementById('home-screen').classList.add('hidden'); document.getElementById('game-screen').classList.remove('hidden'); initBoard(); }
-        async function rollVisualDice() { const overlay = document.getElementById('dice-overlay'); const cube = document.getElementById('cube'); overlay.style.display = 'flex'; cube.classList.add('rolling'); const val = Math.floor(Math.random() * 6) + 1; await new Promise(r => setTimeout(r, 600)); cube.classList.remove('rolling'); playSfx(880, 'square', 0.15); const rots = { 1: "rotateX(0deg) rotateY(0deg)", 2: "rotateX(-90deg) rotateY(0deg)", 3: "rotateX(0deg) rotateY(-90deg)", 4: "rotateX(0deg) rotateY(90deg)", 5: "rotateX(90deg) rotateY(0deg)", 6: "rotateX(180deg) rotateY(0deg)" }; cube.style.transform = rots[val]; await new Promise(r => setTimeout(r, 500)); overlay.style.display = 'none'; cube.style.transform = ''; return val; }
+        function startGame() { 
+            player.name = document.getElementById('nickname-input').value.trim() || "익명"; 
+            player.lap = 1; ai.lap = 1; player.pos = 0; ai.pos = 0; player.items = { shield: 0, freepass: 0 }; 
+            gameState.active = true; 
+            document.getElementById('home-screen').classList.add('hidden'); 
+            document.getElementById('game-screen').classList.remove('hidden'); 
+            initBoard(); 
+        }
+
+        async function rollVisualDice() { 
+            const overlay = document.getElementById('dice-overlay'); 
+            const cube = document.getElementById('cube'); 
+            overlay.style.display = 'flex'; 
+            cube.classList.add('rolling'); 
+            const val = Math.floor(Math.random() * 6) + 1; 
+            await new Promise(r => setTimeout(r, 600)); 
+            cube.classList.remove('rolling'); 
+            playSfx(880, 'square', 0.15); 
+            const rots = { 1: "rotateX(0deg) rotateY(0deg)", 2: "rotateX(-90deg) rotateY(0deg)", 3: "rotateX(0deg) rotateY(-90deg)", 4: "rotateX(0deg) rotateY(90deg)", 5: "rotateX(90deg) rotateY(0deg)", 6: "rotateX(180deg) rotateY(0deg)" }; 
+            cube.style.transform = rots[val]; 
+            await new Promise(r => setTimeout(r, 500)); 
+            overlay.style.display = 'none'; 
+            cube.style.transform = ''; 
+            return val; 
+        }
         
         async function handleRoll() { 
             if(gameState.isMoving || gameState.turn !== 'player') return; 
@@ -716,25 +757,107 @@
         }
 
         async function executeTurn(type) {
-            if(!gameState.active) return; gameState.isMoving = true; updateUI(); const target = type === 'player' ? player : ai; const dice = await rollVisualDice(); document.getElementById('dice-btn').innerText = dice;
-            for(let i=0; i<dice; i++) { if(!gameState.active) return; const old = target.pos; target.pos = (target.pos + 1) % path.length; if (old > target.pos) { target.lap++; if (target.lap > GOAL_LAPS) { endGame(type === 'player'); return; } } await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); }
+            if(!gameState.active) return; 
+            gameState.isMoving = true; 
+            updateUI(); 
+            
+            // 이동 시작 시 줌인 효과 적용
+            const container = document.getElementById('board-container');
+            container.classList.add('board-zoom');
+
+            const target = type === 'player' ? player : ai; 
+            const dice = await rollVisualDice(); 
+            document.getElementById('dice-btn').innerText = dice;
+            
+            for(let i=0; i<dice; i++) { 
+                if(!gameState.active) return; 
+                const old = target.pos; 
+                target.pos = (target.pos + 1) % path.length; 
+                if (old > target.pos) { 
+                    target.lap++; 
+                    if (target.lap > GOAL_LAPS) { 
+                        container.classList.remove('board-zoom');
+                        endGame(type === 'player'); 
+                        return; 
+                    } 
+                } 
+                await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); 
+            }
+
+            // 이벤트 칸 처리
             if(penaltyCells.includes(target.pos)) {
                 if(type === 'player') {
-                    if(player.items.freepass > 0) { player.items.freepass--; document.getElementById('game-status-text').innerText = `프리패스 사용! 2칸 전진!`; playSfx(700, 'sine', 0.3); await new Promise(r => setTimeout(r, 1000)); for(let k=0; k<2; k++) { target.pos = (target.pos + 1) % path.length; await movePieceVisual('player-piece', target.pos); } } 
-                    else if(player.items.shield > 0) { player.items.shield--; document.getElementById('game-status-text').innerText = `쉴드 사용! 후퇴 방어!`; playSfx(300, 'sine', 0.3); await new Promise(r => setTimeout(r, 1000)); } 
+                    if(player.items.freepass > 0) { 
+                        player.items.freepass--; 
+                        document.getElementById('game-status-text').innerText = `프리패스 사용! 2칸 전진!`; 
+                        playSfx(700, 'sine', 0.3); 
+                        await new Promise(r => setTimeout(r, 800)); 
+                        for(let k=0; k<2; k++) { target.pos = (target.pos + 1) % path.length; await movePieceVisual('player-piece', target.pos); } 
+                    } 
+                    else if(player.items.shield > 0) { 
+                        player.items.shield--; 
+                        document.getElementById('game-status-text').innerText = `쉴드 사용! 후퇴 방어!`; 
+                        playSfx(300, 'sine', 0.3); 
+                        await new Promise(r => setTimeout(r, 800)); 
+                    } 
                     else { await applyPenalty(target, type); }
                 } else { await applyPenalty(target, type); }
+            } else if(bonusCells.includes(target.pos)) {
+                document.getElementById('game-status-text').innerText = `보너스! 2칸 더 전진!`;
+                playSfx(900, 'triangle', 0.4);
+                await new Promise(r => setTimeout(r, 800));
+                for(let k=0; k<2; k++) { target.pos = (target.pos + 1) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); }
             }
-            gameState.turn = type === 'player' ? 'ai' : 'player'; gameState.isMoving = false; updateUI();
+
+            // 이동 종료 시 줌인 해제
+            container.classList.remove('board-zoom');
+            gameState.turn = type === 'player' ? 'ai' : 'player'; 
+            gameState.isMoving = false; 
+            updateUI();
         }
 
-        async function applyPenalty(target, type) { const moveBack = 2; document.getElementById('game-status-text').innerText = `뒤로 ${moveBack}칸 후퇴!`; await new Promise(r => setTimeout(r, 1000)); for(let j=0; j<moveBack; j++) { target.pos = (target.pos - 1 + path.length) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); } }
-        async function movePieceVisual(id, pos) { const p = document.getElementById(id); const t = document.getElementById(`tile-${pos}`); if (p && t) { t.appendChild(p); playSfx(400 + (pos * 10)); await new Promise(r => setTimeout(r, 200)); } }
-        function endGame(win) { gameState.active = false; clearTimeout(idleTimer); if (win) { stats.score += 250; } else { stats.score = Math.max(0, stats.score - 150); } alert(win ? "승리하셨습니다!" : "패배했습니다."); goToHomeScreen(); }
+        async function applyPenalty(target, type) { 
+            const moveBack = 2; 
+            document.getElementById('game-status-text').innerText = `뒤로 ${moveBack}칸 후퇴!`; 
+            await new Promise(r => setTimeout(r, 1000)); 
+            for(let j=0; j<moveBack; j++) { 
+                target.pos = (target.pos - 1 + path.length) % path.length; 
+                await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); 
+            } 
+        }
+
+        async function movePieceVisual(id, pos) { 
+            const p = document.getElementById(id); 
+            const t = document.getElementById(`tile-${pos}`); 
+            if (p && t) { 
+                t.appendChild(p); 
+                playSfx(400 + (pos * 10)); 
+                await new Promise(r => setTimeout(r, 200)); 
+            } 
+        }
+
+        function endGame(win) { 
+            gameState.active = false; 
+            clearTimeout(idleTimer); 
+            if (win) { stats.score += 250; } else { stats.score = Math.max(0, stats.score - 150); } 
+            alert(win ? "승리하셨습니다!" : "패배했습니다."); 
+            goToHomeScreen(); 
+        }
+
         function confirmQuit() { toggleModal('quit-confirm-modal'); }
         function applyQuitPenalty() { stats.score = Math.max(0, stats.score - 100); toggleModal('quit-confirm-modal'); goToHomeScreen(); }
-        function goToHomeScreen() { gameState.active = false; clearTimeout(idleTimer); document.getElementById('game-screen').classList.add('hidden'); document.getElementById('home-screen').classList.remove('hidden'); updateUI(); }
-        function showToast(text) { const status = document.getElementById('game-status-text'); status.innerText = text; setTimeout(() => { if(!gameState.isMoving) updateUI(); }, 2000); }
+        function goToHomeScreen() { 
+            gameState.active = false; 
+            clearTimeout(idleTimer); 
+            document.getElementById('game-screen').classList.add('hidden'); 
+            document.getElementById('home-screen').classList.remove('hidden'); 
+            updateUI(); 
+        }
+        function showToast(text) { 
+            const status = document.getElementById('game-status-text'); 
+            status.innerText = text; 
+            setTimeout(() => { if(!gameState.isMoving) updateUI(); }, 2000); 
+        }
     </script>
 </body>
 </html>
