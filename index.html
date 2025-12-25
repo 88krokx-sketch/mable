@@ -53,7 +53,8 @@
             top: 0; 
             left: 0; 
             z-index: 200;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            /* 경계선 제거됨 */
+            border-bottom: none; 
             background: rgba(15, 23, 42, 0.4); 
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -63,7 +64,6 @@
         .nav-logo { font-weight: 900; font-size: 1.1rem; color: #fbbf24; letter-spacing: -1px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         .dice-icon-small { width: 24px; height: 24px; fill: #fbbf24; }
 
-        /* 메뉴 버튼 테두리 스타일 추가 */
         .nav-menu-btn {
             padding: 6px 14px;
             border-radius: 12px;
@@ -348,7 +348,6 @@
                 <span>주사위 마블</span>
             </div>
             <div class="flex items-center gap-2 sm:gap-3">
-                <!-- 테두리가 추가된 메뉴 버튼 -->
                 <button onclick="openModal('ranking-modal')" class="nav-menu-btn btn-ranking uppercase tracking-tighter">마블 랭킹</button>
                 <button onclick="openModal('patch-modal')" class="nav-menu-btn btn-patch">패치노트</button>
                 <div class="hidden sm:flex text-[10px] font-bold text-emerald-500 items-center bg-emerald-500/10 px-2 py-1.5 rounded-xl border border-emerald-500/20 ml-1">
