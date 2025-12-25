@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>체스마블 - 플리</title>
+    <title>체스 마블 - 레이싱 에디션</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap');
@@ -42,20 +42,20 @@
             border-bottom: 1px solid rgba(251, 191, 36, 0.2);
         }
 
-        .nav-content { height: 100%; max-width: 1400px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo { font-weight: 900; font-size: 1.1rem; color: #fbbf24; letter-spacing: -1px; cursor: pointer; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .nav-content { height: 100%; max-width: 1400px; margin: 0 auto; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-weight: 900; font-size: 1rem; color: #fbbf24; letter-spacing: -1px; cursor: pointer; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
         
-        .nav-right-area { display: flex; gap: 24px; align-items: center; }
-        .nav-links { display: flex; gap: 12px; align-items: center; }
+        .nav-right-area { display: flex; gap: 12px; align-items: center; }
+        .nav-links { display: flex; gap: 8px; align-items: center; }
         
         .nav-link { 
-            font-size: 11px; 
+            font-size: 10px; 
             font-weight: 700; 
             color: #fbbf24; 
             cursor: pointer; 
             transition: all 0.2s; 
             white-space: nowrap;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border: 1px solid rgba(251, 191, 36, 0.5);
             border-radius: 8px;
             background: rgba(251, 191, 36, 0.05);
@@ -67,8 +67,6 @@
             box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
             transform: translateY(-1px);
         }
-
-        .stat-badge { font-size: 10px; font-weight: 900; color: #fbbf24; background: rgba(251, 191, 36, 0.1); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(251, 191, 36, 0.2); }
 
         /* 팝업 공통 스타일 */
         .overlay-modal {
@@ -177,14 +175,9 @@
             transform: rotateX(50deg) rotateZ(-45deg); 
             transform-style: preserve-3d; 
             position: relative; 
-            /* 세계지도 배경 레이어 추가 */
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 80%;
             background-color: transparent;
         }
-        /* 배경 반투명 처리를 위한 가상 요소 */
+        
         .dice-board::before {
             content: "";
             position: absolute;
@@ -192,11 +185,11 @@
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 85%;
-            opacity: 0.15; /* 반투명도 조절 */
-            filter: invert(1) brightness(0.8); /* 어두운 배경에 맞게 색상 반전 및 밝기 조정 */
+            background-size: 90%;
+            opacity: 0.18;
+            filter: invert(1) brightness(0.8);
             pointer-events: none;
-            transform: translateZ(-2px);
+            transform: translateZ(-5px) rotateZ(45deg) scale(1.4);
         }
 
         .tile { 
@@ -274,20 +267,24 @@
             pointer-events: none;
             transform-style: preserve-3d;
         }
+        
+        /* 말풍선 디자인 수정: 골드 테두리 스타일 */
         .status-content {
-            background: rgba(251, 191, 36, 0.95);
-            color: #000;
-            padding: 12px 20px;
-            border-radius: 50px;
+            background: #0f172a; /* 어두운 배경 */
+            color: #fbbf24;    /* 금색 글씨 */
+            padding: 14px 24px;
+            border-radius: 16px;
             font-weight: 900;
-            font-size: 14px;
+            font-size: 15px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(251, 191, 36, 0.4);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 15px rgba(251, 191, 36, 0.3);
             transform: translateZ(80px) rotateZ(45deg) rotateX(-50deg);
-            border: 2px solid #fff;
-            min-width: 140px;
+            border: 2px solid #fbbf24; /* 명확한 골드 테두리 */
+            min-width: 150px;
             animation: statusFloat 2s ease-in-out infinite;
+            text-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
         }
+        
         @keyframes statusFloat {
             0%, 100% { transform: translateZ(80px) rotateZ(45deg) rotateX(-50deg) translateY(0); }
             50% { transform: translateZ(100px) rotateZ(45deg) rotateX(-50deg) translateY(-10px); }
@@ -331,7 +328,7 @@
         }
         .dice-box:active { transform: translateY(4px); box-shadow: 0 4px 0 #b45309, 0 5px 10px rgba(0,0,0,0.4); }
 
-        .compact-profile { width: 160px; padding: 10px; border-radius: 15px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
+        .compact-profile { width: 140px; padding: 10px; border-radius: 15px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
         .compact-profile.active-turn { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); transform: scale(1.05); }
 
         /* 캐릭터 SVG */
@@ -350,9 +347,12 @@
         .chess-svg { width: 100%; height: 100%; filter: drop-shadow(0 25px 15px rgba(0,0,0,0.7)); }
 
         @media (max-width: 640px) {
-            .nav-links { display: none; } 
+            .nav-links { display: flex; } 
+            .nav-logo span { display: none; } 
             .diamond-card { width: 260px; height: 260px; }
             .dice-board { gap: 8px; }
+            .compact-profile { width: 130px; }
+            .nav-content { padding: 0 12px; }
         }
     </style>
 </head>
@@ -375,11 +375,9 @@
             
             <div class="nav-right-area">
                 <div class="nav-links">
+                    <!-- 버튼 이름 수정: 랭킹 -> 마블 랭킹 / 소식 -> 패치노트 -->
                     <span class="nav-link" onclick="toggleModal('ranking-modal')">마블 랭킹</span>
-                    <span class="nav-link" onclick="toggleModal('patch-modal')">패치 노트</span>
-                </div>
-                <div class="stat-badge">
-                    <span id="stat-win">0</span>승 <span id="stat-score">1000</span>점
+                    <span class="nav-link" onclick="toggleModal('patch-modal')">패치노트</span>
                 </div>
             </div>
         </div>
@@ -390,8 +388,8 @@
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h3 class="text-xl font-black text-amber-400 italic">MARBLE RANKING</h3>
-                    <p class="text-[10px] text-white/40 font-bold">TOP 1200 PLAYERS</p>
+                    <h3 class="text-xl font-black text-amber-400 italic">마블 랭킹 리스트</h3>
+                    <p class="text-[10px] text-white/40 font-bold">상위 1200명의 플레이어</p>
                 </div>
                 <button onclick="toggleModal('ranking-modal')" class="text-white/20 hover:text-white text-2xl">&times;</button>
             </div>
@@ -404,18 +402,18 @@
     <div id="patch-modal" class="overlay-modal" onclick="event.target === this && toggleModal('patch-modal')">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-black text-amber-400 italic">PATCH NOTES</h3>
+                <h3 class="text-xl font-black text-amber-400 italic">패치 노트</h3>
                 <button onclick="toggleModal('patch-modal')" class="text-white/20 hover:text-white text-2xl">&times;</button>
             </div>
             <div class="space-y-4">
                 <div class="border-l-2 border-amber-400 pl-4 py-1">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded-full font-black uppercase">v1.6.5</span>
+                        <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded-full font-black uppercase">v1.7.0</span>
                     </div>
-                    <p class="text-xs font-bold text-white mb-1">디자인 고도화 패치</p>
+                    <p class="text-xs font-bold text-white mb-1">UI 커스터마이징</p>
                     <ul class="text-[10px] text-white/50 space-y-1 list-disc pl-3">
-                        <li>보드 중앙 세계지도 배경 삽입</li>
-                        <li>타일 3D 입체 효과 강화</li>
+                        <li>상태 말풍선 골드 프리미엄 테두리 디자인 적용</li>
+                        <li>메인 내비게이션 메뉴 명칭 변경 및 직관성 개선</li>
                     </ul>
                 </div>
             </div>
@@ -445,8 +443,8 @@
     <div id="home-screen" class="home-container">
         <div class="diamond-card">
             <div class="diamond-content">
-                <h2 class="text-2xl font-black italic text-amber-400 tracking-tighter mb-1">CHESS RACE</h2>
-                <p class="text-white/40 text-[8px] font-bold tracking-[0.3em] mb-6 uppercase">3 LAPS CHALLENGE</p>
+                <h2 class="text-2xl font-black italic text-amber-400 tracking-tighter mb-1">체스 레이스</h2>
+                <p class="text-white/40 text-[8px] font-bold tracking-[0.3em] mb-6 uppercase">3 LAPS 먼저 돌기 챌린지</p>
                 <div class="nickname-area max-w-[160px] mx-auto space-y-3">
                     <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" 
                            class="w-full bg-black/50 border border-amber-400/30 rounded-xl py-3 text-xs text-center text-white outline-none focus:border-amber-400 transition-all">
@@ -459,34 +457,30 @@
     <div id="game-screen" class="hidden w-full h-full relative">
         <div class="flex flex-col items-center justify-center w-screen h-screen pt-12">
             <div class="flex gap-4 mb-4">
+                <!-- 플레이어 정보 카드 -->
                 <div id="player-card" class="compact-profile active-turn">
                     <div class="flex justify-between mb-1">
-                        <span class="text-[8px] text-amber-400 font-bold uppercase">Player | Rank #412</span>
+                        <span class="text-[8px] text-amber-400 font-bold uppercase">랭킹 #412</span>
                         <span class="text-[10px] text-amber-400 font-black">LAP <span id="p-lap">1</span></span>
                     </div>
-                    <div id="p-name" class="text-white font-black text-xs truncate mb-1">플레이어</div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[7px] bg-amber-400/20 text-amber-400 px-1.5 py-0.5 rounded border border-amber-400/30 font-bold uppercase tracking-widest">Gold IV</span>
-                    </div>
-                    <div class="bg-black/40 px-2 py-1 rounded text-amber-400 font-black text-[9px]">₩ <span id="p-money">500,000</span></div>
+                    <div id="p-name" class="text-white font-black text-[12px] truncate mb-0.5">플레이어</div>
+                    <div class="text-[8px] text-white/40 font-bold uppercase">승률: 50.0%</div>
                 </div>
+                <!-- AI 정보 카드 -->
                 <div id="ai-card" class="compact-profile">
                     <div class="flex justify-between mb-1">
-                        <span class="text-[8px] text-slate-400 font-bold uppercase">AI | Rank #821</span>
+                        <span class="text-[8px] text-slate-400 font-bold uppercase">랭킹 #1</span>
                         <span class="text-[10px] text-slate-400 font-black">LAP <span id="ai-lap">1</span></span>
                     </div>
-                    <div id="ai-name" class="text-white font-black text-xs truncate mb-1">AI 코어</div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[7px] bg-slate-400/20 text-slate-400 px-1.5 py-0.5 rounded border border-slate-400/30 font-bold uppercase tracking-widest">Silver I</span>
-                    </div>
-                    <div class="bg-black/40 px-2 py-1 rounded text-slate-400 font-black text-[9px]">₩ <span id="ai-money">500,000</span></div>
+                    <div id="ai-name" class="text-white font-black text-[12px] truncate mb-0.5">AI 코어</div>
+                    <div class="text-[8px] text-white/40 font-bold uppercase">승률: 99.9%</div>
                 </div>
             </div>
 
             <div class="board-container">
                 <div id="board" class="dice-board">
                     <div class="center-status-bubble">
-                        <div id="game-status-text" class="status-content">당신의 차례입니다!</div>
+                        <div id="game-status-text" class="status-content">당신의 차례!</div>
                     </div>
                 </div>
             </div>
@@ -494,12 +488,12 @@
 
         <div class="game-controls-mini">
             <div class="flex flex-col items-start">
-                <button onclick="confirmQuit()" class="text-[10px] font-bold text-red-500 mb-1">기권하기</button>
+                <button onclick="confirmQuit()" class="text-[10px] font-bold text-red-500 mb-1">기권</button>
                 <div class="text-white font-black text-lg italic"><span id="pos-display">00</span></div>
             </div>
             <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
             <div class="text-right">
-                <div class="text-[9px] text-amber-400 font-black">GOAL</div>
+                <div class="text-[9px] text-amber-400 font-black">목표</div>
                 <div class="text-white font-black text-lg italic">3 LAPS</div>
             </div>
         </div>
@@ -511,21 +505,21 @@
             const firstNames = ["강력한", "신속한", "어두운", "빛나는", "냉철한", "용감한", "영리한", "우아한", "거대한", "날카로운", "고독한", "전설의", "불멸의", "궁극의", "미친", "조용한", "불타는", "얼어붙은", "신비한", "거친"];
             const lastNames = ["기사", "군주", "체스러", "도전자", "왕", "사냥꾼", "그림자", "폭풍", "파괴자", "수호자", "검객", "마법사", "로그", "마스터", "신", "심판자", "망령", "용사", "광신도", "수도승"];
             const ranks = [
-                { name: "GrandMaster", color: "text-red-500", bg: "bg-red-500/10", icon: "👑" },
-                { name: "Master", color: "text-amber-500", bg: "bg-amber-500/10", icon: "💎" },
-                { name: "Diamond", color: "text-blue-400", bg: "bg-blue-400/10", icon: "💠" },
-                { name: "Platinum", color: "text-emerald-400", bg: "bg-emerald-400/10", icon: "✨" },
-                { name: "Gold", color: "text-yellow-400", bg: "bg-yellow-400/10", icon: "📀" },
-                { name: "Silver", color: "text-slate-400", bg: "bg-slate-400/10", icon: "💿" },
-                { name: "Bronze", color: "text-orange-700", bg: "bg-orange-700/10", icon: "🥉" }
+                { name: "그랜드마스터", color: "text-red-500", bg: "bg-red-500/10", icon: "👑" },
+                { name: "마스터", color: "text-amber-500", bg: "bg-amber-500/10", icon: "💎" },
+                { name: "다이아몬드", color: "text-blue-400", bg: "bg-blue-400/10", icon: "💠" },
+                { name: "플래티넘", color: "text-emerald-400", bg: "bg-emerald-400/10", icon: "✨" },
+                { name: "골드", color: "text-yellow-400", bg: "bg-yellow-400/10", icon: "📀" },
+                { name: "실버", color: "text-slate-400", bg: "bg-slate-400/10", icon: "💿" },
+                { name: "브론즈", color: "text-orange-700", bg: "bg-orange-700/10", icon: "🥉" }
             ];
             const data = [];
             for (let i = 0; i < 1200; i++) {
-                const nick = firstNames[Math.floor(Math.random() * firstNames.length)] + " " + lastNames[Math.floor(Math.random() * lastNames.length)] + (Math.random() > 0.7 ? Math.floor(Math.random() * 99) : "");
+                const nick = firstNames[Math.floor(Math.random() * firstNames.length)] + " " + lastNames[Math.floor(Math.random() * lastNames.length)];
                 const score = 10000 - (i * 8) + Math.floor(Math.random() * 5);
                 const winRate = (90 - (i * 0.05) + (Math.random() * 5)).toFixed(1);
                 let rankIdx = 0;
-                if (i > 5) rankIdx = 1; if (i > 50) rankIdx = 2; if (i > 150) rankIdx = 3; if (i > 400) rankIdx = 4; if (i > 800) rankIdx = 5; if (i > 1100) rankIdx = 6;
+                if (i > 5) rankIdx = 0; if (i > 50) rankIdx = 1; if (i > 150) rankIdx = 2; if (i > 400) rankIdx = 3; if (i > 800) rankIdx = 4; if (i > 1100) rankIdx = 5;
                 data.push({ rank: i + 1, nick: nick, score: score, winRate: winRate, rankInfo: ranks[rankIdx] });
             }
             globalRankings = data;
@@ -538,23 +532,23 @@
                     <div class="flex items-center gap-3">
                         <span class="font-black text-amber-400 w-8 text-center text-[10px]">#412</span>
                         <div class="flex flex-col">
-                            <span class="text-sm font-black text-white">${player.name} (YOU)</span>
-                            <span class="text-[9px] font-bold text-amber-400">📀 Gold IV | 승률 50.0%</span>
+                            <span class="text-sm font-black text-white">${player.name} (당신)</span>
+                            <span class="text-[9px] font-bold text-amber-400">📀 골드 IV | 승률 50.0%</span>
                         </div>
                     </div>
-                    <span class="text-xs font-black text-amber-400">${stats.score} pts</span>
+                    <span class="text-xs font-black text-amber-400">${stats.score} 점</span>
                 </div>
             `;
-            const listHTML = globalRankings.map(item => `
+            const listHTML = globalRankings.slice(0, 50).map(item => `
                 <div class="flex items-center justify-between p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 transition-colors">
                     <div class="flex items-center gap-3">
                         <span class="font-black ${item.rank <= 3 ? 'text-amber-400' : 'text-white/40'} w-8 text-center">${item.rank}</span>
                         <div class="flex flex-col">
                             <div class="flex items-center gap-1"><span class="text-[10px]">${item.rankInfo.icon}</span><span class="text-sm font-bold text-white/90">${item.nick}</span></div>
-                            <div class="flex gap-2 items-center"><span class="text-[9px] font-bold ${item.rankInfo.color} uppercase">${item.rankInfo.name}</span><span class="text-[9px] text-white/30 font-medium">|</span><span class="text-[9px] text-white/40 font-bold">승률 ${item.winRate}%</span></div>
+                            <div class="flex gap-2 items-center"><span class="text-[9px] font-bold ${item.rankInfo.color} uppercase">${item.rankInfo.name}</span><span class="text-[9px] text-white/40 font-bold">| ${item.winRate}%</span></div>
                         </div>
                     </div>
-                    <div class="text-right"><span class="text-xs font-black text-white/60">${item.score.toLocaleString()}</span><p class="text-[8px] text-white/20 font-bold uppercase">pts</p></div>
+                    <div class="text-right"><span class="text-xs font-black text-white/60">${item.score.toLocaleString()}</span><p class="text-[8px] text-white/20 font-bold uppercase">점</p></div>
                 </div>
             `).join('');
             list.innerHTML = myRankHTML + listHTML;
@@ -563,8 +557,8 @@
         generateRankings();
 
         let gameState = { turn: 'player', isMoving: false, active: false };
-        let player = { name: "익명", money: 500000, pos: 0, lap: 1 };
-        let ai = { name: "AI 코어", money: 500000, pos: 0, lap: 1 };
+        let player = { name: "익명", pos: 0, lap: 1 };
+        let ai = { name: "AI 코어", pos: 0, lap: 1 };
         let stats = { wins: 0, score: 1000 };
         const GOAL_LAPS = 3;
         
@@ -591,14 +585,10 @@
 
         function updateUI() {
             document.getElementById('p-name').innerText = player.name;
-            document.getElementById('p-money').innerText = player.money.toLocaleString();
-            document.getElementById('ai-money').innerText = ai.money.toLocaleString();
             document.getElementById('p-lap').innerText = player.lap;
             document.getElementById('ai-lap').innerText = ai.lap;
             document.getElementById('player-card').classList.toggle('active-turn', gameState.turn === 'player');
             document.getElementById('ai-card').classList.toggle('active-turn', gameState.turn === 'ai');
-            document.getElementById('stat-win').innerText = stats.wins;
-            document.getElementById('stat-score').innerText = stats.score;
             document.getElementById('game-status-text').innerText = gameState.isMoving ? "이동 중..." : (gameState.turn === 'player' ? "당신의 차례!" : "AI 생각 중...");
             if (!gameState.isMoving) renderPieces();
             document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
@@ -623,7 +613,6 @@
         function initBoard() {
             const b = document.getElementById('board');
             const statusBubble = b.querySelector('.center-status-bubble');
-            const originalChildren = Array.from(b.children);
             b.innerHTML = ''; 
             b.appendChild(statusBubble);
             
@@ -638,13 +627,13 @@
                 const el = document.getElementById(`c-${p[0]}-${p[1]}`);
                 if(el) { 
                     el.id = `tile-${i}`; 
-                    el.innerText = i === 0 ? "GO" : i; 
+                    el.innerText = i === 0 ? "시작" : i; 
                     if(penaltyCells.includes(i)) {
                         el.classList.add('tile-penalty');
-                        el.innerHTML = `<div class='flex flex-col items-center'><span class='text-[10px]'>벌칙</span><span class='text-xs'>${i}</span></div>`;
+                        el.innerHTML = `<div class='flex flex-col items-center'><span class='text-[9px]'>감점</span></div>`;
                     } else if(bonusCells.includes(i)) {
                         el.classList.add('tile-bonus');
-                        el.innerHTML = `<div class='flex flex-col items-center'><span class='text-[10px]'>보너스</span><span class='text-xs'>${i}</span></div>`;
+                        el.innerHTML = `<div class='flex flex-col items-center'><span class='text-[9px]'>보너스</span></div>`;
                     }
                 }
             });
@@ -653,7 +642,7 @@
 
         function startGame() {
             player.name = document.getElementById('nickname-input').value.trim() || "익명";
-            player.lap = 1; ai.lap = 1; player.pos = 0; ai.pos = 0; player.money = 500000; ai.money = 500000;
+            player.lap = 1; ai.lap = 1; player.pos = 0; ai.pos = 0;
             gameState.active = true;
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
@@ -694,7 +683,6 @@
                 
                 if (old > target.pos) { 
                     target.lap++; 
-                    target.money += 100000; 
                     if (target.lap > GOAL_LAPS) { endGame(type === 'player'); return; } 
                 }
                 await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
@@ -705,7 +693,7 @@
                 if (currentTile) currentTile.classList.add('effect-penalty');
                 const moveBack = Math.floor(Math.random() * 2) + 2;
                 playSfx(150, 'sawtooth', 0.4);
-                document.getElementById('game-status-text').innerText = `${type === 'player' ? '당신' : 'AI'}의 실책! 뒤로 ${moveBack}칸 후퇴!`;
+                document.getElementById('game-status-text').innerText = `뒤로 ${moveBack}칸 후퇴!`;
                 await new Promise(r => setTimeout(r, 1000));
                 if (currentTile) currentTile.classList.remove('effect-penalty');
                 for(let j=0; j<moveBack; j++) {
@@ -714,10 +702,8 @@
                 }
             } else if(bonusCells.includes(target.pos)) {
                 if (currentTile) currentTile.classList.add('effect-bonus');
-                const bonusAmount = 200000;
-                target.money += bonusAmount;
                 playSfx(1200, 'sine', 0.5);
-                document.getElementById('game-status-text').innerText = `${type === 'player' ? '당신' : 'AI'}의 행운! 보너스 획득! (+₩200,000)`;
+                document.getElementById('game-status-text').innerText = `보너스 구역 통과!`;
                 await new Promise(r => setTimeout(r, 1500));
                 if (currentTile) currentTile.classList.remove('effect-bonus');
             }
@@ -737,8 +723,9 @@
 
         function endGame(win) {
             gameState.active = false;
-            if (win) { stats.wins++; stats.score += 250; alert("축하합니다! 승리하셨습니다!"); } 
-            else { stats.score = Math.max(0, stats.score - 150); alert("아쉽네요... AI에게 패배했습니다."); }
+            if (win) { stats.wins++; stats.score += 250; } 
+            else { stats.score = Math.max(0, stats.score - 150); }
+            alert(win ? "승리하셨습니다!" : "패배했습니다.");
             goToHomeScreen();
         }
 
