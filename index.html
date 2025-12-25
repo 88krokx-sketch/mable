@@ -187,6 +187,28 @@
         .spade-center-icon { font-size: 100px; color: #1a1a1a; margin-bottom: 20px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); }
         .spade-content { width: 100%; text-align: center; z-index: 10; }
 
+        /* 닉네임 입력창 및 버튼 골드 디자인 + 테두리 강화 */
+        #nickname-input {
+            background: rgba(251, 191, 36, 0.05);
+            border: 3px solid #fbbf24; 
+            color: #000;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); 
+        }
+        #nickname-input::placeholder { color: rgba(180, 83, 9, 0.5); }
+        #nickname-input:focus { border-color: #b45309; background: #fff; box-shadow: 0 0 15px rgba(251, 191, 36, 0.4); }
+
+        .btn-gold-start {
+            background: linear-gradient(135deg, #fde68a 0%, #fbbf24 50%, #d97706 100%);
+            color: #000;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+            border: 3px solid #78350f; 
+            box-shadow: 0 4px 0 #78350f, 0 8px 15px rgba(180, 83, 9, 0.4);
+        }
+        .btn-gold-start:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #78350f, 0 4px 8px rgba(180, 83, 9, 0.3);
+        }
+
         /* 게임 보드 */
         .board-container { perspective: 2000px; width: 100%; display: flex; align-items: center; justify-content: center; margin-top: -30px; position: relative; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
         .board-zoom { transform: scale(1.15) translateY(20px); }
@@ -285,7 +307,7 @@
         </div>
     </header>
 
-    <!-- 게임 중 상단 대시보드 -->
+    <!-- 게임 중 상단 대시보드 (점수 제거됨) -->
     <div id="game-dashboard" class="game-top-dashboard">
         <div class="dashboard-container">
             <div id="db-rank-icon" class="w-10 h-10 flex items-center justify-center bg-amber-400/20 border border-amber-400/40 rounded-xl text-xl">📀</div>
@@ -297,7 +319,6 @@
                 <div class="flex gap-4 mt-1">
                     <div class="db-stat"><span class="db-label">순위</span><span class="db-value">#412</span></div>
                     <div class="db-stat"><span class="db-label">승률</span><span class="db-value">50.0%</span></div>
-                    <div class="db-stat"><span class="db-label">점수</span><span class="db-value" id="db-score">1000</span></div>
                     <div class="db-stat"><span class="db-label">전적</span><span class="db-value">12승 12패</span></div>
                 </div>
             </div>
@@ -340,7 +361,7 @@
         </div>
     </div>
 
-    <!-- 랭킹 모달 (강화됨) -->
+    <!-- 랭킹 모달 -->
     <div id="ranking-modal" class="overlay-modal">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
@@ -371,8 +392,8 @@
                 <h2 class="text-2xl font-black italic text-black mb-1">체스 레이스</h2>
                 <p class="text-black/40 text-[8px] font-bold tracking-[0.3em] mb-8 uppercase">ACE OF SPADES EDITION</p>
                 <div class="nickname-area max-w-[200px] mx-auto space-y-4">
-                    <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" class="w-full bg-slate-100 border-2 border-slate-200 rounded-xl py-3 text-xs text-center text-black font-bold outline-none focus:border-black transition-colors">
-                    <button onclick="startGame()" class="w-full bg-black text-white font-black text-sm py-4 rounded-xl shadow-xl active:scale-95 transition-transform">레이스 시작</button>
+                    <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" class="w-full rounded-xl py-3 text-xs text-center font-bold outline-none transition-all">
+                    <button onclick="startGame()" class="w-full btn-gold-start font-black text-sm py-4 rounded-xl shadow-xl active:scale-95 transition-all">레이스 시작</button>
                 </div>
             </div>
         </div>
@@ -494,7 +515,7 @@
         function handleResignClick() {
             const infoEl = document.getElementById('resign-info');
             const itemTotal = player.items.shield + player.items.freepass;
-            infoEl.innerHTML = `현재 <b>${player.lap}바퀴</b> 진행 중이며,<br>보유한 <b>아이템 ${itemTotal}개</b>와<br>획득한 <b>${player.score}점</b>이 모두 소멸됩니다.`;
+            infoEl.innerHTML = `현재 <b>${player.lap}바퀴</b> 진행 중이며,<br>보유한 <b>아이템 ${itemTotal}개</b>는<br>모두 소멸됩니다.`;
             toggleModal('resign-modal');
         }
 
@@ -515,7 +536,6 @@
 
         function updateUI() {
             document.getElementById('db-name').innerText = player.name;
-            document.getElementById('db-score').innerText = player.score;
             document.getElementById('p-lap').innerText = player.lap;
             document.getElementById('ai-lap').innerText = ai.lap;
             document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
