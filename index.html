@@ -39,15 +39,6 @@
             z-index: -1;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, transparent 0%, rgba(2, 6, 23, 0.8) 100%);
-            pointer-events: none;
-            z-index: -1;
-        }
-
         .glass-panel {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(25px);
@@ -61,17 +52,8 @@
         }
 
         .nav-content { height: 100%; max-width: 1400px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; }
-
-        .nav-logo { font-weight: 900; font-size: 1.1rem; color: #fbbf24; letter-spacing: -1px; cursor: pointer; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .nav-logo { font-weight: 900; font-size: 1.1rem; color: #fbbf24; letter-spacing: -1px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         .dice-icon-small { width: 24px; height: 24px; fill: #fbbf24; }
-
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links button { color: rgba(255, 255, 255, 0.5); font-weight: 700; font-size: 0.8rem; transition: all 0.3s; white-space: nowrap; }
-        .nav-links button:hover { color: #fbbf24; }
-
-        .status-dot { width: 6px; height: 6px; background-color: #10b981; border-radius: 50%; display: inline-block; margin-right: 4px; box-shadow: 0 0 8px #10b981; animation: pulse 2s infinite; }
-
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
 
         .board-wrapper { 
             perspective: 3000px; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-top: 60px; position: relative;
@@ -102,46 +84,63 @@
         .chess-p svg { fill: #fbbf24; filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.9)); }
         .chess-ai svg { fill: #ffffff; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9)); }
 
-        .speech-center-wrapper {
-            position: absolute;
-            z-index: 100;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
+        .board-center-ui {
+            position: absolute; z-index: 100; pointer-events: none;
+            width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        .character-speech {
-            background: #fff;
-            color: #1e293b;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 900;
+        .inner-profile-row {
+            display: flex; gap: 12px; margin-bottom: 20px; pointer-events: auto;
+        }
+
+        .profile-card-mini {
+            width: 160px; padding: 12px; border-radius: 20px;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border: 3px solid #fbbf24;
-            animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            max-width: 200px;
-            text-align: center;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .profile-container { position: fixed; top: 100px; left: 24px; z-index: 150; display: flex; flex-direction: column; gap: 15px; }
-        .profile-card { width: 260px; padding: 18px; border-radius: 25px; border-left: 5px solid #fbbf24; }
-        .profile-card.ai-card { border-left-color: #ef4444; }
-
-        .badge-glow {
-            border-radius: 12px;
-            padding: 2px;
             transition: all 0.3s ease;
         }
+        .profile-card-mini.active-turn { 
+            border-color: #fbbf24; 
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .rank-badge {
+            display: flex; align-items: center; gap: 4px; margin-bottom: 6px;
+        }
+        .rank-icon { width: 14px; height: 14px; }
+        .rank-text { font-size: 10px; font-weight: 800; letter-spacing: -0.5px; }
+        
+        .info-nick { font-weight: 900; font-size: 13px; color: white; line-height: 1.2; margin-bottom: 2px; }
+        .info-rank-num { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 700; margin-bottom: 8px; display: block; }
+
+        .money-box {
+            background: rgba(255,255,255,0.05); border-radius: 8px; padding: 4px 8px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .money-label { font-size: 8px; color: rgba(255,255,255,0.4); font-weight: 700; }
+        .money-val { font-size: 11px; font-weight: 900; color: #fbbf24; }
+
+        .character-speech {
+            background: #fff; color: #1e293b; padding: 10px 20px; border-radius: 20px;
+            font-size: 13px; font-weight: 900; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 3px solid #fbbf24; animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 200px; text-align: center; pointer-events: auto;
+            margin-bottom: 15px;
+        }
+
+        .btn-quit-inner {
+            pointer-events: auto;
+            padding: 6px 16px; border-radius: 12px;
+            background: rgba(239, 68, 68, 0.15); color: #ef4444; font-weight: 800; font-size: 0.7rem;
+            border: 1px solid rgba(239, 68, 68, 0.3); backdrop-filter: blur(5px);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-quit-inner:hover { background: rgba(239, 68, 68, 0.25); transform: translateY(-1px); }
+
+        @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
         .game-controls {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
@@ -153,290 +152,246 @@
             width: 70px; height: 70px; background: white; border-radius: 18px;
             display: flex; align-items: center; justify-content: center;
             font-size: 2rem; font-weight: 900; color: #0f172a; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: all 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
-        .ranking-modal {
+        .custom-modal-overlay {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
             z-index: 500; align-items: center; justify-content: center; padding: 20px;
             backdrop-filter: blur(15px);
         }
-        .ranking-container { width: 100%; max-width: 700px; height: 80vh; display: flex; flex-direction: column; background: #0f172a; border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        .ranking-list { flex: 1; overflow-y: auto; padding: 15px; }
-        .rank-item { display: grid; grid-template-columns: 50px 60px 80px 1fr 120px; gap: 10px; align-items: center; padding: 12px 20px; margin-bottom: 6px; background: rgba(255,255,255,0.03); border-radius: 12px; }
-
-        .tier-tag { font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; text-align: center; }
-        .tier-master { background: #f59e0b; color: #000; }
-        .tier-diamond { background: #38bdf8; color: #000; }
-        .tier-platinum { background: #818cf8; color: #fff; }
-        .tier-gold { background: #fbbf24; color: #000; }
-        .tier-silver { background: #94a3b8; color: #fff; }
-        .tier-bronze { background: #78350f; color: #fff; }
+        .modal-container { 
+            width: 100%; max-width: 600px; max-height: 80vh; background: #0f172a; 
+            border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
+            display: flex; flex-direction: column;
+        }
+        .modal-header {
+            padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); 
+            display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.8);
+        }
+        .modal-content { padding: 24px; overflow-y: auto; flex: 1; }
 
         .custom-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 600; align-items: center; justify-content: center; padding: 20px; }
-
-        .btn-quit {
-            margin-top: 10px; width: 100%; padding: 8px; border-radius: 10px;
-            background: rgba(239, 68, 68, 0.1); color: #ef4444; font-weight: 800; font-size: 0.7rem;
-            border: 1px solid rgba(239, 68, 68, 0.2); transition: all 0.2s;
-        }
-
-        .turn-indicator { position: absolute; top: -10px; right: -10px; background: #10b981; color: white; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 900; animation: bounce 1s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
-        .game-footer { position: fixed; bottom: 8px; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; pointer-events: none; z-index: 50; }
-        .footer-center { font-size: 10px; font-weight: 800; color: rgba(255, 255, 255, 0.2); text-transform: uppercase; letter-spacing: 1px; }
-
+        
         .character-img-fixed {
             position: fixed; bottom: 0; right: 10px; z-index: 90; pointer-events: none; max-width: 120px;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
         }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .maker-credit {
+            position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
+            font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.2);
+            z-index: 10; letter-spacing: 1px;
+        }
+
+        @media (max-width: 640px) {
+            .profile-card-mini { width: 140px; padding: 10px; }
+            .inner-profile-row { gap: 8px; }
+            .dice-board { max-width: 350px; }
+            .nav-content { padding: 0 16px; }
+            .nav-logo span { display: none; }
+            .maker-credit { bottom: 5px; font-size: 9px; }
+        }
     </style>
 </head>
 <body>
 
     <header class="nav-bar">
         <div class="nav-content">
-            <div class="nav-logo" onclick="playClickSound(); resetToHome()">
+            <div class="nav-logo" onclick="resetToHome()">
                 <svg class="dice-icon-small" viewBox="0 0 24 24">
                     <rect x="2" y="2" width="20" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
                     <circle cx="7" cy="7" r="1.5" /><circle cx="17" cy="17" r="1.5" /><circle cx="12" cy="12" r="1.5" />
-                    <circle cx="17" cy="7" r="1.5" /><circle cx="7" cy="17" r="1.5" />
                 </svg>
-                주사위 마블
+                <span>주사위 마블</span>
             </div>
-            
-            <nav class="nav-links">
-                <button onclick="playClickSound(); showCommonModal('공지사항', '말풍선이 보드 중앙으로 이동되었습니다!')">공지사항</button>
-                <button onclick="playClickSound(); openRanking()">전체 랭킹</button>
-                <button onclick="playClickSound(); showCommonModal('패치노트', '버전 1.7 업데이트:\n- 포기하기 기능 최적화\n- 닉네임 화면 복귀 로직 개선')">패치노트</button>
-            </nav>
-
-            <div class="server-status-box text-right">
-                <div class="text-[10px] font-bold text-emerald-500 flex items-center justify-end">
-                    <span class="status-dot"></span>매칭 서버 온라인
-                </div>
-                <div class="text-[9px] font-bold text-white/30 tracking-tight">
-                    PING: <span id="ping-val">8</span>ms | KR-SEOUL
+            <div class="flex items-center gap-3 sm:gap-6">
+                <button onclick="openModal('ranking-modal')" class="text-[11px] sm:text-xs font-bold text-amber-400/80 hover:text-amber-400 transition-colors uppercase tracking-tighter">마블 랭킹</button>
+                <button onclick="openModal('patch-modal')" class="text-[11px] sm:text-xs font-bold text-white/50 hover:text-white transition-colors">패치노트</button>
+                <div class="text-[10px] font-bold text-emerald-500 flex items-center bg-emerald-500/10 px-2 py-1 rounded-full">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1 animate-pulse"></span>서버 가동중
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Home Screen -->
+    <!-- 홈 화면 -->
     <div id="home-screen" class="w-full h-full flex items-center justify-center">
         <div class="glass-panel p-10 rounded-[40px] text-center w-full max-w-sm">
             <div class="flex justify-center mb-4">
-                <svg class="w-20 h-20 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.6)]" viewBox="0 0 100 100">
-                    <rect x="10" y="10" width="80" height="80" rx="15" fill="#fbbf24" stroke="white" stroke-width="4"/>
-                    <circle cx="30" cy="30" r="6" fill="white"/><circle cx="70" cy="70" r="6" fill="white"/>
-                    <circle cx="50" cy="50" r="6" fill="white"/><circle cx="70" cy="30" r="6" fill="white"/>
-                    <circle cx="30" cy="70" r="6" fill="white"/>
+                <svg class="w-16 h-16 text-amber-400" viewBox="0 0 100 100">
+                    <rect x="10" y="10" width="80" height="80" rx="15" fill="#fbbf24" />
+                    <circle cx="30" cy="30" r="6" fill="white"/><circle cx="70" cy="70" r="6" fill="white"/><circle cx="50" cy="50" r="6" fill="white"/>
                 </svg>
             </div>
             <h2 class="text-4xl font-black mb-1 italic text-amber-400">주사위 마블</h2>
-            <p class="text-white/40 text-[10px] font-bold tracking-widest mb-10">대한민국 대표 보드게임</p>
+            <p class="text-white/30 text-[10px] font-bold tracking-widest mb-10 uppercase">프리미엄 보드게임</p>
             <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" 
                    class="w-full bg-slate-950/50 border-2 border-slate-700/50 rounded-2xl p-4 text-center font-bold mb-4 focus:border-amber-400 outline-none text-white">
-            <button onclick="playClickSound(); startGame()" class="w-full bg-amber-400 text-slate-900 font-black p-4 rounded-2xl shadow-xl hover:scale-105 transition-all">게임 시작</button>
+            <button onclick="startGame()" class="w-full bg-amber-400 text-slate-900 font-black p-4 rounded-2xl shadow-xl hover:scale-105 transition-all">게임 시작</button>
         </div>
     </div>
 
-    <!-- Game Screen -->
+    <!-- 게임 화면 -->
     <div id="game-screen" class="hidden w-full h-full relative">
-        <div class="profile-container">
-            <div id="player-card" class="profile-card glass-panel relative">
-                <div id="p-turn" class="turn-indicator hidden">내 차례</div>
-                <div class="flex items-center gap-3 mb-3">
-                    <div id="p-badge" class="badge-glow"></div>
-                    <div>
-                        <div id="p-tier" class="tier-tag tier-bronze">브론즈</div>
-                        <h3 id="p-name" class="font-black text-white text-sm">플레이어</h3>
-                    </div>
-                </div>
-                <div class="flex justify-between text-[11px] font-bold text-white/50"><span>자산</span><span id="p-money" class="text-white">10,000</span></div>
-            </div>
-
-            <div id="ai-card" class="profile-card ai-card glass-panel relative">
-                <div id="ai-turn" class="turn-indicator hidden">상대 차례</div>
-                <div class="flex items-center gap-3 mb-3">
-                    <div id="ai-badge" class="badge-glow"></div>
-                    <div>
-                        <div id="ai-tier" class="tier-tag tier-gold">골드</div>
-                        <h3 id="ai-name" class="font-black text-white text-sm">상대</h3>
-                    </div>
-                </div>
-                <div class="flex justify-between text-[11px] font-bold text-white/50"><span>자산</span><span id="ai-money" class="text-white">10,000</span></div>
-            </div>
-            <button class="btn-quit" onclick="playClickSound(); confirmQuit()">포기하기</button>
-        </div>
-
         <div class="board-wrapper">
-            <div class="speech-center-wrapper">
+            <div class="board-center-ui">
+                <div class="inner-profile-row">
+                    <!-- 내 정보 -->
+                    <div id="player-card" class="profile-card-mini active-turn">
+                        <div class="rank-badge">
+                            <svg class="rank-icon fill-amber-600" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <span class="rank-text text-amber-600">BRONZE I</span>
+                        </div>
+                        <h3 id="p-name" class="info-nick">플레이어</h3>
+                        <span id="p-rank-num" class="info-rank-num">전체 순위 1,245위</span>
+                        <div class="money-box">
+                            <span class="money-label">보유 자산</span>
+                            <span id="p-money" class="money-val">10,000</span>
+                        </div>
+                    </div>
+                    <!-- AI 정보 -->
+                    <div id="ai-card" class="profile-card-mini">
+                        <div class="rank-badge">
+                            <svg class="rank-icon fill-purple-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <span class="rank-text text-purple-400">MASTER III</span>
+                        </div>
+                        <h3 id="ai-name" class="info-nick">AI 코어</h3>
+                        <span id="ai-rank-num" class="info-rank-num">전체 순위 82위</span>
+                        <div class="money-box">
+                            <span class="money-label">보유 자산</span>
+                            <span id="ai-money" class="money-val text-purple-400">10,000</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="speech-bubble" class="character-speech">행운을 빌어요!</div>
+                
+                <button class="btn-quit-inner" onclick="confirmQuit()">중도포기</button>
             </div>
+
             <div id="board" class="dice-board"></div>
         </div>
 
         <div class="game-controls glass-panel">
             <div>
-                <span id="status-text" class="text-[9px] font-black text-blue-400 block mb-1">매칭 완료!</span>
-                <span id="pos-display" class="text-xl font-black italic text-white">위치: 00</span>
+                <span class="text-[9px] font-black text-blue-400 block mb-1 uppercase tracking-wider">현재 위치</span>
+                <span id="pos-display" class="text-xl font-black italic text-white">00</span>
             </div>
             <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
             <div class="text-right">
-                <span class="text-[9px] font-black text-amber-400 block mb-1">목표액</span>
+                <span class="text-[9px] font-black text-amber-400 block mb-1 uppercase tracking-wider">목표 자산</span>
                 <span class="text-amber-400 font-black text-xl italic tracking-tighter">500,000</span>
             </div>
         </div>
 
-        <img src="IMG_8846.jpeg" alt="Character" class="character-img-fixed" onerror="this.style.display='none'">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="character-img-fixed" alt="캐릭터" onerror="this.style.display='none'">
     </div>
 
-    <footer class="game-footer">
-        <div class="footer-center">게임제작: 플리</div>
-    </footer>
+    <div class="maker-credit">게임제작사: 플리</div>
 
-    <!-- Ranking Modal -->
-    <div id="ranking-modal" class="ranking-modal" onclick="closeRanking()">
-        <div class="ranking-container shadow-2xl" onclick="event.stopPropagation()">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-slate-900">
-                <h2 class="text-2xl font-black text-white italic">명예의 전당 <span class="text-amber-400 text-sm ml-2">상위 700명</span></h2>
-                <button onclick="playClickSound(); closeRanking()" class="text-xs font-bold text-white/40">닫기</button>
+    <!-- 랭킹 모달 (마블 랭킹) -->
+    <div id="ranking-modal" class="custom-modal-overlay" onclick="closeModal('ranking-modal')">
+        <div class="modal-container shadow-2xl" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="text-xl font-black text-amber-400 italic tracking-tighter uppercase">마블 랭킹 TOP 15</h2>
+                <button onclick="closeModal('ranking-modal')" class="text-xs font-bold text-white/40 hover:text-white">닫기</button>
             </div>
-            <div id="ranking-list" class="ranking-list"></div>
+            <div id="ranking-list" class="modal-content space-y-2"></div>
         </div>
     </div>
 
-    <!-- Alert Modal -->
-    <div id="common-modal" class="custom-modal" onclick="closeCommonModal()">
-        <div class="glass-panel p-8 rounded-[30px] max-w-xs w-full text-center border-t-4 border-amber-400" onclick="event.stopPropagation()">
-            <h3 id="modal-title" class="text-xl font-black mb-2 text-white italic uppercase">알림</h3>
-            <p id="modal-desc" class="text-white/60 text-xs mb-6 leading-relaxed whitespace-pre-line text-left"></p>
-            <div id="modal-actions" class="flex gap-2">
-                <button id="modal-confirm-btn" class="flex-1 py-3 bg-amber-400 text-slate-900 font-black rounded-xl">확인</button>
-                <button id="modal-cancel-btn" onclick="playClickSound(); closeCommonModal()" class="flex-1 py-3 bg-white/5 text-white font-black rounded-xl hidden">취소</button>
+    <!-- 패치노트 모달 -->
+    <div id="patch-modal" class="custom-modal-overlay" onclick="closeModal('patch-modal')">
+        <div class="modal-container shadow-2xl" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="text-xl font-black text-white italic">패치노트</h2>
+                <button onclick="closeModal('patch-modal')" class="text-xs font-bold text-white/40 hover:text-white">닫기</button>
             </div>
+            <div class="modal-content">
+                <div class="patch-item mb-6">
+                    <div class="text-amber-400 font-bold text-sm mb-1">v1.3.5 - 랭킹 시스템 보완</div>
+                    <div class="text-white/30 text-[10px] mb-2 uppercase">2025.12.25</div>
+                    <p class="text-white/60 text-xs leading-relaxed">
+                        • '마블 랭킹'으로 명칭을 변경하고 계급장 아이콘을 추가했습니다.<br>
+                        • 랭커들의 티어에 따른 고유한 시각적 효과를 부여했습니다.
+                    </p>
+                </div>
+                <div class="patch-item">
+                    <div class="text-white/50 font-bold text-sm mb-1">v1.3.0 - 프로필 UI 대개편</div>
+                    <div class="text-white/30 text-[10px] mb-2 uppercase">2025.12.25</div>
+                    <p class="text-white/60 text-xs leading-relaxed">
+                        • 플레이어 정보 창에 계급장, 계급 명칭, 순위 시스템을 추가했습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 모달 -->
+    <div id="common-modal" class="custom-modal">
+        <div class="glass-panel p-8 rounded-[30px] max-w-xs w-full text-center border-t-4 border-amber-400">
+            <h3 id="modal-title" class="text-lg font-black mb-2 text-white italic uppercase">알림</h3>
+            <p id="modal-desc" class="text-white/60 text-xs mb-6"></p>
+            <button id="modal-confirm-btn" class="w-full py-3 bg-amber-400 text-slate-900 font-black rounded-xl">확인</button>
         </div>
     </div>
 
     <script>
-        // --- Sound System ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playWaterDropSound(pitch = 1.0) {
+        function playSfx(p = 1.0) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(600 * pitch, audioCtx.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(1200 * pitch, audioCtx.currentTime + 0.05);
-
-            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.15);
+            const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+            o.type = 'sine'; o.frequency.setValueAtTime(600 * p, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + 0.1);
         }
-
-        function playClickSound() {
-            playWaterDropSound(1.2); 
-        }
-
-        // --- Game Logic ---
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('selectstart', e => e.preventDefault());
 
         let gameState = { turn: 'player', isMoving: false, winner: null };
-        let player = { name: "익명", money: 10000, pos: 0 };
-        let ai = { name: "상대", money: 10000, pos: 0, tier: 'bronze' };
-        let allRankingData = [];
+        let player = { name: "익명", money: 10000, pos: 0, rank: 1245 };
+        let ai = { name: "AI 코어", money: 10000, pos: 0, rank: 82 };
+        const path = [[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],[6,5],[6,4],[6,3],[6,2],[6,1],[6,0],[5,0],[4,0],[3,0],[2,0],[1,0]];
 
-        const path = [
-            [0,0], [0,1], [0,2], [0,3], [0,4], [0,5], [0,6],
-            [1,6], [2,6], [3,6], [4,6], [5,6], [6,6],
-            [6,5], [6,4], [6,3], [6,2], [6,1], [6,0],
-            [5,0], [4,0], [3,0], [2,0], [1,0]
+        // 계급 데이터
+        const tiers = [
+            { name: "CHALLENGER", color: "#60a5fa", icon: "diamond" },
+            { name: "MASTER", color: "#c084fc", icon: "crown" },
+            { name: "DIAMOND", color: "#2dd4bf", icon: "sparkle" },
+            { name: "PLATINUM", color: "#94a3b8", icon: "star" },
+            { name: "GOLD", color: "#fbbf24", icon: "trophy" },
+            { name: "SILVER", color: "#cbd5e1", icon: "medal" },
+            { name: "BRONZE", color: "#b45309", icon: "shield" }
         ];
 
-        const quotes = ["주사위는 던져졌다!", "보드 중앙에서 만나요!", "대박 땅을 잡아라!", "행운이 가득하길!", "고지가 머지않았어요!", "상대방 자산을 보세요!"];
-        let quoteInterval;
-
-        function startQuoteTimer() {
-            if(quoteInterval) clearInterval(quoteInterval);
-            quoteInterval = setInterval(() => {
-                const bubble = document.getElementById('speech-bubble');
-                if(bubble) {
-                    bubble.innerText = quotes[Math.floor(Math.random() * quotes.length)];
-                    bubble.style.animation = 'none';
-                    void bubble.offsetWidth; 
-                    bubble.style.animation = 'bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-                }
-            }, 6000);
-        }
-
-        function getTierKey(score) {
-            if (score >= 400000) return 'master';
-            if (score >= 250000) return 'diamond';
-            if (score >= 150000) return 'platinum';
-            if (score >= 80000) return 'gold';
-            if (score >= 30000) return 'silver';
-            return 'bronze';
-        }
-
-        function getTierBadgeSVG(tier) {
-            const colors = { master: '#f59e0b', diamond: '#38bdf8', platinum: '#818cf8', gold: '#fbbf24', silver: '#94a3b8', bronze: '#78350f' };
-            const color = colors[tier] || colors.bronze;
-            const glowStyle = `filter: drop-shadow(0 0 5px ${color}); border: 2px solid ${color};`;
-            
-            return `
-                <div class="w-12 h-12 flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden" style="${glowStyle}">
-                    <svg viewBox="0 0 100 100" class="w-8 h-8">
-                        <rect x="10" y="10" width="80" height="80" rx="15" fill="${color}" opacity="0.8"/>
-                        <circle cx="50" cy="50" r="10" fill="white"/>
-                    </svg>
-                </div>`;
-        }
-
-        function generateRanking() {
-            const adjs = ["강력한", "날렵한", "영리한", "노련한"];
-            const nouns = ["사자", "승부사", "장인", "독수리"];
-            allRankingData = [];
-            for(let i=1; i<=700; i++) {
-                const name = adjs[Math.floor(Math.random()*adjs.length)] + nouns[Math.floor(Math.random()*nouns.length)] + (100 + i);
-                const score = Math.floor(Math.pow(701-i, 1.9) * 8) + Math.floor(Math.random()*5000);
-                allRankingData.push({ name, score, tier: getTierKey(score) });
-            }
+        function getTierIcon(tierIndex) {
+            const icons = {
+                diamond: '<path d="M12 2l8 8-8 8-8-8z"/>',
+                crown: '<path d="M5 16l-3-8 5 2 5-7 5 7 5-2-3 8z"/>',
+                sparkle: '<path d="M12 1L9 9 1 12l8 3 3 8 3-8 8-3-8-3z"/>',
+                star: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
+                trophy: '<path d="M6 9h12v2c0 2.21-1.79 4-4 4h-4c-2.21 0-4-1.79-4-4V9zm15-4h-3V3H6v2H3c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.49 1.5 1.63 2.7 3.1 3.29L7 16v2h10v-2l-1.49-1.77c1.47-.59 2.61-1.79 3.1-3.29C21.08 11.63 23 9.55 23 7V6c0-1.1-.9-2-2-2z"/>',
+                medal: '<circle cx="12" cy="10" r="7"/><path d="M12 17l-3 5h6l-3-5z"/>',
+                shield: '<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>'
+            };
+            return icons[tiers[tierIndex].icon] || icons.star;
         }
 
         function updateUI() {
-            const pTier = getTierKey(player.money);
-            document.getElementById('p-name').innerText = player.name;
-            document.getElementById('p-money').innerText = player.money.toLocaleString();
-            document.getElementById('p-badge').innerHTML = getTierBadgeSVG(pTier);
-            document.getElementById('p-tier').innerText = pTier.toUpperCase();
-            document.getElementById('p-tier').className = `tier-tag tier-${pTier}`;
+            const pNameEl = document.getElementById('p-name');
+            const pMoneyEl = document.getElementById('p-money');
+            const aiMoneyEl = document.getElementById('ai-money');
             
-            document.getElementById('ai-name').innerText = ai.name;
-            document.getElementById('ai-money').innerText = ai.money.toLocaleString();
-            document.getElementById('ai-badge').innerHTML = getTierBadgeSVG(ai.tier);
-            document.getElementById('ai-tier').innerText = ai.tier.toUpperCase();
-            document.getElementById('ai-tier').className = `tier-tag tier-${ai.tier}`;
+            if(pNameEl) pNameEl.innerText = player.name;
+            if(pMoneyEl) pMoneyEl.innerText = player.money.toLocaleString();
+            if(aiMoneyEl) aiMoneyEl.innerText = ai.money.toLocaleString();
             
-            document.getElementById('p-turn').classList.toggle('hidden', gameState.turn !== 'player');
-            document.getElementById('ai-turn').classList.toggle('hidden', gameState.turn !== 'ai');
+            document.getElementById('player-card').classList.toggle('active-turn', gameState.turn === 'player');
+            document.getElementById('ai-card').classList.toggle('active-turn', gameState.turn === 'ai');
             
             document.querySelectorAll('.chess-piece').forEach(e => e.remove());
             document.querySelectorAll('.tile').forEach(t => t.classList.remove('active-p', 'active-ai'));
-            renderPiece(player.pos, 'p');
-            renderPiece(ai.pos, 'ai');
-            document.getElementById('pos-display').innerText = `위치: ${gameState.turn === 'player' ? player.pos : ai.pos}`;
+            renderPiece(player.pos, 'p'); renderPiece(ai.pos, 'ai');
+            document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
         }
 
         function renderPiece(pos, type) {
@@ -445,57 +400,41 @@
             tile.classList.add(type === 'p' ? 'active-p' : 'active-ai');
             const piece = document.createElement('div');
             piece.className = `chess-piece chess-${type}`;
-            piece.innerHTML = `<svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="240" fill="white" opacity="0.3"/><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0z"/></svg>`;
+            piece.innerHTML = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="${type==='p'?'#fbbf24':'#fff'}"/></svg>`;
             tile.appendChild(piece);
         }
 
         function initBoard() {
-            const board = document.getElementById('board');
-            board.innerHTML = '';
-            for(let r=0; r<7; r++) {
-                for(let c=0; c<7; c++) {
-                    const tile = document.createElement('div');
-                    tile.className = 'tile opacity-5';
-                    tile.style.gridArea = `${r+1}/${c+1}`;
-                    tile.id = `cell-${r}-${c}`;
-                    board.appendChild(tile);
-                }
+            const b = document.getElementById('board'); b.innerHTML = '';
+            for(let r=0; r<7; r++) for(let c=0; c<7; c++) {
+                const t = document.createElement('div'); t.className = 'tile opacity-5'; t.style.gridArea = `${r+1}/${c+1}`; t.id = `c-${r}-${c}`; b.appendChild(t);
             }
             path.forEach((p, i) => {
-                const el = document.getElementById(`cell-${p[0]}-${p[1]}`);
-                if (el) { el.classList.remove('opacity-5'); el.id = `tile-${i}`; el.innerText = i === 0 ? "GO" : i; }
+                const el = document.getElementById(`c-${p[0]}-${p[1]}`);
+                if(el) { el.classList.remove('opacity-5'); el.id = `tile-${i}`; el.innerText = i === 0 ? "출발" : i; }
             });
             updateUI();
         }
 
         function startGame() {
-            const input = document.getElementById('nickname-input');
-            if(!input.value.trim()) return input.focus();
-            generateRanking();
-            player.name = input.value.trim();
-            player.money = 10000;
-            player.pos = 0;
-            const opp = allRankingData[Math.floor(Math.random() * 50) + 10];
-            ai = { name: opp.name, money: 10000, pos: 0, tier: opp.tier };
-            
-            gameState = { turn: 'player', isMoving: false, winner: null };
+            const n = document.getElementById('nickname-input').value.trim();
+            if(!n) { showModal('알림', '닉네임을 입력해 주세요!'); return; }
+            player.name = n;
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             initBoard();
-            startQuoteTimer();
         }
 
         function resetToHome() {
-            if(quoteInterval) clearInterval(quoteInterval);
+            gameState = { turn: 'player', isMoving: false, winner: null };
+            player.pos = 0; ai.pos = 0; player.money = 10000; ai.money = 10000;
             document.getElementById('game-screen').classList.add('hidden');
             document.getElementById('home-screen').classList.remove('hidden');
-            document.getElementById('nickname-input').value = '';
             document.getElementById('dice-btn').innerText = '?';
         }
 
         async function handleRoll() {
             if(gameState.isMoving || gameState.turn !== 'player') return;
-            playClickSound();
             await executeTurn('player');
             if(!gameState.winner) setTimeout(() => executeTurn('ai'), 1000);
         }
@@ -505,63 +444,66 @@
             const target = type === 'player' ? player : ai;
             const dice = Math.floor(Math.random() * 6) + 1;
             document.getElementById('dice-btn').innerText = dice;
-            
+            playSfx(1.2);
+
             for(let i=0; i<dice; i++) {
                 target.pos = (target.pos + 1) % path.length;
-                playWaterDropSound(0.8 + (i * 0.1)); 
+                playSfx(0.8 + (i * 0.1)); 
                 updateUI();
-                await new Promise(r => setTimeout(r, 250));
+                await new Promise(r => setTimeout(r, 200));
             }
             
-            target.money += dice * 3000;
+            target.money += dice * 5000;
             if(target.money >= 500000) {
-                showCommonModal('승리!', `${target.name}님이 목표 금액을 달성했습니다!`, resetToHome);
+                showModal('게임 종료', `${target.name}님이 승리하셨습니다!`, resetToHome);
                 gameState.winner = type;
             } else {
                 gameState.turn = type === 'player' ? 'ai' : 'player';
-                gameState.isMoving = false;
-                updateUI();
+                gameState.isMoving = false; updateUI();
             }
         }
 
-        function openRanking() {
-            if(!allRankingData.length) generateRanking();
-            const list = document.getElementById('ranking-list');
-            list.innerHTML = '';
-            const all = [...allRankingData].sort((a,b) => b.score - a.score);
-            all.slice(0, 100).forEach((d, i) => {
-                const item = document.createElement('div');
-                item.className = `rank-item`;
-                const colors = { master: '#f59e0b', diamond: '#38bdf8', platinum: '#818cf8', gold: '#fbbf24', silver: '#94a3b8', bronze: '#78350f' };
-                const color = colors[d.tier] || colors.bronze;
-
-                item.innerHTML = `
-                    <div class="font-black text-amber-400">#${i+1}</div>
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg" style="border: 1px solid ${color}44; background: ${color}11;">
-                        <svg viewBox="0 0 100 100" class="w-6 h-6">
-                            <rect x="10" y="10" width="80" height="80" rx="15" fill="${color}" opacity="0.8"/>
-                        </svg>
-                    </div>
-                    <div class="tier-tag tier-${d.tier}">${d.tier}</div>
-                    <div class="text-white font-bold">${d.name}</div>
-                    <div class="text-right text-white font-black">${d.score.toLocaleString()}</div>`;
-                list.appendChild(item);
-            });
-            document.getElementById('ranking-modal').style.display = 'flex';
+        function openModal(id) {
+            if(id === 'ranking-modal') {
+                const l = document.getElementById('ranking-list'); l.innerHTML = '';
+                const names = ["마스터_제로", "운의지배자", "다이스퀸", "골드러쉬", "플리마스터", "보드킹", "주사위요정", "마블러", "올인왕", "잭팟헌터", "다이스갓", "행운아", "강남건물주", "코인부자", "노력파"];
+                
+                for(let i=1; i<=15; i++) {
+                    const tierIdx = Math.min(Math.floor((i-1)/2), tiers.length - 1);
+                    const currentTier = tiers[tierIdx];
+                    const item = document.createElement('div');
+                    item.className = 'flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/5 transition-all hover:bg-white/10';
+                    item.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <span class="text-[14px] font-black w-6 ${i <= 3 ? 'text-amber-400' : 'text-white/40'}">#${i}</span>
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-1.5 mb-0.5">
+                                    <svg class="w-3 h-3" style="fill: ${currentTier.color}" viewBox="0 0 24 24">${getTierIcon(tierIdx)}</svg>
+                                    <span class="text-[9px] font-black uppercase tracking-tighter" style="color: ${currentTier.color}">${currentTier.name}</span>
+                                </div>
+                                <span class="text-white font-bold text-[13px]">${names[i-1] || '익명유저'}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-amber-400 font-black text-[13px] block">${(5000000 / (i + 0.5)).toLocaleString().split('.')[0]} P</span>
+                            <span class="text-[9px] text-white/20 font-bold">승률 ${(90 - i * 2)}%</span>
+                        </div>
+                    `;
+                    l.appendChild(item);
+                }
+            }
+            document.getElementById(id).style.display = 'flex';
         }
-        function closeRanking() { document.getElementById('ranking-modal').style.display = 'none'; }
         
-        function showCommonModal(t, d, cb) {
-            document.getElementById('modal-title').innerText = t;
-            document.getElementById('modal-desc').innerText = d;
-            document.getElementById('modal-confirm-btn').onclick = () => { playClickSound(); if(cb) cb(); closeCommonModal(); };
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        function showModal(t, d, cb) {
+            document.getElementById('modal-title').innerText = t; document.getElementById('modal-desc').innerText = d;
+            document.getElementById('modal-confirm-btn').onclick = () => { if(cb) cb(); closeCommonModal(); };
             document.getElementById('common-modal').style.display = 'flex';
         }
         function closeCommonModal() { document.getElementById('common-modal').style.display = 'none'; }
-        
-        function confirmQuit() { 
-            showCommonModal('포기', '정말 포기하시겠습니까?\n모든 자산이 사라지고 첫 화면으로 이동합니다.', resetToHome); 
-        }
+        function confirmQuit() { showModal('중도포기', '기록이 저장되지 않습니다. 정말 포기하시겠습니까?', resetToHome); }
     </script>
 </body>
 </html>
