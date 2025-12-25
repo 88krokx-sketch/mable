@@ -63,6 +63,14 @@
             background: rgba(251, 191, 36, 0.05);
         }
 
+        /* 공통 유리 UI */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 24px;
+        }
+
         /* 게임 중 상단 대시보드 */
         .game-top-dashboard {
             position: fixed;
@@ -118,8 +126,6 @@
             padding: 25px;
         }
 
-        #ranking-list, .scroll-area { overflow-y: auto; flex: 1; padding-right: 8px; }
-
         /* 주사위 3D */
         .dice-overlay {
             position: fixed;
@@ -170,7 +176,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: center; /* 내부 콘텐츠 중앙 정렬 */
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.1);
             animation: cardFloat 4s ease-in-out infinite;
             padding: 20px;
@@ -184,19 +190,22 @@
         .corner-rank { font-size: 24px; }
         .corner-suit { font-size: 18px; }
 
-        .spade-center-icon { font-size: 100px; color: #1a1a1a; margin-bottom: 20px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); }
-        .spade-content { width: 100%; text-align: center; z-index: 10; }
+        .spade-center-icon { font-size: 80px; color: #1a1a1a; margin-bottom: 15px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); }
+        
+        .spade-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
 
-        /* 닉네임 입력창 및 버튼 골드 디자인 + 테두리 강화 */
         #nickname-input {
             background: rgba(251, 191, 36, 0.05);
             border: 3px solid #fbbf24; 
             color: #000;
             box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); 
         }
-        #nickname-input::placeholder { color: rgba(180, 83, 9, 0.5); }
-        #nickname-input:focus { border-color: #b45309; background: #fff; box-shadow: 0 0 15px rgba(251, 191, 36, 0.4); }
-
         .btn-gold-start {
             background: linear-gradient(135deg, #fde68a 0%, #fbbf24 50%, #d97706 100%);
             color: #000;
@@ -204,9 +213,20 @@
             border: 3px solid #78350f; 
             box-shadow: 0 4px 0 #78350f, 0 8px 15px rgba(180, 83, 9, 0.4);
         }
-        .btn-gold-start:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #78350f, 0 4px 8px rgba(180, 83, 9, 0.3);
+
+        /* 모드 선택 카드 - 투명화 제거 */
+        .mode-card {
+            background: #0f172a; 
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .mode-card:hover {
+            background: #1e293b;
+            border-color: #fbbf24;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(251, 191, 36, 0.2);
         }
 
         /* 게임 보드 */
@@ -246,12 +266,13 @@
 
         .tile-penalty { border: 4px solid #ef4444; color: #ef4444; }
         .tile-bonus { border: 4px solid #22c55e; color: #22c55e; }
+        .tile-battle { border: 4px solid #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.2); }
         .tile.empty-space { background: transparent; border: none; box-shadow: none; color: transparent; pointer-events: none; }
 
         .center-status-bubble { grid-area: 3/3 / 6/6; display: flex; align-items: center; justify-content: center; z-index: 10; pointer-events: none; transform-style: preserve-3d; }
         .status-content {
             background: #0f172a; color: #fbbf24; padding: 14px 24px; border-radius: 16px; font-weight: 900; font-size: 15px; text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: translateZ(80px) rotateZ(45deg) rotateX(-50deg); border: 2px solid #fbbf24;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: translateZ(80px) rotateZ(45deg) rotateX(-50deg) ; border: 2px solid #fbbf24;
         }
 
         /* 컨트롤 영역 */
@@ -269,20 +290,28 @@
 
         .hidden { display: none !important; }
 
-        /* 랭킹 UI 강화 */
+        /* 랭킹 UI */
         .ranking-item { padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: all 0.2s; }
-        .ranking-item:hover { background: rgba(255, 255, 255, 0.08); transform: translateX(5px); }
         .ranking-rank { font-weight: 900; color: #fbbf24; min-width: 40px; text-align: center; font-size: 14px; font-style: italic; }
         .ranking-info { flex: 1; }
         .ranking-name { font-weight: 700; color: #fff; font-size: 13px; display: flex; align-items: center; gap: 6px; }
         .ranking-stats { font-size: 10px; color: rgba(255, 255, 255, 0.5); display: flex; gap: 8px; margin-top: 2px; }
         .ranking-tier-icon { background: #fbbf24; color: #000; font-size: 7px; font-weight: 900; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .search-bar { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px; padding: 10px 16px; margin-bottom: 16px; width: 100%; color: white; outline: none; font-size: 12px; }
-        .search-bar:focus { border-color: #fbbf24; }
+
+        /* 매칭 로딩 */
+        .matching-loader {
+            width: 60px; height: 60px;
+            border: 4px solid #fbbf24;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body oncontextmenu="return false">
 
+    <!-- 주사위 오버레이 -->
     <div id="dice-overlay" class="dice-overlay">
         <div class="dice-container">
             <div id="cube" class="cube">
@@ -291,8 +320,8 @@
         </div>
     </div>
 
-    <!-- 홈 화면 내비게이션 바 -->
-    <header id="home-nav" class="nav-bar">
+    <!-- 내비게이션 바 -->
+    <header id="top-nav" class="nav-bar">
         <div class="nav-content">
             <div class="nav-logo" onclick="location.reload()">
                 <div class="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center text-black font-black">C</div>
@@ -307,30 +336,30 @@
         </div>
     </header>
 
-    <!-- 게임 중 상단 대시보드 (점수 제거됨) -->
+    <!-- 게임 대시보드 -->
     <div id="game-dashboard" class="game-top-dashboard">
         <div class="dashboard-container">
-            <div id="db-rank-icon" class="w-10 h-10 flex items-center justify-center bg-amber-400/20 border border-amber-400/40 rounded-xl text-xl">📀</div>
+            <div class="w-10 h-10 flex items-center justify-center bg-amber-400/20 border border-amber-400/40 rounded-xl text-xl">📀</div>
             <div class="flex flex-col flex-1">
                 <div class="flex items-center gap-2">
                     <span id="db-name" class="font-black text-sm text-white">플레이어</span>
-                    <span class="bg-amber-400 text-black text-[8px] px-1.5 py-0.5 rounded font-black uppercase">GOLD IV</span>
+                    <span id="db-mode-badge" class="bg-amber-400 text-black text-[8px] px-1.5 py-0.5 rounded font-black uppercase">CLASSIC</span>
                 </div>
                 <div class="flex gap-4 mt-1">
                     <div class="db-stat"><span class="db-label">순위</span><span class="db-value">#412</span></div>
-                    <div class="db-stat"><span class="db-label">승률</span><span class="db-value">50.0%</span></div>
-                    <div class="db-stat"><span class="db-label">전적</span><span class="db-value">12승 12패</span></div>
+                    <div class="db-stat"><span class="db-label">승률</span><span class="db-value">52.4%</span></div>
+                    <div class="db-stat"><span class="db-label">모드</span><span id="db-mode-text" class="db-value text-amber-400">인공지능</span></div>
                 </div>
             </div>
             <div id="db-inventory" class="flex gap-1.5 border-l border-white/10 pl-4"></div>
         </div>
     </div>
 
-    <!-- 모달 창들 -->
+    <!-- 각종 모달 -->
     <div id="shop-modal" class="overlay-modal" onclick="event.target === this && toggleModal('shop-modal')">
         <div class="modal-content">
             <h3 class="text-xl font-black text-amber-400 italic mb-6">아이템 상점</h3>
-            <div class="scroll-area space-y-3">
+            <div class="scroll-area space-y-3 overflow-y-auto">
                 <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 bg-amber-400/20 rounded-xl flex items-center justify-center text-xl">🛡️</div>
@@ -349,40 +378,40 @@
         </div>
     </div>
 
-    <!-- 기권 확인 모달 -->
-    <div id="resign-modal" class="overlay-modal" onclick="event.target === this && toggleModal('resign-modal')">
+    <div id="resign-modal" class="overlay-modal">
         <div class="modal-content text-center">
             <h3 class="text-xl font-black text-red-500 italic mb-2">정말 기권하시겠습니까?</h3>
-            <p id="resign-info" class="text-xs text-white/60 mb-8 leading-relaxed"></p>
+            <p class="text-xs text-white/60 mb-8 leading-relaxed">기권 시 현재 진행 중인 게임이 패배 처리되며 모드 선택 화면으로 이동합니다.</p>
             <div class="flex gap-3">
                 <button onclick="toggleModal('resign-modal')" class="flex-1 bg-white/10 text-white font-black py-3 rounded-xl">계속하기</button>
-                <button onclick="handleResign()" class="flex-1 bg-red-500 text-white font-black py-3 rounded-xl shadow-lg shadow-red-500/20">기권 확정</button>
+                <button onclick="handleResign()" class="flex-1 bg-red-500 text-white font-black py-3 rounded-xl">기권 확정</button>
             </div>
         </div>
     </div>
 
-    <!-- 랭킹 모달 -->
     <div id="ranking-modal" class="overlay-modal">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-black text-amber-400 italic">마블 랭킹 (Top 1000)</h3>
-                <button onclick="toggleModal('ranking-modal')" class="text-white/40 hover:text-white transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
+                <button onclick="toggleModal('ranking-modal')" class="text-white/40">✕</button>
             </div>
-            <input type="text" id="rank-search" placeholder="닉네임으로 검색하세요..." class="search-bar" oninput="filterRanking()">
-            <div id="ranking-list"></div>
+            <div id="ranking-list" class="overflow-y-auto pr-2"></div>
         </div>
     </div>
 
     <div id="patch-modal" class="overlay-modal" onclick="event.target === this && toggleModal('patch-modal')">
         <div class="modal-content">
             <h3 class="text-xl font-black text-amber-400 italic mb-6">패치 노트</h3>
-            <div class="text-xs text-white/50">v2.5.1: 랭킹 검색 및 상세 UI 개선 (순위/티어/닉네임/승률)</div>
+            <div class="text-xs text-white/50 leading-loose">
+                v2.6.0: 트리플 모드 시스템 도입<br>
+                - 인공지능 모드: 정통 레이스 모드<br>
+                - 마블 전투 모드: 자동 전투 칸 추가<br>
+                - 랜덤 매칭 모드: 실시간 유저 매칭 시뮬레이션
+            </div>
         </div>
     </div>
 
-    <!-- 홈 화면 -->
+    <!-- 1단계: 홈 화면 -->
     <div id="home-screen" class="home-container">
         <div class="spade-card">
             <div class="card-corner corner-top"><div class="corner-rank">A</div><div class="corner-suit">♠</div></div>
@@ -391,15 +420,51 @@
             <div class="spade-content">
                 <h2 class="text-2xl font-black italic text-black mb-1">체스 레이스</h2>
                 <p class="text-black/40 text-[8px] font-bold tracking-[0.3em] mb-8 uppercase">ACE OF SPADES EDITION</p>
-                <div class="nickname-area max-w-[200px] mx-auto space-y-4">
+                <div class="nickname-area w-full px-4 space-y-4">
                     <input type="text" id="nickname-input" placeholder="닉네임 입력" maxlength="8" class="w-full rounded-xl py-3 text-xs text-center font-bold outline-none transition-all">
-                    <button onclick="startGame()" class="w-full btn-gold-start font-black text-sm py-4 rounded-xl shadow-xl active:scale-95 transition-all">레이스 시작</button>
+                    <button onclick="goToModeSelection()" class="w-full btn-gold-start font-black text-sm py-4 rounded-xl shadow-xl active:scale-95 transition-all">레이스 시작</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 게임 화면 -->
+    <!-- 2단계: 모드 선택 화면 -->
+    <div id="mode-screen" class="hidden w-full max-w-4xl px-6 py-20 flex flex-col items-center overflow-y-auto">
+        <h2 class="text-3xl font-black text-white italic tracking-tighter mb-2">모드 선택</h2>
+        <p class="text-white/40 text-xs mb-10">참가하실 대전 모드를 선택하세요</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+            <div onclick="selectMode('ai')" class="mode-card p-8 rounded-3xl text-center">
+                <div class="text-4xl mb-6">🤖</div>
+                <h3 class="text-xl font-black text-amber-400 mb-2">인공지능 모드</h3>
+                <p class="text-[10px] text-white/40 leading-relaxed mb-6">컴퓨터 AI와 겨루는<br>정통 보드 레이스</p>
+                <div class="text-[9px] bg-amber-400/10 text-amber-400 py-1 rounded-full font-bold uppercase">Classic</div>
+            </div>
+            <div onclick="selectMode('battle')" class="mode-card p-8 rounded-3xl text-center">
+                <div class="text-4xl mb-6">⚔️</div>
+                <h3 class="text-xl font-black text-emerald-400 mb-2">마블 전투 모드</h3>
+                <p class="text-[10px] text-white/40 leading-relaxed mb-6">특수 전투 칸이 존재하며<br>자동 전투가 벌어집니다</p>
+                <div class="text-[9px] bg-emerald-400/10 text-emerald-400 py-1 rounded-full font-bold uppercase">Auto-Battle</div>
+            </div>
+            <div onclick="selectMode('multi')" class="mode-card p-8 rounded-3xl text-center">
+                <div class="text-4xl mb-6">🌐</div>
+                <h3 class="text-xl font-black text-blue-400 mb-2">랜덤 매칭</h3>
+                <p class="text-[10px] text-white/40 leading-relaxed mb-6">실시간 접속 유저와<br>랜덤 매칭 대결</p>
+                <div class="text-[9px] bg-blue-400/10 text-blue-400 py-1 rounded-full font-bold uppercase">PvP Match</div>
+            </div>
+        </div>
+        <button onclick="logoutToHome()" class="mt-10 text-white/20 text-[10px] font-bold underline underline-offset-4">처음 화면으로(로그아웃)</button>
+    </div>
+
+    <!-- 매칭 중 오버레이 -->
+    <div id="matching-overlay" class="fixed inset-0 bg-black/95 z-[1000] flex flex-col items-center justify-center hidden">
+        <div class="matching-loader mb-10"></div>
+        <h2 class="text-2xl font-black text-white italic tracking-tighter animate-pulse">상대방 매칭 중...</h2>
+        <p class="text-white/30 text-[10px] mt-4">매칭 성공 시 자동으로 시작됩니다</p>
+        <button onclick="document.getElementById('matching-overlay').classList.add('hidden')" class="mt-12 text-red-500 font-bold text-xs">매칭 취소</button>
+    </div>
+
+    <!-- 3단계: 게임 화면 -->
     <div id="game-screen" class="hidden w-full h-full relative">
         <div class="flex flex-col items-center justify-center w-screen h-screen pt-20">
             <div class="flex gap-4 mb-4">
@@ -408,39 +473,39 @@
                     <div class="text-white font-black text-sm">LAP <span id="p-lap">1</span></div>
                 </div>
                 <div id="ai-lap-card" class="compact-profile text-center">
-                    <span class="text-[8px] text-slate-400 font-bold uppercase">AI 위치</span>
+                    <span id="o-label" class="text-[8px] text-slate-400 font-bold uppercase">AI 위치</span>
                     <div class="text-white font-black text-sm">LAP <span id="ai-lap">1</span></div>
                 </div>
             </div>
             <div id="board-container" class="board-container">
                 <div id="board" class="dice-board">
                     <div class="center-status-bubble">
-                        <div id="game-status-text" class="status-content">당신의 차례!</div>
+                        <div id="game-status-text" class="status-content">준비 완료!</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="game-controls-mini">
-            <button onclick="handleResignClick()" class="text-[10px] font-bold text-red-500 border border-red-500/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors">기권하기</button>
+            <button onclick="handleResignClick()" class="text-[10px] font-bold text-red-500 border border-red-500/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors">기권</button>
             <div class="flex items-center gap-3">
                 <button onclick="toggleModal('shop-modal')" class="w-10 h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-xl">🛒</button>
                 <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
             </div>
             <div class="text-right">
-                <div class="text-[9px] text-amber-400 font-black">위치</div>
+                <div class="text-[9px] text-amber-400 font-black">POS</div>
                 <div class="text-white font-black text-lg italic"><span id="pos-display">00</span></div>
             </div>
         </div>
     </div>
 
     <script>
-        let gameState = { turn: 'player', isMoving: false, active: false };
-        let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 }, score: 1000 };
+        let gameState = { turn: 'player', isMoving: false, active: false, mode: 'ai' };
+        let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 } };
         let ai = { pos: 0, lap: 1 };
-        let currentRankingData = [];
         const GOAL_LAPS = 3;
         const penaltyCells = [4, 11, 18];
         const bonusCells = [7, 14, 21];
+        const battleCells = [2, 6, 10, 14, 18, 22]; 
         const path = [[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],[6,5],[6,4],[6,3],[6,2],[6,1],[6,0],[5,0],[4,0],[3,0],[2,0],[1,0]];
         const chessIcons = {
             p: `<svg class="chess-svg" viewBox="0 0 100 100"><defs><linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fde68a" /><stop offset="50%" style="stop-color:#fbbf24" /><stop offset="100%" style="stop-color:#b45309" /></linearGradient></defs><path d="M50 10 L40 25 L60 25 Z" fill="url(#goldGrad)" /><rect x="35" y="25" width="30" height="10" rx="2" fill="url(#goldGrad)" /><path d="M40 35 L35 80 L65 80 L60 35 Z" fill="url(#goldGrad)" /><rect x="30" y="80" width="40" height="10" rx="3" fill="url(#goldGrad)" /></svg>`,
@@ -454,116 +519,112 @@
 
         function toggleModal(id) {
             const m = document.getElementById(id);
+            if (!m) return;
             m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
-            if (id === 'ranking-modal') {
-                document.getElementById('rank-search').value = '';
-            }
         }
 
-        function openRanking() {
-            const list = document.getElementById('ranking-list');
-            list.innerHTML = '';
-            const firstNames = ["강력한", "신속한", "빛나는", "어둠의", "황금의", "전설의", "미친듯한", "용감한", "고요한", "날카로운", "영리한", "무적의", "거대한", "차가운", "불타는"];
-            const lastNames = ["체스왕", "마블러", "레이서", "기사", "도전자", "승부사", "프로", "마스터", "천재", "영웅", "전사", "그림자", "폭풍", "번개", "불꽃"];
-            const tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE"];
-            
-            currentRankingData = [];
-            for (let i = 1; i <= 1000; i++) {
-                const randomName = firstNames[Math.floor(Math.random() * firstNames.length)] + " " + lastNames[Math.floor(Math.random() * lastNames.length)] + " " + Math.floor(Math.random() * 999);
-                const randomScore = 5000 - (i * 4) + Math.floor(Math.random() * 50);
-                const randomWinRate = (90 - (i * 0.05) + Math.floor(Math.random() * 5)).toFixed(1);
-                const tierIdx = Math.min(tiers.length - 1, Math.floor(i / 150));
-                currentRankingData.push({ rank: i, name: randomName, score: Math.max(0, randomScore), winRate: Math.max(0, randomWinRate), tier: tiers[tierIdx] });
-            }
-            displayRanking(currentRankingData);
-            toggleModal('ranking-modal');
-        }
-
-        function displayRanking(data) {
-            const list = document.getElementById('ranking-list');
-            list.innerHTML = '';
-            if (data.length === 0) {
-                list.innerHTML = '<div class="text-center py-10 text-white/20 text-xs">검색 결과가 없습니다.</div>';
+        // --- 화면 전환 로직 ---
+        function goToModeSelection() {
+            const nickname = document.getElementById('nickname-input').value.trim();
+            if (!nickname) {
+                alert("닉네임을 입력해주세요!");
                 return;
             }
-            data.forEach(user => {
-                const item = document.createElement('div');
-                item.className = 'ranking-item';
-                item.innerHTML = `
-                    <div class="ranking-rank">#${user.rank}</div>
-                    <div class="ranking-info">
-                        <div class="ranking-name">
-                            <span>${user.name}</span>
-                            <span class="ranking-tier-icon">${user.tier}</span>
-                        </div>
-                        <div class="ranking-stats">
-                            <span>점수: <b>${user.score.toLocaleString()}</b></span>
-                            <span>승률: <b class="text-amber-400">${user.winRate}%</b></span>
-                        </div>
-                    </div>
-                `;
-                list.appendChild(item);
-            });
+            player.name = nickname;
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('mode-screen').classList.remove('hidden');
         }
 
-        function filterRanking() {
-            const query = document.getElementById('rank-search').value.toLowerCase();
-            const filtered = currentRankingData.filter(user => user.name.toLowerCase().includes(query));
-            displayRanking(filtered);
-        }
-
-        function handleResignClick() {
-            const infoEl = document.getElementById('resign-info');
-            const itemTotal = player.items.shield + player.items.freepass;
-            infoEl.innerHTML = `현재 <b>${player.lap}바퀴</b> 진행 중이며,<br>보유한 <b>아이템 ${itemTotal}개</b>는<br>모두 소멸됩니다.`;
-            toggleModal('resign-modal');
-        }
-
-        function handleResign() {
-            gameState = { turn: 'player', isMoving: false, active: false };
-            player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 }, score: 1000 };
-            ai = { pos: 0, lap: 1 };
-            toggleModal('resign-modal');
-            document.getElementById('game-screen').classList.add('hidden');
-            document.getElementById('game-dashboard').style.display = 'none';
+        function logoutToHome() {
+            // 닉네임 입력 창 초기화 및 홈으로 복귀
+            document.getElementById('nickname-input').value = "";
+            document.getElementById('mode-screen').classList.add('hidden');
             document.getElementById('home-screen').classList.remove('hidden');
-            document.getElementById('home-nav').classList.remove('hidden');
-            const nickInput = document.getElementById('nickname-input');
-            nickInput.value = "";
-            nickInput.focus();
-            playSfx(200, 'sawtooth', 0.3);
+            playSfx(440, 'sine', 0.2);
         }
 
-        function updateUI() {
-            document.getElementById('db-name').innerText = player.name;
-            document.getElementById('p-lap').innerText = player.lap;
-            document.getElementById('ai-lap').innerText = ai.lap;
-            document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
-            document.getElementById('game-status-text').innerText = gameState.isMoving ? "이동 중..." : (gameState.turn === 'player' ? "당신의 차례!" : "AI 생각 중...");
-            const inv = document.getElementById('db-inventory'); inv.innerHTML = '';
-            if(player.items.shield > 0) inv.innerHTML += `<div class="item-badge">🛡️<span class="item-count">${player.items.shield}</span></div>`;
-            if(player.items.freepass > 0) inv.innerHTML += `<div class="item-badge">⚡<span class="item-count">${player.items.freepass}</span></div>`;
-            if (!gameState.isMoving) renderPieces();
-        }
-
-        function renderPieces() { document.querySelectorAll('.chess-piece').forEach(e => e.remove()); renderPieceAt(player.pos, 'p', 'player-piece'); renderPieceAt(ai.pos, 'ai', 'ai-piece'); }
-        function renderPieceAt(pos, type, id) { const tile = document.getElementById(`tile-${pos}`); if(!tile) return; const piece = document.createElement('div'); piece.className = `chess-piece`; piece.id = id; piece.innerHTML = chessIcons[type]; tile.appendChild(piece); }
-
-        function initBoard() {
-            const b = document.getElementById('board'); b.innerHTML = '<div class="center-status-bubble"><div id="game-status-text" class="status-content">당신의 차례!</div></div>';
-            for(let r=0; r<7; r++) { for(let c=0; c<7; c++) { const t = document.createElement('div'); t.style.gridArea = `${r+1}/${c+1}`; t.className = (r >= 2 && r <= 4 && c >= 2 && c <= 4) ? 'tile empty-space' : 'tile'; t.id = `c-${r}-${c}`; b.appendChild(t); } }
-            path.forEach((p, i) => { const el = document.getElementById(`c-${p[0]}-${p[1]}`); if(el) { el.id = `tile-${i}`; el.innerText = i === 0 ? "시작" : i; if(penaltyCells.includes(i)) el.classList.add('tile-penalty'); if(bonusCells.includes(i)) el.classList.add('tile-bonus'); } });
-            updateUI();
+        function selectMode(mode) {
+            gameState.mode = mode;
+            if (mode === 'multi') {
+                document.getElementById('matching-overlay').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('matching-overlay').classList.add('hidden');
+                    startGame();
+                }, 2000); 
+            } else {
+                startGame();
+            }
         }
 
         function startGame() {
-            player.name = document.getElementById('nickname-input').value.trim() || "익명";
+            // 게임 데이터 초기화
+            player.pos = 0; player.lap = 1; player.items = { shield: 0, freepass: 0 };
+            ai.pos = 0; ai.lap = 1;
+            gameState.turn = 'player';
+            gameState.isMoving = false;
             gameState.active = true;
-            document.getElementById('home-screen').classList.add('hidden');
-            document.getElementById('home-nav').classList.add('hidden');
+
+            document.getElementById('mode-screen').classList.add('hidden');
+            document.getElementById('top-nav').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             document.getElementById('game-dashboard').style.display = 'block';
+            
+            const modeBadge = document.getElementById('db-mode-badge');
+            const modeText = document.getElementById('db-mode-text');
+            const oLabel = document.getElementById('o-label');
+            
+            if (gameState.mode === 'ai') {
+                modeBadge.innerText = "CLASSIC"; modeText.innerText = "인공지능"; oLabel.innerText = "AI 위치";
+            } else if (gameState.mode === 'battle') {
+                modeBadge.innerText = "BATTLE"; modeText.innerText = "전투 레이스"; oLabel.innerText = "보스 위치";
+            } else {
+                modeBadge.innerText = "MULTI"; modeText.innerText = "유저 매칭"; oLabel.innerText = "상대방 위치";
+            }
+            
             initBoard();
+        }
+
+        // --- 기권 및 초기화 로직 ---
+        function handleResign() {
+            gameState.active = false;
+            gameState.isMoving = false;
+            if (document.getElementById('resign-modal').style.display === 'flex') {
+                toggleModal('resign-modal');
+            }
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('game-dashboard').style.display = 'none';
+            document.getElementById('top-nav').classList.remove('hidden');
+            document.getElementById('mode-screen').classList.remove('hidden');
+            playSfx(150, 'sawtooth', 0.3);
+        }
+
+        // --- 게임 보드 및 로직 ---
+        function initBoard() {
+            const b = document.getElementById('board'); 
+            b.innerHTML = '<div class="center-status-bubble"><div id="game-status-text" class="status-content">당신의 차례!</div></div>';
+            for(let r=0; r<7; r++) { 
+                for(let c=0; c<7; c++) { 
+                    const t = document.createElement('div'); 
+                    t.style.gridArea = `${r+1}/${c+1}`; 
+                    t.className = (r >= 2 && r <= 4 && c >= 2 && c <= 4) ? 'tile empty-space' : 'tile'; 
+                    t.id = `c-${r}-${c}`; 
+                    b.appendChild(t); 
+                } 
+            }
+            path.forEach((p, i) => { 
+                const el = document.getElementById(`c-${p[0]}-${p[1]}`); 
+                if(el) { 
+                    el.id = `tile-${i}`; 
+                    el.innerText = i === 0 ? "START" : i; 
+                    if(penaltyCells.includes(i)) el.classList.add('tile-penalty'); 
+                    if(bonusCells.includes(i)) el.classList.add('tile-bonus'); 
+                    if(gameState.mode === 'battle' && battleCells.includes(i) && i !== 0) {
+                        el.classList.add('tile-battle');
+                        el.innerText = "⚔️";
+                    }
+                } 
+            });
+            updateUI();
         }
 
         async function rollVisualDice() {
@@ -572,9 +633,12 @@
         }
 
         async function handleRoll() {
-            if(gameState.isMoving || gameState.turn !== 'player') return;
+            if(gameState.isMoving || gameState.turn !== 'player' || !gameState.active) return;
             await executeTurn('player');
-            if(gameState.active) { await new Promise(r => setTimeout(r, 800)); await executeTurn('ai'); }
+            if(gameState.active && gameState.turn === 'ai') { 
+                await new Promise(r => setTimeout(r, 800)); 
+                await executeTurn('ai'); 
+            }
         }
 
         async function executeTurn(type) {
@@ -582,21 +646,75 @@
             const container = document.getElementById('board-container'); container.classList.add('board-zoom');
             const target = type === 'player' ? player : ai;
             const dice = await rollVisualDice(); document.getElementById('dice-btn').innerText = dice;
+            
             for(let i=0; i<dice; i++) {
+                if(!gameState.active) return;
                 const old = target.pos; target.pos = (target.pos + 1) % path.length;
-                if (old > target.pos) { target.lap++; if (target.lap > GOAL_LAPS) { alert(type === 'player' ? "승리!" : "패배!"); location.reload(); return; } }
+                if (old > target.pos) { target.lap++; if (target.lap > GOAL_LAPS) { alert(type === 'player' ? "승리!" : "패배!"); handleResign(); return; } }
                 await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
             }
+
+            if(!gameState.active) return;
+
             if(penaltyCells.includes(target.pos)) {
                 if(type === 'player' && player.items.shield > 0) { player.items.shield--; playSfx(300); }
                 else { for(let j=0; j<2; j++) { target.pos = (target.pos - 1 + path.length) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); } }
+            } else if(bonusCells.includes(target.pos)) {
+                target.pos = (target.pos + 2) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
+            } else if(gameState.mode === 'battle' && battleCells.includes(target.pos)) {
+                const isWin = Math.random() > 0.4;
+                const status = document.getElementById('game-status-text');
+                status.innerText = isWin ? "전투 승리! +2칸" : "전투 패배! -1칸";
+                await new Promise(r => setTimeout(r, 800));
+                if(isWin) { target.pos = (target.pos + 2) % path.length; } 
+                else { target.pos = (target.pos - 1 + path.length) % path.length; }
+                await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
             }
+
             container.classList.remove('board-zoom');
-            gameState.turn = type === 'player' ? 'ai' : 'player'; gameState.isMoving = false; updateUI();
+            if(gameState.active) {
+                gameState.turn = type === 'player' ? 'ai' : 'player'; 
+                gameState.isMoving = false; 
+                updateUI();
+            }
         }
 
         async function movePieceVisual(id, pos) { const p = document.getElementById(id); const t = document.getElementById(`tile-${pos}`); if (p && t) { t.appendChild(p); playSfx(400 + (pos * 10)); await new Promise(r => setTimeout(r, 200)); } }
+        
+        function updateUI() {
+            if(!gameState.active) return;
+            document.getElementById('db-name').innerText = player.name;
+            document.getElementById('p-lap').innerText = player.lap;
+            document.getElementById('ai-lap').innerText = ai.lap;
+            document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
+            document.getElementById('game-status-text').innerText = gameState.isMoving ? "이동 중..." : (gameState.turn === 'player' ? "당신의 차례!" : "상대방 차례...");
+            const inv = document.getElementById('db-inventory'); inv.innerHTML = '';
+            if(player.items.shield > 0) inv.innerHTML += `<div class="item-badge">🛡️<span class="item-count">${player.items.shield}</span></div>`;
+            if(player.items.freepass > 0) inv.innerHTML += `<div class="item-badge">⚡<span class="item-count">${player.items.freepass}</span></div>`;
+            renderPieces();
+        }
+
+        function renderPieces() { document.querySelectorAll('.chess-piece').forEach(e => e.remove()); renderPieceAt(player.pos, 'p', 'player-piece'); renderPieceAt(ai.pos, 'ai', 'ai-piece'); }
+        function renderPieceAt(pos, type, id) { const tile = document.getElementById(`tile-${pos}`); if(!tile) return; const piece = document.createElement('div'); piece.className = `chess-piece`; piece.id = id; piece.innerHTML = chessIcons[type]; tile.appendChild(piece); }
         function buyItem(type) { player.items[type]++; updateUI(); playSfx(523); }
+        function handleResignClick() { toggleModal('resign-modal'); }
+        
+        function openRanking() {
+            const list = document.getElementById('ranking-list');
+            list.innerHTML = '';
+            for (let i = 1; i <= 20; i++) {
+                const item = document.createElement('div');
+                item.className = 'ranking-item';
+                item.innerHTML = `
+                    <div class="ranking-rank">#${i}</div>
+                    <div class="ranking-info">
+                        <div class="ranking-name">플레이어_${Math.floor(Math.random()*999)} <span class="ranking-tier-icon">GOLD</span></div>
+                        <div class="ranking-stats"><span>점수: ${2000 - (i*50)}</span><span>승률: 55%</span></div>
+                    </div>`;
+                list.appendChild(item);
+            }
+            toggleModal('ranking-modal');
+        }
     </script>
 </body>
 </html>
