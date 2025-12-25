@@ -45,7 +45,7 @@
         }
 
         .nav-content { height: 100%; max-width: 1400px; margin: 0 auto; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo { font-weight: 900; font-size: 1rem; color: #fbbf24; letter-spacing: -1px; cursor: pointer; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .nav-logo { font-weight: 900; font-size: 1rem; color: #fbbf24; letter-spacing: -1px; cursor: pointer; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         
         .nav-right-area { display: flex; gap: 12px; align-items: center; }
         .nav-links { display: flex; gap: 8px; align-items: center; }
@@ -338,7 +338,7 @@
         <div class="nav-content">
             <div class="nav-logo" onclick="location.reload()">
                 <div class="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center text-black font-black">C</div>
-                <span class="hidden sm:inline">체스 마블</span>
+                <span>체스 마블</span>
             </div>
             <div class="nav-right-area">
                 <div class="nav-links">
@@ -441,7 +441,7 @@
         </div>
     </div>
 
-    <!-- 2단계: 모드 선택 화면 (모바일 최적화) -->
+    <!-- 2단계: 모드 선택 화면 -->
     <div id="mode-screen" class="hidden w-full max-w-4xl px-6 pt-24 pb-12 flex flex-col items-center">
         <h2 class="text-2xl md:text-3xl font-black text-white italic tracking-tighter mb-2">모드 선택</h2>
         <p class="text-white/40 text-[10px] md:text-xs mb-8 md:mb-10">참가하실 대전 모드를 선택하세요</p>
@@ -591,8 +591,6 @@
             }
         }
 
-        // --- 실제 유저 매칭 로직 ---
-        let matchUnsubscribe = null;
         async function startRealMatching() {
             if (!window.currentUser) { alert("인증 대기 중입니다. 잠시 후 다시 시도하세요."); return; }
             document.getElementById('matching-overlay').classList.remove('hidden');
@@ -627,7 +625,7 @@
                     timestamp: Date.now()
                 });
                 
-                matchUnsubscribe = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'active_matches', uid), (docSnap) => {
+                let matchUnsubscribe = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'active_matches', uid), (docSnap) => {
                     if (docSnap.exists() && docSnap.data().status === 'started') {
                         gameState.matchId = uid;
                         matchUnsubscribe();
@@ -639,7 +637,6 @@
 
         function cancelMatching() {
             const { doc, deleteDoc } = window.firestoreUtils;
-            if (matchUnsubscribe) matchUnsubscribe();
             deleteDoc(doc(window.db, 'artifacts', window.appId, 'public', 'data', 'matchmaking', window.currentUser.uid));
             document.getElementById('matching-overlay').classList.add('hidden');
         }
