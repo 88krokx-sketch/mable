@@ -28,7 +28,7 @@
             -webkit-user-select: none;
         }
 
-        /* 내비게이션 바 - 테두리 제거 버전 */
+        /* 내비게이션 바 */
         .nav-bar {
             width: 100%; 
             height: 65px; 
@@ -36,10 +36,10 @@
             top: 0; 
             left: 0; 
             z-index: 200;
-            background: rgba(15, 23, 42, 0.2); /* 배경 투명도 조정 */
+            background: rgba(15, 23, 42, 0.2);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            border-bottom: none; /* 테두리 제거 */
+            border-bottom: none;
         }
 
         .nav-content { height: 100%; max-width: 1400px; margin: 0 auto; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; }
@@ -56,7 +56,7 @@
             transition: all 0.2s; 
             white-space: nowrap;
             padding: 5px 12px;
-            border: 1px solid rgba(251, 191, 36, 0.3); /* 링크 테두리는 유지하되 더 연하게 */
+            border: 1px solid rgba(251, 191, 36, 0.3);
             border-radius: 8px;
             background: rgba(251, 191, 36, 0.05);
         }
@@ -102,7 +102,7 @@
         #ranking-list::-webkit-scrollbar-track, .scroll-area::-webkit-scrollbar-track { background: transparent; }
         #ranking-list::-webkit-scrollbar-thumb, .scroll-area::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 10px; }
 
-        /* 3D 주사위 오버레이 */
+        /* 주사위 3D */
         .dice-overlay {
             position: fixed;
             inset: 0;
@@ -282,6 +282,50 @@
             box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         }
 
+        /* 주사위 버튼 및 말풍선 */
+        .dice-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dice-tooltip {
+            position: absolute;
+            bottom: 75px;
+            background: #fbbf24;
+            color: #020617;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 900;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.5);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            z-index: 200;
+        }
+        .dice-tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+            animation: tooltipPulse 1.5s infinite;
+        }
+        .dice-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #fbbf24;
+        }
+        @keyframes tooltipPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         .dice-box { 
             width: 60px; 
             height: 60px; 
@@ -297,6 +341,10 @@
             cursor: pointer; 
             box-shadow: 0 8px 0 #b45309, 0 10px 20px rgba(0,0,0,0.4); 
             transition: all 0.1s ease; 
+        }
+        .dice-box:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #b45309, 0 5px 10px rgba(0,0,0,0.4);
         }
 
         .compact-profile { width: 165px; padding: 10px; border-radius: 15px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
@@ -375,7 +423,7 @@
         </div>
     </header>
 
-    <!-- [상점, 랭킹, 패치노트, 기권 모달 동일 로직] -->
+    <!-- 모달 창들 -->
     <div id="shop-modal" class="overlay-modal" onclick="event.target === this && toggleModal('shop-modal')">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
@@ -442,12 +490,12 @@
             <div class="space-y-4">
                 <div class="border-l-2 border-amber-400 pl-4 py-1">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded-full font-black uppercase">v1.9.1</span>
+                        <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded-full font-black uppercase">v1.9.2</span>
                     </div>
-                    <p class="text-xs font-bold text-white mb-1">UI 최적화</p>
+                    <p class="text-xs font-bold text-white mb-1">상호작용 개선</p>
                     <ul class="text-[10px] text-white/50 space-y-1 list-disc pl-3">
-                        <li>상단 메뉴바 테두리 제거로 가시성 향상</li>
-                        <li>아이템 상점 밸런스 조정</li>
+                        <li>5초간 미입력 시 주사위 던지기 유도 말풍선 추가</li>
+                        <li>주사위 버튼 클릭 피드백 강화</li>
                     </ul>
                 </div>
             </div>
@@ -530,10 +578,15 @@
                 <button onclick="confirmQuit()" class="text-[10px] font-bold text-red-500 mb-1">기권</button>
                 <div class="text-white font-black text-lg italic"><span id="pos-display">00</span></div>
             </div>
-            <div class="flex items-center gap-3">
-                <button onclick="toggleModal('shop-modal')" class="w-10 h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-xl hover:bg-white/20 transition-all">🛒</button>
-                <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
+            
+            <div class="dice-wrapper">
+                <div id="dice-tooltip" class="dice-tooltip">주사위를 던지세요!</div>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleModal('shop-modal')" class="w-10 h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-xl hover:bg-white/20 transition-all">🛒</button>
+                    <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
+                </div>
             </div>
+
             <div class="text-right">
                 <div class="text-[9px] text-amber-400 font-black">목표</div>
                 <div class="text-white font-black text-lg italic">3 LAPS</div>
@@ -542,7 +595,7 @@
     </div>
 
     <script>
-        // [게임 로직 및 스크립트 그대로 유지]
+        // 랭킹 생성
         let globalRankings = [];
         function generateRankings() {
             const firstNames = ["강력한", "신속한", "어두운", "빛나는", "냉철한", "용감한", "영리한", "우아한", "거대한", "날카로운", "고독한", "전설의", "불멸의", "궁극의", "미친", "조용한", "불타는", "얼어붙은", "신비한", "거친"];
@@ -574,10 +627,12 @@
 
         generateRankings();
 
+        // 게임 상태
         let gameState = { turn: 'player', isMoving: false, active: false };
         let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 } };
         let ai = { name: "AI 코어", pos: 0, lap: 1 };
         let stats = { wins: 0, score: 1000 };
+        let idleTimer = null; // 5초 타이머용
         const GOAL_LAPS = 3;
         
         const penaltyCells = [4, 10, 16, 22];
@@ -597,6 +652,20 @@
             const isShowing = modal.style.display === 'flex';
             modal.style.display = isShowing ? 'none' : 'flex';
             if (id === 'ranking-modal' && !isShowing) renderRanking();
+        }
+
+        // 타이머 제어
+        function resetIdleTimer() {
+            clearTimeout(idleTimer);
+            const tooltip = document.getElementById('dice-tooltip');
+            tooltip.classList.remove('visible');
+            
+            // 플레이어 차례이고, 이동 중이 아닐 때만 타이머 가동
+            if (gameState.active && gameState.turn === 'player' && !gameState.isMoving) {
+                idleTimer = setTimeout(() => {
+                    tooltip.classList.add('visible');
+                }, 5000);
+            }
         }
 
         function buyItem(type) {
@@ -619,6 +688,8 @@
             if(player.items.freepass > 0) inv.innerHTML += `<div class="item-badge">⚡<span class="item-count">${player.items.freepass}</span></div>`;
             if (!gameState.isMoving) renderPieces();
             document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
+            
+            resetIdleTimer(); // 상태가 바뀔 때마다 타이머 갱신
         }
 
         function renderPieces() { document.querySelectorAll('.chess-piece').forEach(e => e.remove()); renderPieceAt(player.pos, 'p', 'player-piece'); renderPieceAt(ai.pos, 'ai', 'ai-piece'); }
@@ -632,7 +703,18 @@
 
         function startGame() { player.name = document.getElementById('nickname-input').value.trim() || "익명"; player.lap = 1; ai.lap = 1; player.pos = 0; ai.pos = 0; player.items = { shield: 0, freepass: 0 }; gameState.active = true; document.getElementById('home-screen').classList.add('hidden'); document.getElementById('game-screen').classList.remove('hidden'); initBoard(); }
         async function rollVisualDice() { const overlay = document.getElementById('dice-overlay'); const cube = document.getElementById('cube'); overlay.style.display = 'flex'; cube.classList.add('rolling'); const val = Math.floor(Math.random() * 6) + 1; await new Promise(r => setTimeout(r, 600)); cube.classList.remove('rolling'); playSfx(880, 'square', 0.15); const rots = { 1: "rotateX(0deg) rotateY(0deg)", 2: "rotateX(-90deg) rotateY(0deg)", 3: "rotateX(0deg) rotateY(-90deg)", 4: "rotateX(0deg) rotateY(90deg)", 5: "rotateX(90deg) rotateY(0deg)", 6: "rotateX(180deg) rotateY(0deg)" }; cube.style.transform = rots[val]; await new Promise(r => setTimeout(r, 500)); overlay.style.display = 'none'; cube.style.transform = ''; return val; }
-        async function handleRoll() { if(gameState.isMoving || gameState.turn !== 'player') return; await executeTurn('player'); if(gameState.active) { await new Promise(r => setTimeout(r, 800)); await executeTurn('ai'); } }
+        
+        async function handleRoll() { 
+            if(gameState.isMoving || gameState.turn !== 'player') return; 
+            document.getElementById('dice-tooltip').classList.remove('visible');
+            clearTimeout(idleTimer);
+            await executeTurn('player'); 
+            if(gameState.active) { 
+                await new Promise(r => setTimeout(r, 800)); 
+                await executeTurn('ai'); 
+            } 
+        }
+
         async function executeTurn(type) {
             if(!gameState.active) return; gameState.isMoving = true; updateUI(); const target = type === 'player' ? player : ai; const dice = await rollVisualDice(); document.getElementById('dice-btn').innerText = dice;
             for(let i=0; i<dice; i++) { if(!gameState.active) return; const old = target.pos; target.pos = (target.pos + 1) % path.length; if (old > target.pos) { target.lap++; if (target.lap > GOAL_LAPS) { endGame(type === 'player'); return; } } await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); }
@@ -648,10 +730,10 @@
 
         async function applyPenalty(target, type) { const moveBack = 2; document.getElementById('game-status-text').innerText = `뒤로 ${moveBack}칸 후퇴!`; await new Promise(r => setTimeout(r, 1000)); for(let j=0; j<moveBack; j++) { target.pos = (target.pos - 1 + path.length) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); } }
         async function movePieceVisual(id, pos) { const p = document.getElementById(id); const t = document.getElementById(`tile-${pos}`); if (p && t) { t.appendChild(p); playSfx(400 + (pos * 10)); await new Promise(r => setTimeout(r, 200)); } }
-        function endGame(win) { gameState.active = false; if (win) { stats.score += 250; } else { stats.score = Math.max(0, stats.score - 150); } alert(win ? "승리하셨습니다!" : "패배했습니다."); goToHomeScreen(); }
+        function endGame(win) { gameState.active = false; clearTimeout(idleTimer); if (win) { stats.score += 250; } else { stats.score = Math.max(0, stats.score - 150); } alert(win ? "승리하셨습니다!" : "패배했습니다."); goToHomeScreen(); }
         function confirmQuit() { toggleModal('quit-confirm-modal'); }
         function applyQuitPenalty() { stats.score = Math.max(0, stats.score - 100); toggleModal('quit-confirm-modal'); goToHomeScreen(); }
-        function goToHomeScreen() { gameState.active = false; document.getElementById('game-screen').classList.add('hidden'); document.getElementById('home-screen').classList.remove('hidden'); updateUI(); }
+        function goToHomeScreen() { gameState.active = false; clearTimeout(idleTimer); document.getElementById('game-screen').classList.add('hidden'); document.getElementById('home-screen').classList.remove('hidden'); updateUI(); }
         function showToast(text) { const status = document.getElementById('game-status-text'); status.innerText = text; setTimeout(() => { if(!gameState.isMoving) updateUI(); }, 2000); }
     </script>
 </body>
