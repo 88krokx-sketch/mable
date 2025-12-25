@@ -28,6 +28,8 @@
             touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         /* 내비게이션 바 */
@@ -165,7 +167,7 @@
         .rolling { animation: cubeRotate 0.4s linear infinite; }
         @keyframes cubeRotate { 0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); } 100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); } }
 
-        /* 홈 스크린 - 스페이드 A 카드 */
+        /* 홈 스크린 */
         .home-container { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; perspective: 1000px; padding: 20px; }
         .spade-card {
             width: 100%;
@@ -205,7 +207,6 @@
             background: rgba(251, 191, 36, 0.05);
             border: 3px solid #fbbf24; 
             color: #000;
-            box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); 
         }
         .btn-gold-start {
             background: linear-gradient(135deg, #fde68a 0%, #fbbf24 50%, #d97706 100%);
@@ -215,7 +216,6 @@
             box-shadow: 0 4px 0 #78350f, 0 8px 15px rgba(180, 83, 9, 0.4);
         }
 
-        /* 모드 선택 카드 - 모바일 최적화 */
         .mode-card {
             background: #0f172a; 
             border: 2px solid rgba(251, 191, 36, 0.3);
@@ -230,42 +230,34 @@
             background: #1e293b;
             border-color: #fbbf24;
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(251, 191, 36, 0.2);
         }
 
-        /* 게임 보드 및 반응형 해상도 조정 */
+        /* 게임 보드 축소 적용 */
         .board-container { 
             perspective: 2000px; 
             width: 100%; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            margin-top: 0px; 
             position: relative; 
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
         }
         
-        /* 모바일에서는 줌 효과를 조금 완화하여 화면 밖으로 나가지 않게 조절 */
-        @media (max-width: 640px) {
-            .board-zoom { transform: scale(1.05) translateY(10px); }
-        }
-        @media (min-width: 641px) {
-            .board-zoom { transform: scale(1.15) translateY(20px); }
-        }
-
+        /* 보드 전체 크기 축소: 90vw -> 75vw, max-width 600px -> 420px */
         .dice-board { 
             display: grid; 
             grid-template-columns: repeat(7, 1fr); 
             grid-template-rows: repeat(7, 1fr); 
             gap: 2%; 
-            width: 90vw; 
-            max-width: 600px; 
+            width: 75vw; 
+            max-width: 420px; 
             aspect-ratio: 1/1; 
             transform: rotateX(50deg) rotateZ(-45deg); 
             transform-style: preserve-3d; 
             position: relative;
         }
 
+        /* 타일 내부 폰트 및 라운드 조정 */
         .tile { 
             aspect-ratio: 1/1; 
             display: flex; 
@@ -273,11 +265,11 @@
             justify-content: center; 
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); 
             border: 1px solid rgba(251, 191, 36, 0.4);
-            border-radius: 8px; 
+            border-radius: 6px; 
             font-weight: 900; 
-            font-size: 0.8rem; 
+            font-size: 0.65rem; 
             position: relative; 
-            box-shadow: 0px 4px 0px 0px #78350f, 0px 8px 15px rgba(0,0,0,0.6);
+            box-shadow: 0px 3px 0px 0px #78350f, 0px 6px 10px rgba(0,0,0,0.6);
             color: #fbbf24;
             transform-style: preserve-3d; 
             transform: translateZ(10px);
@@ -285,22 +277,22 @@
         }
         
         @media (min-width: 641px) {
-            .tile { font-size: 1rem; border-radius: 12px; }
+            .tile { font-size: 0.8rem; border-radius: 8px; }
         }
 
-        .tile-penalty { border: 4px solid #ef4444; color: #ef4444; }
-        .tile-bonus { border: 4px solid #22c55e; color: #22c55e; }
-        .tile-battle { border: 4px solid #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.2); }
+        .tile-penalty { border: 2px solid #ef4444; color: #ef4444; }
+        .tile-bonus { border: 2px solid #22c55e; color: #22c55e; }
+        .tile-battle { border: 2px solid #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.2); }
         .tile.empty-space { background: transparent; border: none; box-shadow: none; color: transparent; pointer-events: none; }
 
         .center-status-bubble { grid-area: 3/3 / 6/6; display: flex; align-items: center; justify-content: center; z-index: 10; pointer-events: none; transform-style: preserve-3d; }
         .status-content {
-            background: #0f172a; color: #fbbf24; padding: 10px 16px; border-radius: 12px; font-weight: 900; font-size: 12px; text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: translateZ(80px) rotateZ(45deg) rotateX(-50deg) ; border: 2px solid #fbbf24;
+            background: #0f172a; color: #fbbf24; padding: 8px 12px; border-radius: 10px; font-weight: 900; font-size: 10px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); transform: translateZ(60px) rotateZ(45deg) rotateX(-50deg); border: 2px solid #fbbf24;
             white-space: nowrap;
         }
         @media (min-width: 641px) {
-            .status-content { padding: 14px 24px; border-radius: 16px; font-size: 15px; }
+            .status-content { padding: 10px 18px; font-size: 13px; }
         }
 
         /* 컨트롤 영역 */
@@ -310,8 +302,8 @@
             left: 50%; 
             transform: translateX(-50%); 
             width: 90%; 
-            max-width: 550px; 
-            padding: 12px 20px; 
+            max-width: 500px; 
+            padding: 10px 18px; 
             border-radius: 20px; 
             display: flex; 
             align-items: center; 
@@ -322,24 +314,21 @@
             border: 2px solid #fbbf24; 
         }
         .dice-box { width: 50px; height: 50px; background: linear-gradient(135deg, #fbbf24, #d97706); border: 2px solid #fde68a; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900; color: #020617; cursor: pointer; box-shadow: 0 6px 0 #b45309; transition: all 0.1s; }
-        @media (min-width: 641px) {
-            .dice-box { width: 60px; height: 60px; font-size: 1.6rem; box-shadow: 0 8px 0 #b45309; }
-        }
 
-        .compact-profile { width: 110px; padding: 8px; border-radius: 12px; background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .compact-profile { width: 100px; padding: 6px; border-radius: 12px; background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); }
         @media (min-width: 641px) {
-            .compact-profile { width: 140px; padding: 10px; border-radius: 15px; }
+            .compact-profile { width: 120px; padding: 8px; }
         }
-        .compact-profile.active-turn { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
+        .compact-profile.active-turn { border-color: #fbbf24; box-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
 
-        /* 기물 */
-        .chess-piece { position: absolute; width: 100%; height: 100%; z-index: 150; transform: translateZ(60px) rotateZ(45deg) rotateX(-50deg) scale(1.5); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; display: flex; align-items: center; justify-content: center; }
+        /* 기물 크기 조정 */
+        .chess-piece { position: absolute; width: 100%; height: 100%; z-index: 150; transform: translateZ(40px) rotateZ(45deg) rotateX(-50deg) scale(1.3); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; display: flex; align-items: center; justify-content: center; }
         @media (min-width: 641px) {
-            .chess-piece { transform: translateZ(60px) rotateZ(45deg) rotateX(-50deg) scale(1.8); }
+            .chess-piece { transform: translateZ(50px) rotateZ(45deg) rotateX(-50deg) scale(1.5); }
         }
-        .chess-svg { width: 100%; height: 100%; filter: drop-shadow(0 25px 15px rgba(0,0,0,0.7)); }
+        .chess-svg { width: 100%; height: 100%; filter: drop-shadow(0 15px 10px rgba(0,0,0,0.7)); }
 
-        .item-badge { width: 20px; height: 20px; border-radius: 5px; background: #1e293b; border: 1px solid #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 10px; position: relative; }
+        .item-badge { width: 18px; height: 18px; border-radius: 5px; background: #1e293b; border: 1px solid #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 10px; position: relative; }
         .item-count { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 8px; padding: 1px 3px; border-radius: 10px; font-weight: 900; }
 
         .hidden { display: none !important; }
@@ -355,78 +344,21 @@
             align-items: center; 
             gap: 6px; 
             margin-bottom: 8px; 
-            transition: all 0.2s; 
         }
-        @media (min-width: 641px) {
-            .ranking-item { padding: 14px 16px; border-radius: 16px; grid-template-columns: 45px 85px 1fr 60px 85px; gap: 8px; margin-bottom: 10px; }
-        }
-        .ranking-rank { font-weight: 900; color: #fbbf24; text-align: center; font-size: 14px; font-style: italic; }
-        @media (min-width: 641px) { .ranking-rank { font-size: 16px; } }
 
-        .ranking-tier-badge { 
-            font-size: 7px; 
-            font-weight: 900; 
-            padding: 2px 4px; 
-            border-radius: 4px; 
-            text-transform: uppercase; 
-            width: fit-content; 
-            text-align: center;
-            border-width: 1px;
-            border-style: solid;
-        }
-        @media (min-width: 641px) { .ranking-tier-badge { font-size: 9px; padding: 3px 6px; } }
-
+        .ranking-tier-badge { font-size: 7px; font-weight: 900; padding: 2px 4px; border-radius: 4px; text-transform: uppercase; border-width: 1px; border-style: solid; }
         .tier-diamond { background: rgba(34, 211, 238, 0.2); color: #22d3ee; border-color: #22d3ee; }
-        .tier-platinum { background: rgba(45, 212, 191, 0.2); color: #2dd4bf; border-color: #2dd4bf; }
         .tier-gold { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border-color: #fbbf24; }
-        .tier-silver { background: rgba(148, 163, 184, 0.2); color: #94a3b8; border-color: #94a3b8; }
-        .tier-bronze { background: rgba(180, 83, 9, 0.2); color: #b45309; border-color: #b45309; }
-        .tier-iron { background: rgba(71, 85, 105, 0.2); color: #475569; border-color: #475569; }
-
-        .ranking-name { font-weight: 900; color: #fff; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        @media (min-width: 641px) { .ranking-name { font-size: 14px; } }
-        .ranking-winrate { font-size: 10px; color: rgba(251, 191, 36, 0.9); font-weight: 800; text-align: center; }
-        @media (min-width: 641px) { .ranking-winrate { font-size: 12px; } }
-        .ranking-score { font-size: 10px; color: #fff; font-weight: 900; text-align: right; }
-        @media (min-width: 641px) { .ranking-score { font-size: 12px; } }
 
         .ranking-header {
-            display: grid;
-            grid-template-columns: 35px 70px 1fr 50px 70px;
-            gap: 6px;
-            padding: 0 12px 10px 12px;
-            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
-            margin-bottom: 10px;
-            font-size: 8px;
-            font-weight: 900;
-            color: rgba(251, 191, 36, 0.5);
-            text-transform: uppercase;
-            text-align: center;
-        }
-        @media (min-width: 641px) {
-            .ranking-header { grid-template-columns: 45px 85px 1fr 60px 85px; gap: 8px; padding: 0 16px 12px 16px; font-size: 10px; margin-bottom: 15px; }
+            display: grid; grid-template-columns: 35px 70px 1fr 50px 70px; gap: 6px; padding: 0 12px 10px 12px; border-bottom: 1px solid rgba(251, 191, 36, 0.2); margin-bottom: 10px; font-size: 8px; font-weight: 900; color: rgba(251, 191, 36, 0.5); text-align: center;
         }
 
-        /* 매칭 로딩 */
-        .matching-loader {
-            width: 60px; height: 60px;
-            border: 4px solid #fbbf24;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+        .matching-loader { width: 60px; height: 60px; border: 4px solid #fbbf24; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        #mode-screen {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
     </style>
 </head>
-<body oncontextmenu="return false">
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
     <!-- 주사위 오버레이 -->
     <div id="dice-overlay" class="dice-overlay">
@@ -472,7 +404,7 @@
         </div>
     </div>
 
-    <!-- 모달 -->
+    <!-- 모달들 -->
     <div id="shop-modal" class="overlay-modal" onclick="event.target === this && toggleModal('shop-modal')">
         <div class="modal-content">
             <h3 class="text-xl font-black text-amber-400 italic mb-6">아이템 상점</h3>
@@ -506,24 +438,14 @@
         </div>
     </div>
 
-    <!-- 랭킹 모달 -->
     <div id="ranking-modal" class="overlay-modal">
         <div class="modal-content max-w-[600px]">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-lg sm:text-xl font-black text-amber-400 italic">마블 랭킹 TOP 1000</h3>
                 <button onclick="toggleModal('ranking-modal')" class="text-white/40 hover:text-white transition-colors">✕</button>
             </div>
-            
-            <div class="ranking-header">
-                <span>순위</span>
-                <span>계급장</span>
-                <span class="text-left">닉네임</span>
-                <span>승률</span>
-                <span class="text-right">점수</span>
-            </div>
-
-            <div id="ranking-list" class="overflow-y-auto pr-2 custom-scrollbar">
-            </div>
+            <div class="ranking-header"><span>순위</span><span>계급장</span><span class="text-left">닉네임</span><span>승률</span><span class="text-right">점수</span></div>
+            <div id="ranking-list" class="overflow-y-auto pr-2 custom-scrollbar"></div>
         </div>
     </div>
 
@@ -531,10 +453,10 @@
         <div class="modal-content">
             <h3 class="text-xl font-black text-amber-400 italic mb-6">패치 노트</h3>
             <div class="text-xs text-white/50 leading-loose">
-                v2.7.8: 모바일 환경 최적화<br>
-                - 모바일 해상도에 따른 게임 보드 자동 조정<br>
-                - 터치 환경에 최적화된 컨트롤 인터페이스<br>
-                - 반응형 디자인 강화로 가시성 개선
+                v2.9.0: UI 최적화 및 보드 축소<br>
+                - 게임 몰입도 향상을 위해 게임판 크기를 약 25% 축소 조정<br>
+                - 타일 및 기물 크기 밸런스 패치<br>
+                - 소스 코드 보호 및 우클릭 방지 시스템 유지
             </div>
         </div>
     </div>
@@ -559,50 +481,44 @@
     <!-- 2단계: 모드 선택 화면 -->
     <div id="mode-screen" class="hidden w-full max-w-4xl px-6 pt-24 pb-12 flex flex-col items-center">
         <h2 class="text-2xl md:text-3xl font-black text-white italic tracking-tighter mb-2">모드 선택</h2>
-        <p class="text-white/40 text-[10px] md:text-xs mb-8 md:mb-10">참가하실 대전 모드를 선택하세요</p>
-        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-sm md:max-w-none">
             <div onclick="selectMode('ai')" class="mode-card p-6 md:p-8 rounded-3xl text-center">
-                <div class="text-3xl md:text-4xl mb-4 md:mb-6">🤖</div>
-                <h3 class="text-lg md:text-xl font-black text-amber-400 mb-1 md:mb-2">인공지능 모드</h3>
-                <p class="text-[9px] md:text-[10px] text-white/40 leading-relaxed mb-4 md:mb-6">컴퓨터 AI와 겨루는<br>정통 보드 레이스</p>
-                <div class="text-[8px] md:text-[9px] bg-amber-400/10 text-amber-400 px-3 py-1 rounded-full font-bold uppercase">Classic</div>
+                <div class="text-3xl mb-4">🤖</div>
+                <h3 class="text-lg font-black text-amber-400">인공지능 모드</h3>
+                <p class="text-[9px] text-white/40 mb-4">정통 보드 레이스</p>
             </div>
             <div onclick="selectMode('battle')" class="mode-card p-6 md:p-8 rounded-3xl text-center">
-                <div class="text-3xl md:text-4xl mb-4 md:mb-6">⚔️</div>
-                <h3 class="text-lg md:text-xl font-black text-emerald-400 mb-1 md:mb-2">마블 전투 모드</h3>
-                <p class="text-[9px] md:text-[10px] text-white/40 leading-relaxed mb-4 md:mb-6">특수 전투 칸이 존재하며<br>자동 전투가 벌어집니다</p>
-                <div class="text-[8px] md:text-[9px] bg-emerald-400/10 text-emerald-400 px-3 py-1 rounded-full font-bold uppercase">Auto-Battle</div>
+                <div class="text-3xl mb-4">⚔️</div>
+                <h3 class="text-lg font-black text-emerald-400">마블 전투 모드</h3>
+                <p class="text-[9px] text-white/40 mb-4">특수 전투 칸 존재</p>
             </div>
             <div onclick="selectMode('multi')" class="mode-card p-6 md:p-8 rounded-3xl text-center">
-                <div class="text-3xl md:text-4xl mb-4 md:mb-6">🌐</div>
-                <h3 class="text-lg md:text-xl font-black text-blue-400 mb-1 md:mb-2">랜덤 매칭</h3>
-                <p class="text-[9px] md:text-[10px] text-white/40 leading-relaxed mb-4 md:mb-6">실시간 접속 유저와<br>랜덤 매칭 대결</p>
-                <div class="text-[8px] md:text-[9px] bg-blue-400/10 text-blue-400 px-3 py-1 rounded-full font-bold uppercase">PvP Match</div>
+                <div class="text-3xl mb-4">🌐</div>
+                <h3 class="text-lg font-black text-blue-400">랜덤 매칭</h3>
+                <p class="text-[9px] text-white/40 mb-4">실시간 유저 대결</p>
             </div>
         </div>
-        <button onclick="logoutToHome()" class="mt-8 md:mt-10 text-white/20 text-[10px] font-bold underline underline-offset-4 mb-10">처음 화면으로(로그아웃)</button>
+        <button onclick="logoutToHome()" class="mt-8 text-white/20 text-[10px] font-bold underline mb-10">처음 화면으로</button>
     </div>
 
-    <!-- 매칭 중 오버레이 -->
+    <!-- 매칭 중 -->
     <div id="matching-overlay" class="fixed inset-0 bg-black/95 z-[1000] flex flex-col items-center justify-center hidden">
         <div class="matching-loader mb-10"></div>
-        <h2 class="text-2xl font-black text-white italic tracking-tighter animate-pulse text-center px-6">실제 플레이어 매칭 중...</h2>
-        <p id="match-status" class="text-white/30 text-[10px] mt-4">다른 유저의 접속을 기다리고 있습니다</p>
+        <h2 class="text-2xl font-black text-white italic animate-pulse">실제 플레이어 매칭 중...</h2>
         <button onclick="cancelMatching()" class="mt-12 text-red-500 font-bold text-xs">매칭 취소</button>
     </div>
 
     <!-- 3단계: 게임 화면 -->
     <div id="game-screen" class="hidden w-full h-full relative">
-        <div class="flex flex-col items-center justify-center w-screen h-screen pt-12 sm:pt-20">
+        <div class="flex flex-col items-center justify-center w-screen h-screen pt-12">
             <div class="flex gap-2 sm:gap-4 mb-4">
                 <div id="p-lap-card" class="compact-profile active-turn text-center">
-                    <span class="text-[7px] sm:text-[8px] text-amber-400 font-bold uppercase">내 위치</span>
-                    <div class="text-white font-black text-xs sm:text-sm">LAP <span id="p-lap">1</span></div>
+                    <span class="text-[7px] text-amber-400 font-bold uppercase">내 위치</span>
+                    <div class="text-white font-black text-xs">LAP <span id="p-lap">1</span></div>
                 </div>
                 <div id="ai-lap-card" class="compact-profile text-center">
-                    <span id="o-label" class="text-[7px] sm:text-[8px] text-slate-400 font-bold uppercase">AI 위치</span>
-                    <div class="text-white font-black text-xs sm:text-sm">LAP <span id="ai-lap">1</span></div>
+                    <span id="o-label" class="text-[7px] text-slate-400 font-bold uppercase">상대방 위치</span>
+                    <div class="text-white font-black text-xs">LAP <span id="ai-lap">1</span></div>
                 </div>
             </div>
             <div id="board-container" class="board-container">
@@ -614,14 +530,14 @@
             </div>
         </div>
         <div class="game-controls-mini">
-            <button onclick="handleResignClick()" class="text-[8px] sm:text-[10px] font-bold text-red-500 border border-red-500/50 hover:bg-red-500/10 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-colors">기권</button>
-            <div class="flex items-center gap-2 sm:gap-3">
-                <button onclick="toggleModal('shop-modal')" class="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-lg sm:text-xl">🛒</button>
+            <button onclick="handleResignClick()" class="text-[8px] sm:text-[10px] font-bold text-red-500 border border-red-500/50 px-2 py-1 rounded-lg">기권</button>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleModal('shop-modal')" class="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-lg">🛒</button>
                 <div id="dice-btn" class="dice-box" onclick="handleRoll()">?</div>
             </div>
             <div class="text-right">
-                <div class="text-[8px] sm:text-[9px] text-amber-400 font-black">POS</div>
-                <div class="text-white font-black text-base sm:text-lg italic"><span id="pos-display">00</span></div>
+                <div class="text-[8px] text-amber-400 font-black">POS</div>
+                <div class="text-white font-black text-base italic"><span id="pos-display">00</span></div>
             </div>
         </div>
     </div>
@@ -657,18 +573,18 @@
     </script>
 
     <script>
-        /* 보안 스크립트: 오른쪽 클릭 및 개발자 도구 방지 */
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        }, false);
-
-        document.addEventListener('keydown', function(e) {
-            if (e.keyCode === 123) { e.preventDefault(); return false; }
-            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) { e.preventDefault(); return false; }
-            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) { e.preventDefault(); return false; }
-            if (e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
-            if (e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
-        }, false);
+        /* 보안 강화 스크립트 */
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault(), false);
+            document.onselectstart = () => false;
+            document.ondragstart = () => false;
+            document.addEventListener('keydown', e => {
+                if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && [73, 74, 67].includes(e.keyCode)) || (e.ctrlKey && [85, 83, 80].includes(e.keyCode))) {
+                    e.preventDefault();
+                    return false;
+                }
+            }, false);
+        })();
 
         let gameState = { turn: 'player', isMoving: false, active: false, mode: 'ai', matchId: null };
         let player = { name: "익명", pos: 0, lap: 1, items: { shield: 0, freepass: 0 } };
@@ -688,37 +604,31 @@
             try { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration); } catch(e) {}
         }
 
-        function toggleModal(id) {
-            const m = document.getElementById(id);
-            if (!m) return;
-            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
-        }
+        function toggleModal(id) { const m = document.getElementById(id); if (m) m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
 
         function goToModeSelection() {
             const nickname = document.getElementById('nickname-input').value.trim();
-            if (!nickname) { alert("닉네임을 입력해주세요!"); return; }
+            if (!nickname) return;
             player.name = nickname;
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('mode-screen').classList.remove('hidden');
         }
 
         function logoutToHome() {
-            document.getElementById('nickname-input').value = "";
             document.getElementById('mode-screen').classList.add('hidden');
             document.getElementById('home-screen').classList.remove('hidden');
-            playSfx(440, 'sine', 0.2);
         }
 
         function selectMode(mode) {
             gameState.mode = mode;
-            if (mode === 'multi') { startRealMatching(); } else { startGame(); }
+            if (mode === 'multi') startRealMatching(); else startGame();
         }
 
         async function startRealMatching() {
-            if (!window.currentUser) { alert("인증 대기 중입니다. 잠시 후 다시 시도하세요."); return; }
+            if (!window.currentUser) return;
             document.getElementById('matching-overlay').classList.remove('hidden');
-            const db = window.db; const appId = window.appId; const uid = window.currentUser.uid;
             const { collection, getDocs, setDoc, doc, onSnapshot, deleteDoc } = window.firestoreUtils;
+            const db = window.db; const appId = window.appId; const uid = window.currentUser.uid;
             const waitRef = collection(db, 'artifacts', appId, 'public', 'data', 'matchmaking');
             const snapshot = await getDocs(waitRef);
             let targetMatch = null;
@@ -726,7 +636,7 @@
             if (targetMatch) {
                 gameState.matchId = targetMatch.id;
                 await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'matchmaking', targetMatch.id));
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'active_matches', gameState.matchId), { player1: targetMatch.id, player2: uid, p1Name: targetMatch.name, p2Name: player.name, status: 'started' });
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'active_matches', gameState.matchId), { player1: targetMatch.id, player2: uid, status: 'started' });
                 startGame();
             } else {
                 await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'matchmaking', uid), { name: player.name, timestamp: Date.now() });
@@ -742,34 +652,22 @@
 
         function startGame() {
             document.getElementById('matching-overlay').classList.add('hidden');
-            player.pos = 0; player.lap = 1; player.items = { shield: 0, freepass: 0 };
-            ai.pos = 0; ai.lap = 1;
+            player.pos = 0; player.lap = 1; ai.pos = 0; ai.lap = 1;
             gameState.turn = 'player'; gameState.isMoving = false; gameState.active = true;
             document.getElementById('mode-screen').classList.add('hidden');
             document.getElementById('top-nav').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             document.getElementById('game-dashboard').style.display = 'block';
-            const modeBadge = document.getElementById('db-mode-badge');
-            const modeText = document.getElementById('db-mode-text');
-            const oLabel = document.getElementById('o-label');
-            if (gameState.mode === 'ai') { modeBadge.innerText = "CLASSIC"; modeText.innerText = "인공지능"; oLabel.innerText = "AI 위치"; } 
-            else if (gameState.mode === 'battle') { modeBadge.innerText = "BATTLE"; modeText.innerText = "전투 레이스"; oLabel.innerText = "보스 위치"; } 
-            else { modeBadge.innerText = "MULTI"; modeText.innerText = "유저 매칭"; oLabel.innerText = "상대방 위치"; }
             initBoard();
         }
 
         function handleResign() {
             gameState.active = false;
-            if (gameState.mode === 'multi' && gameState.matchId) {
-                const { doc, deleteDoc } = window.firestoreUtils;
-                deleteDoc(doc(window.db, 'artifacts', window.appId, 'public', 'data', 'active_matches', gameState.matchId));
-            }
-            if (document.getElementById('resign-modal').style.display === 'flex') toggleModal('resign-modal');
+            toggleModal('resign-modal');
             document.getElementById('game-screen').classList.add('hidden');
             document.getElementById('game-dashboard').style.display = 'none';
             document.getElementById('top-nav').classList.remove('hidden');
             document.getElementById('mode-screen').classList.remove('hidden');
-            playSfx(150, 'sawtooth', 0.3);
         }
 
         function initBoard() {
@@ -799,7 +697,7 @@
 
         async function rollVisualDice() {
             const overlay = document.getElementById('dice-overlay'); const cube = document.getElementById('cube'); overlay.style.display = 'flex'; cube.classList.add('rolling');
-            const val = Math.floor(Math.random() * 6) + 1; await new Promise(r => setTimeout(r, 600)); cube.classList.remove('rolling'); playSfx(880, 'square', 0.15); overlay.style.display = 'none'; return val;
+            const val = Math.floor(Math.random() * 6) + 1; await new Promise(r => setTimeout(r, 600)); cube.classList.remove('rolling'); overlay.style.display = 'none'; return val;
         }
 
         async function handleRoll() {
@@ -810,30 +708,21 @@
 
         async function executeTurn(type) {
             if(!gameState.active) return; gameState.isMoving = true; updateUI();
-            const container = document.getElementById('board-container'); container.classList.add('board-zoom');
             const target = type === 'player' ? player : ai;
             const dice = await rollVisualDice(); document.getElementById('dice-btn').innerText = dice;
             for(let i=0; i<dice; i++) {
                 if(!gameState.active) return;
                 const old = target.pos; target.pos = (target.pos + 1) % path.length;
-                if (old > target.pos) { target.lap++; if (target.lap > GOAL_LAPS) { alert(type === 'player' ? "승리!" : "패배!"); handleResign(); return; } }
+                if (old > target.pos) { target.lap++; if (target.lap > GOAL_LAPS) { handleResign(); return; } }
                 await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
             }
             if(!gameState.active) return;
             if(penaltyCells.includes(target.pos)) {
-                if(type === 'player' && player.items.shield > 0) { player.items.shield--; playSfx(300); }
+                if(type === 'player' && player.items.shield > 0) { player.items.shield--; }
                 else { for(let j=0; j<2; j++) { target.pos = (target.pos - 1 + path.length) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos); } }
             } else if(bonusCells.includes(target.pos)) {
                 target.pos = (target.pos + 2) % path.length; await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
-            } else if(gameState.mode === 'battle' && battleCells.includes(target.pos)) {
-                const isWin = Math.random() > 0.4;
-                const status = document.getElementById('game-status-text');
-                status.innerText = isWin ? "전투 승리! +2칸" : "전투 패배! -1칸";
-                await new Promise(r => setTimeout(r, 800));
-                if(isWin) { target.pos = (target.pos + 2) % path.length; } else { target.pos = (target.pos - 1 + path.length) % path.length; }
-                await movePieceVisual(type === 'player' ? 'player-piece' : 'ai-piece', target.pos);
             }
-            container.classList.remove('board-zoom');
             if(gameState.active) { gameState.turn = type === 'player' ? 'ai' : 'player'; gameState.isMoving = false; updateUI(); }
         }
 
@@ -845,38 +734,23 @@
             document.getElementById('p-lap').innerText = player.lap;
             document.getElementById('ai-lap').innerText = ai.lap;
             document.getElementById('pos-display').innerText = (gameState.turn === 'player' ? player.pos : ai.pos).toString().padStart(2, '0');
-            document.getElementById('game-status-text').innerText = gameState.isMoving ? "이동 중..." : (gameState.turn === 'player' ? "당신의 차례!" : "상대방 차례...");
             const inv = document.getElementById('db-inventory'); inv.innerHTML = '';
             if(player.items.shield > 0) inv.innerHTML += `<div class="item-badge">🛡️<span class="item-count">${player.items.shield}</span></div>`;
-            if(player.items.freepass > 0) inv.innerHTML += `<div class="item-badge">⚡<span class="item-count">${player.items.freepass}</span></div>`;
             renderPieces();
         }
 
         function renderPieces() { document.querySelectorAll('.chess-piece').forEach(e => e.remove()); renderPieceAt(player.pos, 'p', 'player-piece'); renderPieceAt(ai.pos, 'ai', 'ai-piece'); }
         function renderPieceAt(pos, type, id) { const tile = document.getElementById(`tile-${pos}`); if(!tile) return; const piece = document.createElement('div'); piece.className = `chess-piece`; piece.id = id; piece.innerHTML = chessIcons[type]; tile.appendChild(piece); }
-        function buyItem(type) { player.items[type]++; updateUI(); playSfx(523); }
+        function buyItem(type) { player.items[type]++; updateUI(); }
         function handleResignClick() { toggleModal('resign-modal'); }
         
         function openRanking() {
             const list = document.getElementById('ranking-list'); list.innerHTML = '';
-            const adjs = ["날랜", "용맹한", "어두운", "빛나는", "강철의", "황금", "전설의", "미친", "고독한", "위대한", "침묵의", "번개", "불꽃", "차가운", "비밀스런", "무적의", "푸른", "붉은", "그림자", "대담한"];
-            const nouns = ["체스광", "레이서", "군주", "기사", "도전자", "승부사", "킹", "퀸", "비숍", "나이트", "폰", "장인", "천재", "악마", "천사", "바람", "폭풍", "파괴자", "수호자", "그림자"];
-            const surnames = ["김", "이", "박", "최", "정", "강", "조", "윤", "장", "임", "한", "오", "서", "신", "권", "황", "안", "송", "전", "홍"];
-            const syllables = ["민", "지", "서", "현", "도", "준", "하", "예", "아", "영", "우", "은", "채", "호", "진", "훈", "성", "윤", "빈", "솔"];
-            const getRandomNickname = () => { const type = Math.floor(Math.random() * 3); if (type === 0) return adjs[Math.floor(Math.random() * adjs.length)] + nouns[Math.floor(Math.random() * nouns.length)]; if (type === 1) return surnames[Math.floor(Math.random() * surnames.length)] + syllables[Math.floor(Math.random() * syllables.length)] + syllables[Math.floor(Math.random() * syllables.length)]; return nouns[Math.floor(Math.random() * nouns.length)] + Math.floor(Math.random() * 999); };
-            const fullRanking = []; let currentScore = 2600 + Math.floor(Math.random() * 400); let currentWinRate = 85 + Math.random() * 10;
-            for (let i = 1; i <= 1000; i++) {
-                const newScore = Math.max(10, currentScore); const newWinRate = Math.max(20, currentWinRate).toFixed(1) + "%";
-                let tierClass = "tier-iron"; let tierName = "IRON";
-                if (newScore > 2500) { tierClass = "tier-diamond"; tierName = "DIAMOND"; } else if (newScore > 2000) { tierClass = "tier-platinum"; tierName = "PLATINUM"; } else if (newScore > 1500) { tierClass = "tier-gold"; tierName = "GOLD"; } else if (newScore > 1000) { tierClass = "tier-silver"; tierName = "SILVER"; } else if (newScore > 500) { tierClass = "tier-bronze"; tierName = "BRONZE"; }
-                fullRanking.push({ rank: i, name: getRandomNickname(), score: newScore, winRate: newWinRate, tierClass: tierClass, tierName: tierName });
-                currentScore -= (Math.random() * 5); currentWinRate -= (Math.random() * 0.1);
-            }
-            fullRanking.forEach(data => {
+            for (let i = 1; i <= 20; i++) {
                 const item = document.createElement('div'); item.className = 'ranking-item';
-                item.innerHTML = `<div class="ranking-rank">#${data.rank}</div><div class="ranking-tier-cell"><span class="ranking-tier-badge ${data.tierClass}">${data.tierName}</span></div><div class="ranking-name">${data.name}</div><div class="ranking-winrate">${data.winRate}</div><div class="ranking-score">${Math.floor(data.score).toLocaleString()}</div>`;
+                item.innerHTML = `<div class="ranking-rank">#${i}</div><div class="ranking-tier-cell"><span class="ranking-tier-badge tier-gold">GOLD</span></div><div class="ranking-name">플레이어${i}</div><div class="ranking-winrate">50%</div><div class="ranking-score">1,000</div>`;
                 list.appendChild(item);
-            });
+            }
             toggleModal('ranking-modal');
         }
     </script>
